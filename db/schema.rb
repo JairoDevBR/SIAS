@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_06_214826) do
     t.datetime "time_start"
     t.datetime "time_end"
     t.integer "n_people"
-    t.integer "type"
+    t.integer "category"
     t.float "start_lon"
     t.float "start_lat"
     t.float "end_lon"
@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_06_214826) do
     t.datetime "updated_at", null: false
     t.boolean "admin"
     t.boolean "central"
-    t.integer "type"
+    t.integer "kind"
     t.string "plate"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
