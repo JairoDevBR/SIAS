@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+Worker1.create(name: 'Guilherme Marques', occupation: 'paramedic')
+Worker.save!
+Worker2.create(name: 'Keny Chun', occupation: 'paramedic')
+Worker.save!
