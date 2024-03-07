@@ -1,0 +1,17 @@
+<div class="container" style="background-color: red;">
+
+  <input type="text"
+    data-address-autocomplete-target="address"
+    data-controller="address-autocomplete"
+    address-autocomplete-api-key-value="ENV['MAPBOX_API_KEY']">
+
+  <div id='map' style='width: 400px; height: 300px;'
+    data-controller="map"
+    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+  </div>
+
+
+
+
+</div>
