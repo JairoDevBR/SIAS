@@ -6,10 +6,12 @@ class SchedulesController < ApplicationController
   end
 
   def new
+    authorize @schedule
     @schedule = Schedule.new
   end
 
   def create
+    authorize @schedule
     @schedule = Schedule.new(schedule_params)
     @schedule.user = current_user
     @schedule.active = true
