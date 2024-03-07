@@ -1,3 +1,4 @@
 class Worker < ApplicationRecord
-  has_many :schedule
+  has_many :first_schedules, class_name: 'Schedule', foreign_key: 'worker1_id'
+  has_many :second_schedules, class_name: 'Schedule', foreign_key: 'worker2_id'
 end

@@ -1,22 +1,26 @@
 class SchedulePolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.all
+    end
+  end
+
+  def index?
+    ambulance?
   end
 
   def new?
-    is_ambulance?
+    ambulance?
   end
 
   def create?
-    is_ambulance?
+    ambulance?
   end
 
   private
 
-  def is_ambulance?
+  def ambulance?
     user.admin == user.central
   end
 end

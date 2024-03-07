@@ -3,6 +3,8 @@ class SchedulesController < ApplicationController
 
   def index
     @schedules = Schedule.all
+    # @schedules = policy_scope(Schedule)
+    authorize @schedules
   end
 
   def new
