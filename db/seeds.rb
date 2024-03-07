@@ -1,5 +1,11 @@
 p "starting the Seed!"
 
+worker1 = Worker.create(name: 'Guilherme Marques', occupation: 'paramedic')
+worker1.save!
+worker2 = Worker.create(name: 'Keny Chun', occupation: 'paramedic')
+worker2.save!
+
+
 emergency1 = Emergency.new({ n_people: 1, category: 1, description: 'Paciente mulher acidentada ao lado da calçada', street: 'Rua jerico 193', neighborhood: 'Vila madalena', city: 'São Paulo' })
 emergency1.save!
 emergency2 = Emergency.new({ n_people: 2, category: 2, description: 'Dois pacientes homens feridos em um acidente de carro', street: 'Rua apinajes 200', neighborhood: 'Perdizes', city: 'São Paulo' })
@@ -8,3 +14,4 @@ emergency3 = Emergency.new({ n_people: 2, category: 3, description: 'Paciente mu
 emergency3.save!
 
 p "finalizando o seed"
+
