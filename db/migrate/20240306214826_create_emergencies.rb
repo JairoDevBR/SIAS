@@ -5,7 +5,7 @@ class CreateEmergencies < ActiveRecord::Migration[7.1]
       t.datetime :time_start
       t.datetime :time_end
       t.integer :n_people
-      t.integer :type
+      t.integer :category
       t.float :start_lon
       t.float :start_lat
       t.float :end_lon
