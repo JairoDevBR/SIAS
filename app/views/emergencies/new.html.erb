@@ -1,0 +1,11 @@
+<div class="container">
+  <%= simple_form_for @emergency do |f| %>
+    <%= f.input :n_people %>
+    <%= f.input :type %>
+    <%= f.input :category %>
+    <%= f.input :street %>
+    <%= f.input :neighborhood %>
+    <%= f.input :city %>
+    <%= f.button :submit %>
+  <% end %>
+</div>
