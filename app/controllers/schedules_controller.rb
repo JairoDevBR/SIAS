@@ -6,16 +6,16 @@ class SchedulesController < ApplicationController
   end
 
   def new
-    authorize @schedule
     @schedule = Schedule.new
+    authorize @schedule
   end
 
   def create
-    authorize @schedule
     @schedule = Schedule.new(schedule_params)
     @schedule.user = current_user
     @schedule.active = true
-    if @schedule.save
+    authorize @schedule
+    if @schedule.save!
       redirect_to schedules_path, notice: 'Você está logado.'
     else
       render :new, status: :unprocessable_entity

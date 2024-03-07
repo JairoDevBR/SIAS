@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_06_214826) do
     t.string "neighborhood"
     t.string "city"
     t.bigint "user_id", null: false
-    t.bigint "schedule_id", null: false
+    t.bigint "schedule_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["schedule_id"], name: "index_emergencies_on_schedule_id"

@@ -1,11 +1,9 @@
 <div class="container">
+
+<%# precisa colocar um form do geocoding ou do correios %>
   <%= simple_form_for @emergency do |f| %>
-    <%= f.input :n_people %>
-    <%= f.input :type %>
-    <%= f.input :category %>
-    <%= f.input :street %>
-    <%= f.input :neighborhood %>
-    <%= f.input :city %>
+    <%= f.input :description %>
+    <%# o geocoding vai pegar os dados do endereco limpo e mandar pelo submit com params %>
     <%= f.button :submit %>
   <% end %>
 </div>

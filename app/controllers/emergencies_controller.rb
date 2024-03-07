@@ -2,8 +2,8 @@ class EmergenciesController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    authorize @emergency
     @emergency = Emergency.new
+    authorize @emergency
   end
 
   def create
@@ -11,9 +11,10 @@ class EmergenciesController < ApplicationController
     # aqui vamos rodar o geocoding e obter o address limpo
     # aqui vamos rodar o GPT retorna gravidade(prioridade)
     @emergency = Emergency.new(emergency_params)
+
     @emergency.user = current_user
 
-    @emergency.schedule = Schedule.where()
+    # @emergency.schedule = Schedule.where()
     if @emergency.save
       redirect_to new_emergency_path, notice: 'Novo chamado foi criado.'
     else
@@ -31,5 +32,9 @@ class EmergenciesController < ApplicationController
 
   def emergency_params
     params.require(:emergency).permit(:n_people, :type, :description, :street, :neighborhood, :city)
+  end
+
+  def save_without_validation
+    save(validate: false)
   end
 end
