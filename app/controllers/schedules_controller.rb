@@ -9,6 +9,7 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = Schedule.new
+    @schedule.user = current_user
     authorize @schedule
   end
 
