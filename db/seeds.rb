@@ -33,4 +33,6 @@ emergency2 = Emergency.create!({ n_people: 2, category: 2, description: 'Dois pa
 emergency3 = Emergency.create!({ n_people: 2, category: 3, description: 'Paciente mulher acidentada ao lado da calçada', street: 'avenida paulista 1300', neighborhood: 'bela vista', city: 'São Paulo', user_id: 2})
 # emergency3.save(validate: false)
 
+chatroom = Chatroom.create!(name: "general")
+
 p "finalizando o seed"

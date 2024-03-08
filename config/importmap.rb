@@ -25,3 +25,4 @@ pin "nanoid" # @3.3.7
 pin "subtag" # @0.5.0
 pin "suggestions" # @1.7.1
 pin "xtend" # @4.0.2
+pin "@rails/actioncable", to: "@rails--actioncable.js" # @7.1.3
