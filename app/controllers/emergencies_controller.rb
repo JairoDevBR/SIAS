@@ -7,12 +7,12 @@ class EmergenciesController < ApplicationController
   end
 
   def create
+    @emergency = Emergency.new(emergency_params)
     authorize @emergency
+    @emergency.user = current_user
     # aqui vamos rodar o geocoding e obter o address limpo
     # aqui vamos rodar o GPT retorna gravidade(prioridade)
-    @emergency = Emergency.new(emergency_params)
 
-    @emergency.user = current_user
 
     # @emergency.schedule = Schedule.where()
     if @emergency.save
@@ -31,7 +31,7 @@ class EmergenciesController < ApplicationController
   private
 
   def emergency_params
-    params.require(:emergency).permit(:n_people, :type, :description, :street, :neighborhood, :city)
+    params.require(:emergency).permit(:description, :street, :neighborhood, :city)
   end
 
   def save_without_validation

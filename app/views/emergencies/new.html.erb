@@ -1,9 +1,27 @@
 <div class="container">
 
-<%# precisa colocar um form do geocoding ou do correios %>
+  <div id="info-tranfer" data-controller="info-transfer">
+    <div id='map' style='width: 400px; height: 300px;' data-controller="map" data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" >
+      <input type="hidden" data-map-target="rua" data-info-transfer-target="streetInput" data-action="input->info-transfer#send">
+      <input type="hidden" data-map-target="bairro" data-info-transfer-target="neighborhoodInput" >
+      <input type="hidden" data-map-target="cidade" data-info-transfer-target="cityInput" >
+      <input type="hidden" data-map-target="categoria">
+      <input type="hidden" data-map-target="latitude">
+      <input type="hidden" data-map-target="longitude">
+    </div>
+    <%# data-map-markers-value="<%= @markers.to_json" %>
+    <br><br><br><br><br><br><br><br>
+      <button data-info-transfer-target="button" data-action="click->info-transfer#send">Autocomplete</button>
+
   <%= simple_form_for @emergency do |f| %>
-    <%= f.input :description %>
+    <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}} %>
+    <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}} %>
+    <%= f.input :city, label: "Cidade", input_html: {data: {info_transfer_target:"cityOutput"}} %>
+    <%= f.input :n_people, label: "Número de acidentados" %>
+    <%= f.input :description, label: "Descrição da ocorrência" %>
     <%# o geocoding vai pegar os dados do endereco limpo e mandar pelo submit com params %>
-    <%= f.button :submit %>
+    <%= f.button :submit, class:"btn btn-primary" %>
   <% end %>
+
+  </div>
 </div>
