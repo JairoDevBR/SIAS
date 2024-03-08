@@ -6,4 +6,8 @@
     <%# o geocoding vai pegar os dados do endereco limpo e mandar pelo submit com params %>
     <%= f.button :submit %>
   <% end %>
+
+    <%= turbo_frame_tag "chat_message" do %>
+      <p><%= render "chat_message" %></p>
+    <% end %>
 </div>
