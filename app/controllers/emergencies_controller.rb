@@ -1,3 +1,5 @@
+require 'json'
+
 class EmergenciesController < ApplicationController
   before_action :authenticate_user!
 
@@ -13,14 +15,37 @@ class EmergenciesController < ApplicationController
   end
 
   def create
-    # aqui vamos rodar o geocoding e obter o address limpo
-    # aqui vamos rodar o GPT retorna gravidade(prioridade)
     @emergency = Emergency.new(emergency_params)
-    @emergency.user = current_user
     authorize @emergency
-    # @emergency.schedule = Schedule.where()
+    @emergency.user = current_user
+
+    # aqui vamos rodar o GPT retorna gravidade(prioridade)
+    @chat_response = JSON.parse(
+      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
+        Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
+        Para definir a categoria da ocorrência, forneça o número correspondente à categoria de acordo com as seguintes opções:
+        Acidentes de trânsito = 1;
+        Mal súbito = 2;
+        Ferimentos por queda = 3;
+        Parada cardiorrespiratória = 4;
+        Intoxicação ou envenenamento = 5;
+        Problemas respiratórios = 6;
+        Crises hipertensivas = 7;
+        Complicações durante a gravidez ou parto = 8;
+        Ferimentos por arma branca ou de fogo = 9;
+        Reações alérgicas graves = 10;
+        Outros = 11;
+        Por favor, insira o número correspondente à categoria da ocorrência, seguindo o padrão anterior (categoria = número da categoria).
+        A resposta deve ser uma única hash na seguinte estrutura:
+        {\"gravidade\":integer, \"numero_pessoas_machucadas\":integer, \"categoria\":integer}.
+        Não inclua nenhuma informação adicional além da hash.
+        ").call)
+
+    @emergency.gravity = @chat_response["gravidade"]
+    @emergency.category = @chat_response["categoria"]
+
     if @emergency.save
-      @chat = chatgpt_service("#{@emergency.description}, como voce classificaria a gravidade dessa emergencia de 0(menos grave) a 10(mais grave)?").call
+      raise
       render turbo_stream: [
         turbo_stream.replace("chat_message", partial: "emergencies/chat_message", locals: {chat: @chat})
       ]
@@ -39,7 +64,7 @@ class EmergenciesController < ApplicationController
   private
 
   def emergency_params
-    params.require(:emergency).permit(:description, :street, :neighborhood, :city)
+    params.require(:emergency).permit(:description, :n_people, :street, :neighborhood, :city)
   end
 
   def save_without_validation
