@@ -2,9 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static values = {
-    apiKey: String,
-    markers: Array
-  }
+    apiKey: String}
   static targets = ["cidade", "bairro", "rua", "categoria", "latitude", "longitude", "button"]
 
 

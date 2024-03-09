@@ -14,9 +14,9 @@
       <button data-info-transfer-target="button" data-action="click->info-transfer#send">Autocomplete</button>
 <br><br><br>
 
-      <input type="text" value="categoria" data-info-transfer-target="categoryOutput" >
-      <input type="text" value="latitude" data-info-transfer-target="latitudeOutput" >
-      <input type="text" value="longitude" data-info-transfer-target="longitudeOutput" >
+    <input type="text" value="categoria" data-info-transfer-target="categoryOutput">
+    <input type="text" value="latitude" data-info-transfer-target="latitudeOutput">
+    <input type="text" value="longitude" data-info-transfer-target="longitudeOutput">
   <%= simple_form_for @emergency do |f| %>
     <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}} %>
     <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}} %>
@@ -27,11 +27,10 @@
     <%= f.button :submit, class:"btn btn-primary" %>
   <% end %>
 
-<<<<<<< HEAD
+
+
     <%= turbo_frame_tag "chat_message" do %>
       <p><%= render "chat_message" %></p>
     <% end %>
-=======
   </div>
->>>>>>> master
 </div>
