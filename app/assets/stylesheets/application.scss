@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 $azul: #141E46;
 $vermelho: #BB2525;
 $rose: #FF6969;
 $creme:#FFF5E0;
 $text-grey: #838383;
+=======
+
+>>>>>>> master
 // Graphical variables
 @import "config/fonts";
 @import "config/colors";
@@ -15,3 +19,12 @@ $text-grey: #838383;
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+body {
+  background-color: $azul;
+  width: 430px;
+}
+
+a {
+  text-decoration: none;
+}

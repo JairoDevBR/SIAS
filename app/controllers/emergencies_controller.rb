@@ -39,7 +39,7 @@ class EmergenciesController < ApplicationController
   private
 
   def emergency_params
-    params.require(:emergency).permit(:n_people, :type, :description, :street, :neighborhood, :city)
+    params.require(:emergency).permit(:description, :street, :neighborhood, :city)
   end
 
   def save_without_validation
