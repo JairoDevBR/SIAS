@@ -52,7 +52,6 @@ export default class extends Controller {
       if (city) {
           console.log('City:', city);
           cidadeHidden.value = city
-          // this.cityTarget.innerHtml = city
       } else {
           console.log('City information not available for this location.');
       }
@@ -94,17 +93,8 @@ export default class extends Controller {
           categoriaHidden.value = category
       } else {
           console.log('Category information not available for this location.');
+          categoriaHidden.value = "Sem categoria"
       }
-
-      setClickButton()
-      // new mapboxgl.Marker()
-      // .setLngLat([lat, lon ])
-      // .addTo(geocoder)
-
     });
-      this.cidadeTarget.innerText = city;
-  }
-  setClickButton(){
-    this.buttonTarget
   }
 }
