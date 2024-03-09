@@ -18,7 +18,10 @@
   </head>
 
   <body>
-    <%= render "shared/navbar" %>
+    <%unless(request.fullpath == schedules_path) || (request.fullpath == new_schedule_path) %>
+      <%= render "shared/navbar" %>
+   <% end %>
+
     <%= render "shared/flashes" %>
 
     <%= yield %>
