@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sias</title>
+    <title>SIAS - Sistema de Auxílio aos Socorristas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= favicon_link_tag asset_path('logo_sias_blue.png') %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -16,8 +17,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body><%= render "shared/navbar" %>
-<%= render "shared/flashes" %>
+  <body>
+    <%= render "shared/navbar" unless new_schedule_path %>
+    <%= render "shared/flashes" %>
 
     <%= yield %>
   </body>

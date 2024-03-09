@@ -1,0 +1,62 @@
+@media (max-width: 540px) {
+  .container {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .space-gui {
+    margin: 40px 0;
+    color: $creme;
+  }
+
+  .img-schedule {
+    width: 100%;
+
+  }
+
+  .form-schedule-info{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+
+    .optional {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .form-schedule-label {
+    color: $branco;
+  }
+
+  .btn-schedule{
+    margin: 10px 0;
+  }
+
+  .btn-gui {
+    width: 100%;
+    background-color: #BB2525;
+    border-radius: 27px;
+    padding: 12px 0;
+    font-weight: bold;
+    color: $creme;
+    margin-top: 15px;
+    font-size: 30px;
+  }
+
+  .custom-input-id {
+
+  }
+
+  .custom-input-worker {
+
+  }
+  .btn-back {
+    margin-top: 50px;
+
+    a{
+      color: $creme;
+
+    }
+  }
+
+}
