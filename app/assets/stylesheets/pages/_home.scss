@@ -6,12 +6,28 @@
 
 }
 
-.color-creme{
+.text-creme{
   color: $creme;
+}
+
+.text-azul{
+  color: $azul;
+}
+
+.text-vermelho{
+  color: $vermelho
+}
+
+.text-grey{
+  color: $text-grey;
 }
 
 .background-blur{
   backdrop-filter: blur(4px);
+}
+
+.background-color-azul{
+  background-color: $azul;
 }
 
 .text-shadow-jairo{
@@ -20,8 +36,44 @@
 
 .margin-top-100{
   margin-top: 100px;
+
 }
 
 .padding-50{
   padding: 50px;
+}
+
+
+.icons-vermelhos{
+  background-color: $vermelho;
+  color: $azul;
+}
+
+.botao-azul{
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 24px;
+  font-weight: bolder;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: $azul;
+  color: #FFF;
+  border-radius: 24px;
+  border: 2px solid #144e75;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.1);
+    color: $vermelho;
+    box-shadow: 2px 2px 4px 0 #403e3e;
+  }
+}
+
+.background-img-body{
+  background-image: url("https://images.unsplash.com/photo-1588321421727-f807ae7da8a9?q=80&w=2067&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+}
+
+.border-radius-60{
+  border-radius: 60px;
 }
