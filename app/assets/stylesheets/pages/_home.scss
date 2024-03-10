@@ -112,3 +112,29 @@
 .heigth-200{
   height: 300px;
 }
+
+.mudar-display{
+  display: flex;
+}
+
+.formulario-contato{
+  width: 50%;
+}
+
+.descrição-breve{
+  width: 50%;
+}
+
+@media (max-width: 700px) {
+  .mudar-display{
+    display: block;
+  }
+
+  .descrição-breve{
+    width: 100%;
+  }
+
+  .formulario-contato{
+    width: 100%;
+  }
+}
