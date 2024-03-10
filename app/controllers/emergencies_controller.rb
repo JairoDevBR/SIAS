@@ -23,7 +23,7 @@ class EmergenciesController < ApplicationController
     @chat_response = JSON.parse(
       chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
-        Para definir a categoria da ocorrência, forneça o número correspondente à categoria de acordo com as seguintes opções:
+        Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
         Acidentes de trânsito = 1;
         Mal súbito = 2;
         Ferimentos por queda = 3;
@@ -35,7 +35,6 @@ class EmergenciesController < ApplicationController
         Ferimentos por arma branca ou de fogo = 9;
         Reações alérgicas graves = 10;
         Outros = 11;
-        Por favor, insira o número correspondente à categoria da ocorrência, seguindo o padrão anterior (categoria = número da categoria).
         A resposta deve ser uma única hash na seguinte estrutura:
         {\"gravidade\":integer, \"numero_pessoas_machucadas\":integer, \"categoria\":integer}.
         Não inclua nenhuma informação adicional além da hash.
@@ -43,9 +42,12 @@ class EmergenciesController < ApplicationController
 
     @emergency.gravity = @chat_response["gravidade"]
     @emergency.category = @chat_response["categoria"]
+    @emergency.save!
+    prioritize_emergencies_by_gravity
+    find_ambulance(@emergency)
+
 
     if @emergency.save
-      raise
       render turbo_stream: [
         turbo_stream.replace("chat_message", partial: "emergencies/chat_message", locals: {chat: @chat})
       ]
@@ -70,8 +72,40 @@ class EmergenciesController < ApplicationController
   def save_without_validation
     save(validate: false)
   end
+
   # chatgpt
   def chatgpt_service(message)
     ChatgptService.new(message)
   end
+
+  def prioritize_emergencies_by_gravity
+    # seleciona as emergencias ativas, ou seja, nao encerradas
+    @emergencies = Emergency.where(time_end: nil)
+    # ordena pela gravidade mais alta para menos alta
+    @emergencies.sort_by(&:gravity).reverse
+  end
+
+  def find_ambulance(emergency)
+    # seleciona ambulancias ativas, nao socorrendo nenhuma emergencia ou socorrendo emergencia com gravidade abaixo 15 ou
+    # socorrendo emergencia com gravidade abaixo dela
+    @schedules = Schedule.where(active: true) "procurar usando um through emergency.gravity"
+    distances = {}
+    @schedules.each do |schedule|
+      # calcular distancia usando pitagoras ou geocode e colocar em uma hash
+      distances[schedule.id] = calculate_distance(schedule, emergency)
+    end
+    # atribui a ambulancia com a menor distancia a emergencia
+
+    # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
+
+    # caso nao possua ambulancias ativas disponiveis, deverá aguardar uma ambulancia disponivel para rodar o find ambulance, ou seja,
+    # toda vez que uma ambulancia receber um time_end, devera rodar um metodo para procurar emergencias sem schedule
+
+  end
+
+  def calculate_distance(schedule, emergency)
+    # precisamos colocar latitude e longitude da emergencia e current lat lon para schedule
+    Math.sqrt((((schedule.latitude - emergency.latitude) * 111.11) ** 2) + (((schedule.longitude - emergency.longitude) * 111.1) ** 2))
+  end
+
 end

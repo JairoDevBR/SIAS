@@ -14,7 +14,6 @@ class ChatgptService
     @api_url = 'https://api.openai.com/v1/chat/completions'
     @model = model
     @message = message
-
   end
 
   def call
