@@ -1,12 +1,6 @@
 .navbar-lewagon {
-  justify-content: space-between;
+  justify-content: center;
   background-color: $azul;
-  a{
-    color: $vermelho;
-  }
-  a:hover{
-    color: $vermelho;
-  }
 }
 
 .navbar-lewagon .navbar-collapse {
@@ -15,4 +9,25 @@
 
 .navbar-lewagon .navbar-brand img {
   width: 40px;
+}
+
+.botão-login-navbar {
+  display: inline-block;
+  padding: 5px 18px;
+  font-size: 15px;
+  font-weight: bolder;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: $rose;
+  color: #000000;
+  border-radius: 24px;
+  border: 2px solid $rose;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.1);
+    color: $creme;
+    box-shadow: 2px 2px 4px 0 #403e3e;
+    background-color: $azul;
+  }
 }
