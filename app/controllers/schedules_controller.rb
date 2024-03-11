@@ -7,6 +7,20 @@ class SchedulesController < ApplicationController
     authorize @schedules
   end
 
+  def show
+    @chatroom = Chatroom.find(1)
+    @schedule = Schedule.find(params[:id])
+    authorize @schedule
+    @emergencies = Emergency.all
+    @markers = []
+    @markers = @emergencies.map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon
+      }
+    end
+  end
+
   def new
     @schedule = Schedule.new
     @schedule.user = current_user
