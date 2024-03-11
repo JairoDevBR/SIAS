@@ -16,8 +16,8 @@ class EmergenciesController < ApplicationController
 
   def create
     @emergency = Emergency.new(emergency_params)
-    authorize @emergency
     @emergency.user = current_user
+    authorize @emergency
 
     # aqui vamos rodar o GPT retorna gravidade(prioridade)
     # @chat_response = JSON.parse(

@@ -3,6 +3,16 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   include Pundit::Authorization
 
+  def after_sign_in_path_for(resourse)
+    if current_user.admin
+      return root_path
+    elsif current_user.central
+      return new_emergency_path
+    else
+      return new_schedule_path
+    end
+  end
+
   def configure_permitted_parameters
     # For additional fields in app/views/devise/registrations/new.html.erb
     devise_parameter_sanitizer.permit(:sign_up, keys: [:admin, :central, :type, :plate])
