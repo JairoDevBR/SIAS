@@ -34,13 +34,14 @@ export default class extends Controller {
     geocoder.on('result', function (e) {
       // Access the result object which contains detailed information about the selected location
       let result = e.result;
-      // console.log(result);
+      console.log(result);
 
       // Access neighborhood information if available
       const neighborhood = result.context[1].text;
       if (neighborhood) {
           console.log('Neighborhood:', neighborhood);
           bairroHidden.value = neighborhood
+          document.getElementById("emergency_neighborhood").value = neighborhood;
       } else {
           console.log('Neighborhood information not available for this location.');
       }
@@ -50,6 +51,7 @@ export default class extends Controller {
       if (city) {
           console.log('City:', city);
           cidadeHidden.value = city
+          document.getElementById("emergency_city").value = city;
       } else {
           console.log('City information not available for this location.');
       }
@@ -59,6 +61,7 @@ export default class extends Controller {
       if (street) {
           console.log('Street:', street);
           ruaHidden.value = street
+          document.getElementById("emergency_street").value = street;
       } else {
           console.log('Street information not available for this location.');
       }
@@ -69,6 +72,7 @@ export default class extends Controller {
       if (lat) {
           console.log('Latitude:', lat);
           latitudeHidden.value = lat
+          document.getElementById("emergency_emergency_lat").value = lat;
       } else {
           console.log('Latitude information not available for this location.');
       }
@@ -79,6 +83,7 @@ export default class extends Controller {
       if (lon) {
           console.log('Longitude:', lon);
           longitudeHidden.value = lon
+          document.getElementById("emergency_emergency_lon").value = lon;
       } else {
           console.log('Longitude information not available for this location.');
       }
@@ -89,9 +94,11 @@ export default class extends Controller {
       if (category) {
           console.log('Category:', category);
           categoriaHidden.value = category
+          document.getElementById("emergency_local_type").value = category;
       } else {
           console.log('Category information not available for this location.');
-          categoriaHidden.value = "Sem categoria"
+          categoriaHidden.value = "Sem categoria";
+          document.getElementById("emergency_local_type").value = "Sem categoria";
       }
     });
   }
