@@ -23,9 +23,9 @@
     <%= f.input :local_type, label: "Tipo de local", input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-white fw-bold" } %>
     <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
     <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :n_people, label: "Número de acidentados" %>
-    <%= f.input :description, label: "Descrição da ocorrência" %>
-    <%= f.button :submit, class:"btn btn-primary" %>
+    <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
+    <%= f.input :description, label: "Descrição da ocorrência",label_html: { class: "text-white fw-bold" }  %>
+    <%= f.button :submit, class:"btn button-vermelho", id:"btn-vermelho" %>
   <% end %>
 
 
