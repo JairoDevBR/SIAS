@@ -1,6 +1,6 @@
 <div class="log-in-jairo">
   <div class="wrapper-jairo">
-      <h2 class="text-vermelho fw-bold">Log in</h2>
+      <h2 class="text-vermelho fw-bolder text-center">Log in</h2>
 
       <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <div class="form-inputs">
@@ -16,11 +16,11 @@
         </div>
 
         <div class="form-actions">
-          <%= f.button :submit, "Log in" %>
+          <%= f.button :submit, "Log in", class:"button-log-in" %>
         </div>
       <% end %>
 
-      <%= render "devise/shared/links" %>
+      <%# <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>

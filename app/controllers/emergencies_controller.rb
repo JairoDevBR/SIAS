@@ -60,8 +60,8 @@ class EmergenciesController < ApplicationController
   end
 
   def show
-    authorize @emergency
     @emergency = Emergency.find(params[:id])
+    authorize @emergency
     # aqui vamos atualizar o time final, local final
   end
 
