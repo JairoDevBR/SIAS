@@ -10,7 +10,7 @@
           <input type="hidden" data-map-target="latitude" data-info-transfer-target="latitudeInput" >
           <input type="hidden" data-map-target="longitude" data-info-transfer-target="longitudeInput" >
         </div>
-      <div>
+      </div>
     </div>
 
 
@@ -28,17 +28,8 @@
     <%= f.button :submit, class:"btn btn-primary" %>
   <% end %>
 
-
-
-    <%= turbo_frame_tag "chat_message" do %>
-      <p><%= render "chat_message" %></p>
-    <% end %>
-
-
-
-      <%= turbo_frame_tag "chat_message" do %>
-        <p><%= render "chat_message" %></p>
-      <% end %>
-    </div>
-  </div>
+    <%# <%= turbo_frame_tag "chat_message" do %>
+      <%# <p><%= render "chat_message" %>
+    <%# <% end %>
+   </div>
 </div>
