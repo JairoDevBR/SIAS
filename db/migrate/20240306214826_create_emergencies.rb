@@ -12,6 +12,7 @@ class CreateEmergencies < ActiveRecord::Migration[7.1]
       t.float :emergency_lat
       t.float :end_lon
       t.float :end_lat
+      t.string :local_type
       t.text :description
       t.string :street
       t.string :neighborhood

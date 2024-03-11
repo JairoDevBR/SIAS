@@ -41,6 +41,7 @@ class EmergenciesController < ApplicationController
     #     ").call)
 
     @chat_response = JSON.parse("{\"gravidade\":15, \"numero_pessoas_machucadas\":1, \"categoria\":3}")
+
     @emergency.gravity = @chat_response["gravidade"]
     @emergency.category = @chat_response["categoria"]
     @emergency.save!
@@ -67,7 +68,7 @@ class EmergenciesController < ApplicationController
   private
 
   def emergency_params
-    params.require(:emergency).permit(:description, :n_people, :street, :neighborhood, :city)
+    params.require(:emergency).permit(:description, :n_people, :street, :neighborhood, :city, :local_type, :emergency_lat, :emergency_lon)
   end
 
   def save_without_validation
@@ -93,13 +94,14 @@ class EmergenciesController < ApplicationController
     @schedules = Schedule.where(active: true)
     distances = {}
     @schedules.each do |schedule|
-      # calcular distancia usando pitagoras ou geocode e colocar em uma hash
+      # calcular distancia usando pitagoras ou geocode e colocar em uma hash (ok)
       distances[schedule.id] = calculate_distance(schedule, emergency)
     end
-    raise
-    # atribui a ambulancia com a menor distancia a emergencia
-
+    # lembrar de testar se o autocomplete esta mandando lat e lon com , ou . (ok)
+    # atribui a ambulancia com a menor distancia a emergencia (ok)
+    emergency.schedule_id = distances.min_by { |id, distance| distance }&.first
     # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
+    raise
 
     # caso nao possua ambulancias ativas disponiveis, deverá aguardar uma ambulancia disponivel para rodar o find ambulance, ou seja,
     # toda vez que uma ambulancia receber um time_end, devera rodar um metodo para procurar emergencias sem schedule
@@ -108,7 +110,7 @@ class EmergenciesController < ApplicationController
 
   def calculate_distance(schedule, emergency)
     # precisamos colocar latitude e longitude da emergencia e current lat lon para schedule
-    Math.sqrt((((schedule.latitude - emergency.latitude) * 111.11) ** 2) + (((schedule.longitude - emergency.longitude) * 111.1) ** 2))
+    Math.sqrt((((schedule.current_lat - emergency.emergency_lat) * 111.11) ** 2) + (((schedule.current_lon - emergency.emergency_lon) * 111.1) ** 2))
   end
 
 end

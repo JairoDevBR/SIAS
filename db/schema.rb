@@ -28,8 +28,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
     t.integer "category"
     t.float "start_lon"
     t.float "start_lat"
+    t.float "emergency_lon"
+    t.float "emergency_lat"
     t.float "end_lon"
     t.float "end_lat"
+    t.string "local_type"
     t.text "description"
     t.string "street"
     t.string "neighborhood"
@@ -57,6 +60,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
     t.bigint "worker2_id", null: false
     t.bigint "user_id", null: false
     t.boolean "active"
+    t.float "current_lon"
+    t.float "current_lat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_schedules_on_user_id"

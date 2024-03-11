@@ -14,14 +14,11 @@
       <button data-info-transfer-target="button" data-action="click->info-transfer#send">Autocomplete</button>
 <br><br><br>
 
-    <input type="text" value="categoria" data-info-transfer-target="categoryOutput">
-    <input type="text" value="latitude" data-info-transfer-target="latitudeOutput">
-    <input type="text" value="longitude" data-info-transfer-target="longitudeOutput">
   <%= simple_form_for @emergency do |f| %>
     <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}} %>
     <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}} %>
     <%= f.input :city, label: "Cidade", input_html: {data: {info_transfer_target:"cityOutput"}} %>
-    <%= f.input :category, label: "Categoria", input_html: {data: {info_transfer_target:"categoryOutput"}} %>
+    <%= f.input :local_type, label: "Tipo de local", input_html: {data: {info_transfer_target:"categoryOutput"}} %>
     <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}} %>
     <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}} %>
     <%= f.input :n_people, label: "Número de acidentados" %>
