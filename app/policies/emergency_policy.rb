@@ -14,7 +14,7 @@ class EmergencyPolicy < ApplicationPolicy
     is_central?
   end
 
-  def show
+  def show?
     is_ambulance?
   end
 
