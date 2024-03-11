@@ -16,7 +16,8 @@ class SchedulesController < ApplicationController
     @markers = @emergencies.map do |emergency|
       {
         lat: emergency.emergency_lat,
-        lng: emergency.emergency_lon
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "marker")
       }
     end
   end
