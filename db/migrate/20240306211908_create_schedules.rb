@@ -5,7 +5,8 @@ class CreateSchedules < ActiveRecord::Migration[7.1]
       t.references :worker2, null: false, foreign_key: { to_table: :workers }
       t.references :user, null: false, foreign_key: true
       t.boolean :active
-
+      t.float :current_lon
+      t.float :current_lat
       t.timestamps
     end
   end
