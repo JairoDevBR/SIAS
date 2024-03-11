@@ -1,8 +1,20 @@
 .navbar-lewagon {
   justify-content: center;
   background-color: $azul;
+  a {
+      color: #fff;
+      font-weight: bold;
+  }
+  a:hover{
+    color: $vermelho;
+    font-weight: bold;
+  }
 }
 
+.drop-jairo{
+  border-radius: 24px;
+  background-color: white;
+}
 .navbar-lewagon .navbar-collapse {
   flex-grow: 0;
 }

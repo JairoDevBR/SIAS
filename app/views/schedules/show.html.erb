@@ -1,0 +1,19 @@
+<div class="container sched-show">
+  <div class="chatroom-mobile"
+    data-controller="chatroom-subscription"
+    data-chatroom-subscription-chatroom-id-value="<%= @chatroom.id %>">
+    <div class="messages" data-chatroom-subscription-target="message">
+      <% @chatroom.messages.each do |message| %>
+        <%= render 'messages/message', message: message %>
+      <% end %>
+    </div>
+  </div>
+  <div class="map-mobile mt-3">
+    <div id='map' style='width: 0 auto; height: 550px;'
+    data-controller="map-mobile"
+    data-map-mobile-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+    data-map-mobile-markers-value="<%= @markers.to_json %>">
+
+    </div>
+  </div>
+</div>

@@ -10,6 +10,10 @@ class SchedulePolicy < ApplicationPolicy
     ambulance?
   end
 
+  def show?
+    ambulance?
+  end
+
   def new?
     ambulance?
   end
