@@ -48,15 +48,14 @@ class EmergenciesController < ApplicationController
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
 
-
-    if @emergency.save
-      render turbo_stream: [
-        turbo_stream.replace("chat_message", partial: "emergencies/chat_message", locals: {chat: @chat})
-      ]
-      # redirect_to new_emergency_path(chat: @chat), notice: 'Novo chamado foi criado.'
-    else
-      render :new, status: :unprocessable_entity
-    end
+    # if @emergency.save
+    #   render turbo_stream: [
+    #     turbo_stream.replace("chat_message", partial: "emergencies/chat_message", locals: {chat: @chat})
+    #   ]
+    #   # redirect_to new_emergency_path(chat: @chat), notice: 'Novo chamado foi criado.'
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
   end
 
   def show
@@ -88,28 +87,44 @@ class EmergenciesController < ApplicationController
   end
 
   def find_ambulance(emergency)
-    # seleciona ambulancias ativas, nao socorrendo nenhuma emergencia ou socorrendo emergencia com gravidade abaixo 15 ou
-    # socorrendo emergencia com gravidade abaixo dela
-    # "procurar usando um through emergency.gravity"
     # restringe a procura para somente as ambulancias com emergencias menores que 15 ou menores que a emergencia atual
     emergency.gravity < 15 ? max_gravity = emergency.gravity : max_gravity = 15
 
-    @schedules = Schedule.left_joins(:emergencies).where(active: true).where('emergencies.gravity < ? OR emergencies.id IS NULL', max_gravity)
+    # ambulancias ativas (ambulancias sem emergencias + ambulancias com emergencias < max gravity) considerando apenas as emergencias ativas (time_end = null) (ok)
+    @schedules = Schedule.left_joins(:emergencies)
+                         .where(active: true)
+                         .where('emergencies.gravity < ? OR emergencies.id IS NULL', max_gravity)
+                         .joins("LEFT JOIN emergencies ON emergencies.schedule_id = schedules.id AND emergencies.time_end IS NULL")
 
+    # FALTA FAZER caso nao possua ambulancias ativas disponiveis, deverá aguardar uma ambulancia disponivel para rodar o find ambulance, ou seja,
+    # toda vez que uma ambulancia receber um time_end, devera rodar um metodo para procurar emergencias sem schedule
     distances = {}
     @schedules.each do |schedule|
       # calcular distancia usando pitagoras ou geocode e colocar em uma hash (ok)
       distances[schedule.id] = calculate_distance(schedule, emergency)
     end
     # lembrar de testar se o autocomplete esta mandando lat e lon com , ou . (ok)
-    # atribui a ambulancia com a menor distancia a emergencia (ok)
-    emergency.schedule_id = distances.min_by { |id, distance| distance }&.first
-    # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
-    raise
+    # acha o id da ambulancia mais proxima
+    nearest_ambulance_id = distances.min_by { |id, distance| distance }&.first
+    # acha a ambulancia mais proxima
+    nearest_ambulance = Schedule.find(nearest_ambulance_id)
+    # verifica se a ambulancia esta atendendo alguma emergencia
+    if check_if_is_free(nearest_ambulance)
+      # atribui a ambulancia com a menor distancia a emergencia
+      emergency.schedule_id = nearest_ambulance
+      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      # FALTA FAZER cria um PopUp na view da central de que foi criada a nova emergencia
+    else
+      # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
+      emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
+      # atribui a ambulancia com a menor distancia a emergencia
+      emergency.schedule_id = nearest_ambulance
+      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      # FALTA FAZER cria um PopUp na view da central de que a emergencia x da ambulancia reatribuida para a ambulancia x foi criada nova emergencia para amb y
 
-    # caso nao possua ambulancias ativas disponiveis, deverá aguardar uma ambulancia disponivel para rodar o find ambulance, ou seja,
-    # toda vez que uma ambulancia receber um time_end, devera rodar um metodo para procurar emergencias sem schedule
-
+      # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
+      find_ambulance(emergency_to_be_reattributed)
+    end
   end
 
   def calculate_distance(schedule, emergency)
@@ -117,4 +132,11 @@ class EmergenciesController < ApplicationController
     Math.sqrt((((schedule.current_lat - emergency.emergency_lat) * 111.11) ** 2) + (((schedule.current_lon - emergency.emergency_lon) * 111.1) ** 2))
   end
 
+  def check_if_is_free(schedule_id)
+    # Verifica se não há nenhuma emergency associada à ambulancia ou se há uma emergency com time_end == nil
+    Schedule.left_joins(:emergencies)
+            .where(id: schedule_id)
+            .where("emergencies.id IS NULL OR emergencies.time_end IS NULL")
+            .exists?
+  end
 end
