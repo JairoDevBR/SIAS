@@ -26,6 +26,7 @@ class SchedulesController < ApplicationController
     @schedule = Schedule.new
     @schedule.user = current_user
     authorize @schedule
+    # create a array of hash with key and value
   end
 
   def create
