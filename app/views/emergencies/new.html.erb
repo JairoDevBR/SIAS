@@ -12,7 +12,7 @@
         </div>
       <div>
     </div>
-        <button class="w-100  p-2 my-3 button-vermelho"data-info-transfer-target="button" data-action="click->info-transfer#send">Autocomplete</button>
+        <button class="w-100  p-2 my-3 button-vermelho-jairo"data-info-transfer-target="button" data-action="click->info-transfer#send">Autocomplete</button>
     <%= simple_form_for @emergency do |f| %>
       <%= f.input :street, label: "Rua e número", input_html: { data: { info_transfer_target: "streetOutput" } }, label_html: { class: "text-white fw-bold" } %>
       <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}},label_html: { class: "text-white fw-bold" } %>
@@ -20,7 +20,7 @@
       <%# <%= f.input :category, label: "Categoria", input_html: {data: {info_transfer_target:"categoryOutput"}} %>
       <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
       <%= f.input :description, label: "Descrição da ocorrência",label_html: { class: "text-white fw-bold" } %>
-      <%= f.button :submit, class:"btn button-vermelho" %>
+      <%= f.button :submit, class:"button-vermelho-jairo", id:"cacete" %>
     <% end %>
 
 

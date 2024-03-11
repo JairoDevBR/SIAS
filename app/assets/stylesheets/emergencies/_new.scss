@@ -1,7 +1,16 @@
-.button-vermelho{
+.button-vermelho-jairo{
   background-color: $vermelho;
   border-radius: 20px;
   font-weight: bold;
   color: #fff;
   font-size: 24px;
+  :hover{
+    background-color: #fff;
+    color: $azul;
+  }
+}
+
+#cacete:hover{
+  background-color: #fff;
+  color: $azul;
 }
