@@ -19,43 +19,31 @@ class EmergenciesController < ApplicationController
     @emergency.user = current_user
     authorize @emergency
 
-    # aqui vamos rodar o GPT retorna gravidade(prioridade)
-    # @chat_response = JSON.parse(
-    #   chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
-    #     Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
-    #     Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
-    #     Acidentes de trânsito = 1;
-    #     Mal súbito = 2;
-    #     Ferimentos por queda = 3;
-    #     Parada cardiorrespiratória = 4;
-    #     Intoxicação ou envenenamento = 5;
-    #     Problemas respiratórios = 6;
-    #     Crises hipertensivas = 7;
-    #     Complicações durante a gravidez ou parto = 8;
-    #     Ferimentos por arma branca ou de fogo = 9;
-    #     Reações alérgicas graves = 10;
-    #     Outros = 11;
-    #     A resposta deve ser uma única hash na seguinte estrutura:
-    #     {\"gravidade\":integer, \"numero_pessoas_machucadas\":integer, \"categoria\":integer}.
-    #     Não inclua nenhuma informação adicional além da hash.
-    #     ").call)
-
-    @chat_response = JSON.parse("{\"gravidade\":15, \"numero_pessoas_machucadas\":1, \"categoria\":3}")
+    @chat_response = JSON.parse(
+      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
+        Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
+        Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
+        Acidentes de trânsito = 1;
+        Mal súbito = 2;
+        Ferimentos por queda = 3;
+        Parada cardiorrespiratória = 4;
+        Intoxicação ou envenenamento = 5;
+        Problemas respiratórios = 6;
+        Crises hipertensivas = 7;
+        Complicações durante a gravidez ou parto = 8;
+        Ferimentos por arma branca ou de fogo = 9;
+        Reações alérgicas graves = 10;
+        Outros = 11;
+        A resposta deve ser uma única hash na seguinte estrutura:
+        {\"gravidade\":integer, \"numero_pessoas_machucadas\":integer, \"categoria\":integer}.
+        Não inclua nenhuma informação adicional além da hash.
+        ").call)
 
     @emergency.gravity = @chat_response["gravidade"]
     @emergency.category = @chat_response["categoria"]
     @emergency.save!
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
-
-    # if @emergency.save
-    #   render turbo_stream: [
-    #     turbo_stream.replace("chat_message", partial: "emergencies/chat_message", locals: {chat: @chat})
-    #   ]
-    #   # redirect_to new_emergency_path(chat: @chat), notice: 'Novo chamado foi criado.'
-    # else
-    #   render :new, status: :unprocessable_entity
-    # end
   end
 
   def show
