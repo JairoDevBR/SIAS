@@ -91,7 +91,11 @@ class EmergenciesController < ApplicationController
     # seleciona ambulancias ativas, nao socorrendo nenhuma emergencia ou socorrendo emergencia com gravidade abaixo 15 ou
     # socorrendo emergencia com gravidade abaixo dela
     # "procurar usando um through emergency.gravity"
-    @schedules = Schedule.where(active: true)
+    # restringe a procura para somente as ambulancias com emergencias menores que 15 ou menores que a emergencia atual
+    emergency.gravity < 15 ? max_gravity = emergency.gravity : max_gravity = 15
+
+    @schedules = Schedule.left_joins(:emergencies).where(active: true).where('emergencies.gravity < ? OR emergencies.id IS NULL', max_gravity)
+
     distances = {}
     @schedules.each do |schedule|
       # calcular distancia usando pitagoras ou geocode e colocar em uma hash (ok)
