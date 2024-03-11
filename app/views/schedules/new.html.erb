@@ -1,24 +1,26 @@
-<div class="container">
-  <%= link_to root_path do %>
-    <%= image_tag "logo_sias_white.png", alt: "logo", class: "img-schedule" %>
-  <% end %>
-    <h1 class= "space-gui">Ambulância <%= @schedule.user_id %></h1>
-  <div class="form-schedule">
-    <%= simple_form_for @schedule do |f| %>
-      <div class="form-schedule-info">
-        <%= f.input :worker1_id, label: 'ID Usuário', label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-id'} %>
-        <%= f.input :worker1_id.name, label: 'Nome', label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-worker'} %>
-        <%= f.input :worker2_id, label: false, label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-id'} %>
-        <%= f.input :worker2_id.name, label: false, label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-worker'} %>
-      </div>
-      <div class="btn-schedule">
-        <%= f.button :submit, value: 'Iniciar Turno', class: "btn-gui" %>
-      </div>
+<div class="gui">
+  <div class="container">
+    <%= link_to root_path do %>
+      <%= image_tag "logo_sias_white.png", alt: "logo", class: "img-schedule" %>
     <% end %>
-  </div>
-  <div class="btn-back">
-    <%=  link_to root_path, class:"btn-back" do %>
-      <i class="fa-solid fa-arrow-left"></i> Voltar
-    <% end %>
+      <h1 class= "space-gui">Ambulância <%= @schedule.user_id %></h1>
+    <div class="form-schedule">
+      <%= simple_form_for @schedule do |f| %>
+        <div class="form-schedule-info">
+          <%= f.input :worker1_id, label: 'ID Usuário', label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-id'} %>
+          <%= f.input :worker1_id.name, label: 'Nome', label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-worker'} %>
+          <%= f.input :worker2_id, label: false, label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-id'} %>
+          <%= f.input :worker2_id.name, label: false, label_html: { class: 'form-schedule-label' }, input_html: { class: 'custom-input-worker'} %>
+        </div>
+        <div class="btn-schedule">
+          <%= f.button :submit, value: 'Iniciar Turno', class: "btn-gui" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="btn-back">
+      <%=  link_to root_path, class:"btn-back" do %>
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      <% end %>
+    </div>
   </div>
 </div>
