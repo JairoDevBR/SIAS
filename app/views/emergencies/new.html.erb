@@ -1,27 +1,14 @@
 <div class="background-color-azul py-5">
   <div class="container ">
-    <div class="d-flex">
-      <div class=" mapa-pegando-emergencia ">
-        <div id="info-tranfer">
-          <div id='map' style='width: 100%; height: 400px;' data-controller="map" data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" >
-            <input type="hidden" data-map-target="rua" data-info-transfer-target="streetInput" data-action="change->info-transfer#send">
-            <input type="hidden" data-map-target="bairro" data-info-transfer-target="neighborhoodInput" >
-            <input type="hidden" data-map-target="cidade" data-info-transfer-target="cityInput" >
-            <input type="hidden" data-map-target="categoria" data-info-transfer-target="categoryInput" >
-            <input type="hidden" data-map-target="latitude" data-info-transfer-target="latitudeInput" >
-            <input type="hidden" data-map-target="longitude" data-info-transfer-target="longitudeInput" >
-          </div>
-        </div>
+    <div class=" w-100 ">
+      <div id="info-tranfer">
+        <div id='map' style='width: 100%; height: 400px;' data-controller="map" data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
       </div>
 
       <div class="todas-ocorrencias">
 
       </div>
     </div>
-
-
-
-
 
   <%= simple_form_for @emergency do |f| %>
     <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
@@ -35,8 +22,5 @@
     <%= f.button :submit, class:"btn button-vermelho", id:"btn-vermelho" %>
   <% end %>
 
-    <%# <%= turbo_frame_tag "chat_message" do %>
-      <%# <p><%= render "chat_message" %>
-    <%# <% end %>
    </div>
 </div>
