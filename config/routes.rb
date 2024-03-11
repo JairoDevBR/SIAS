@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   end
   resources :schedules, only: %i[new create index show]
   resources :emergencies, only: %i[new create show]
+
+  get 'botao', to: "pages#botao"
 end
