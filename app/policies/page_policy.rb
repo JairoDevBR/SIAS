@@ -9,4 +9,8 @@ class PagePolicy < ApplicationPolicy
   def home?
     true
   end
+
+  def botao?
+    true
+  end
 end

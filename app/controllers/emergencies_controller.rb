@@ -5,13 +5,28 @@ class EmergenciesController < ApplicationController
 
   def new
     @emergency = Emergency.new
-    # chatgpt
-    # if params[:chat]
-    #   @chat = params[:chat]
-    # else
-    #   @chat = ""
-    # end
     authorize @emergency
+    # criacao dos markers de emergencias
+    @emergencies = Emergency.all
+    @emergencies_markers = []
+    @emergencies_markers = @emergencies.map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "marker")
+      }
+    end
+
+    # criacao dos markers das ambulancias
+    @schedules = Schedule.all
+    @schedule_markers = []
+    @schedule_markers = @schedules.map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker")
+      }
+    end
   end
 
   def create
