@@ -18,10 +18,13 @@
 }
 
 .body{
-  background-color: transparent;
+  background-color: var(--clr-1);
   min-height: 100vh;
   display: grid;
   place-content: center;
+  z-index: -2;
+  position: absolute;
+  width: 100%;
   h1{
     color: #f5e5e5;
     text-align: center;
