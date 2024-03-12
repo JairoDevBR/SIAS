@@ -50,4 +50,7 @@ schedule3.save!
 
 chatroom = Chatroom.create!(name: "general")
 
+message1 = Message.create!(content:"Ocorrência 1: Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda. Local: Rua jerico 193", chatroom_id:1, user_id: 2)
+message2 = Message.create!(content:"Ocorrência 2: Dois pacientes homens feridos em um acidente de carro", chatroom_id:1, user_id: 2)
+
 p "finalizando o seed"
