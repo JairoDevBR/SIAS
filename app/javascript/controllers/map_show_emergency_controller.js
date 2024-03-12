@@ -34,6 +34,8 @@ export default class extends Controller {
 
   addAmbulance(){
     new mapboxgl.Marker()
+
+
     .setLngLat([ this.slatValue, this.slonValue])
     .addTo(this.map);
   }
