@@ -8,6 +8,7 @@
       <% end %>
     </div>
   </div>
+   <%= link_to ".", botao_path%>
   <div class="map-mobile mt-3">
     <div id='map' style='width: 0 auto; height: 550px;'
       data-controller="map-mobile"
@@ -15,5 +16,4 @@
       data-map-mobile-markers-value="<%= @markers.to_json %>">
     </div>
   </div>
-  <%= link_to "gambis", botao_path %>
 </div>
