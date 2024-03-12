@@ -5,6 +5,6 @@ class PagesController < ApplicationController
   end
 
   def botao
+    skip_authorization
   end
-
 end
