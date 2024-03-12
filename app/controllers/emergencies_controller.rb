@@ -120,6 +120,10 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       # FALTA FAZER cria um PopUp na view da central de que foi criada a nova emergencia
+
+      # Defina o texto específico para exibir no popup
+      # Define o texto na popup
+
     else
       # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
@@ -130,7 +134,10 @@ class EmergenciesController < ApplicationController
 
       # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
       find_ambulance(emergency_to_be_reattributed)
+
+      # Define o texto na popup
     end
+    alert("<%= j(@texto_popup) %>");
   end
 
   def calculate_distance(schedule, emergency)

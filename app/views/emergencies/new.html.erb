@@ -9,17 +9,17 @@
       </div>
     </div>
 
-  <%= simple_form_for @emergency do |f| %>
-    <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :city, label: "Cidade", input_html: {data: {info_transfer_target:"cityOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :local_type, label: "Tipo de local", input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
-    <%= f.input :description, label: "Descrição da ocorrência",label_html: { class: "text-white fw-bold" }  %>
-    <%= f.button :submit, class:"btn button-vermelho", id:"btn-vermelho" %>
-  <% end %>
+    <%= simple_form_for @emergency do |f| %>
+      <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :city, label: "Cidade", input_html: {data: {info_transfer_target:"cityOutput"}}, label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :local_type, label: "Tipo de local", input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
+      <%= f.input :description, label: "Descrição da ocorrência",label_html: { class: "text-white fw-bold" }  %>
+      <%= f.button :submit, class:"btn button-vermelho", id:"btn-vermelho" %>
+    <% end %>
 
    </div>
 </div>
