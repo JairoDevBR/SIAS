@@ -28,17 +28,13 @@
       </div>
       <div class="row w-100">
         <div class="col">
+          <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
+        </div>
+        <div class="col">
           <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
         <div class="col">
           <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
-        </div>
-      </div>
-      <div class="row w-100">
-        <div class="col">
-          <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
-        </div>
-        <div class="col">
         </div>
       </div>
       <div class="row w-100">
