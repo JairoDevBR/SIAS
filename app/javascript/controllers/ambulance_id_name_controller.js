@@ -3,7 +3,9 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="ambulance-id-name"
 export default class extends Controller {
   static targets = ["worker1Id", "worker1Nname", "worker2Id", "worker2Name"]
-  // static value
+  static values = {
+    login: String
+  }
 
   connect() {
     console.log("hello world");
@@ -12,7 +14,6 @@ export default class extends Controller {
 
   fillName () {
     this.worker1IdTarget.value
-    // acess this value and use the key to input name
+    console.log(JSON.parse(this.loginValue));
   }
-
 }
