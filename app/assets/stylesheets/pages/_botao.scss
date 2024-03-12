@@ -5,8 +5,8 @@
 }
 
 :root{
-  --clr-1: #111;
-  --clr-2: #111;
+  --clr-1: #141E46;
+  --clr-2: #141E46;
   --clr-3: #ff0000;
   --clr-4: #ffd0d0;
   --clr-5: #2822c1;
@@ -30,19 +30,20 @@
     text-align: center;
   }
 
-  button{
-    margin: auto;
-    justify-content: center;
-    align-items: center;
-    width: 60%;
-    border-radius: 40px;
-    padding: 12px 24px;
-    font-weight: bold;
-    font-size: larger;
-    color: black;
-  }
+
 }
 
+.button-aceitar-emergencia{
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  border-radius: 40px;
+  padding: 12px 24px;
+  font-weight: bold;
+  font-size: larger;
+  color: black;
+}
 
 .card-jairo{
   height: 60vh;
