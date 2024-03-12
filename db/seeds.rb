@@ -7,7 +7,14 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-
+# p "destroying all Seed!"
+# Schedule.destroy_all
+# Worker.destroy_all
+# Message.destroy_all
+# Chatroom.destroy_all
+# Emergency.destroy_all
+# User.destroy_all
+# DÁ ERROR PQ OS USERS CRIADOS SEM DROPAR O DATABASE POSSUEM ACIMA DE ID:4
 
 p "starting the Seed!"
 ambulancia = User.new(email: "ambulancia1@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
@@ -18,7 +25,6 @@ central.save!
 
 admin = User.new(email: "admin1@email.com", admin: "true", central: "false", password: '123123')
 admin.save!
-
 
 
 worker1 = Worker.create(name: 'Guilherme Marques', occupation: 'paramedic')
@@ -41,7 +47,7 @@ emergency4.save!
 
 schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283021475413, current_lon: -46.64309817497531)
 schedule2.save!
-schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.60885648693514, current_lon: -46.715081138609925)
+schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.608856, current_lon: -46.715081)
 schedule3.save!
 
 chatroom = Chatroom.create!(name: "general")
