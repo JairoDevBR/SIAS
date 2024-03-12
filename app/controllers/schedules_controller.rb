@@ -25,6 +25,8 @@ class SchedulesController < ApplicationController
   def new
     @schedule = Schedule.new
     @schedule.user = current_user
+    # @name = @schedule.worker1.name
+    @worker = Worker.new
     authorize @schedule
   end
 
@@ -34,7 +36,7 @@ class SchedulesController < ApplicationController
     @schedule.active = true
     authorize @schedule
     if @schedule.save!
-      redirect_to schedules_path, notice: 'Você está logado.'
+      redirect_to schedule_path(@schedule), notice: 'Você está logado.'
     else
       render :new, status: :unprocessable_entity
     end
