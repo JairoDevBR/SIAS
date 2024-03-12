@@ -7,7 +7,14 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-
+# p "destroying all Seed!"
+# Schedule.destroy_all
+# Worker.destroy_all
+# Message.destroy_all
+# Chatroom.destroy_all
+# Emergency.destroy_all
+# User.destroy_all
+# DÁ ERROR PQ OS USERS CRIADOS SEM DROPAR O DATABASE POSSUEM ACIMA DE ID:4
 
 p "starting the Seed!"
 ambulancia = User.new(email: "ambulancia1@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
@@ -18,7 +25,6 @@ central.save!
 
 admin = User.new(email: "admin1@email.com", admin: "true", central: "false", password: '123123')
 admin.save!
-
 
 
 worker1 = Worker.create(name: 'Guilherme Marques', occupation: 'paramedic')
@@ -35,11 +41,11 @@ emergency3.save!
 emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, description: 'crianca com sintomas leves de alergia', street: 'Avenida Do Estado 200, São Paulo - São Paulo, 01107-000, Brasil', neighborhood: 'Cambuci', city: 'São Paulo', emergency_lat:-23.564691, emergency_lon:-46.611123, user_id: 2})
 emergency4.save!
 
-schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292821132864, current_lon: -46.65384091724742)
+schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292, current_lon: -46.653840)
 schedule1.save!
-schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283021475413, current_lon: -46.64309817497531)
+schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283, current_lon: -46.643098)
 schedule2.save!
-schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.60885648693514, current_lon: -46.715081138609925)
+schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.608856, current_lon: -46.715081)
 schedule3.save!
 
 chatroom = Chatroom.create!(name: "general")

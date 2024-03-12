@@ -1,0 +1,17 @@
+<% if @texto_popup.present? %>
+  <div id="popup">
+    <div class="popup-content">
+      <p><%= @texto_popup %></p>
+    </div>
+  </div>
+
+  <!-- Adicione aqui o código JavaScript/jQuery para exibir o popup -->
+  <script>
+    // Exibe o popup quando a página é carregada
+    document.addEventListener("DOMContentLoaded", function() {
+      // Coloque aqui o código para exibir o popup, por exemplo, usando JavaScript/jQuery
+      // Por exemplo, usando jQuery:
+      // $('#popup').show();
+    });
+  </script>
+<% end %>
