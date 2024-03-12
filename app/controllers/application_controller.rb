@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
   end
 
   # Pundit: allow-list approach
-  after_action :verify_authorized, except: [:home, :user_session], unless: :skip_pundit?
-  after_action :verify_policy_scoped, only: [:home, :user_session], unless: :skip_pundit?
+  after_action :verify_authorized, except: [:home, :user_session, :botao], unless: :skip_pundit?
+  after_action :verify_policy_scoped, only: [:home, :user_session, :botao], unless: :skip_pundit?
 
   # # Uncomment when you *really understand* Pundit!
   # # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

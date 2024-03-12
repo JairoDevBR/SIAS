@@ -11,6 +11,7 @@ class SchedulesController < ApplicationController
     @chatroom = Chatroom.find(1)
     @schedule = Schedule.find(params[:id])
     authorize @schedule
+    # criacao dos markers de emergencias
     @emergencies = Emergency.all
     @markers = []
     @markers = @emergencies.map do |emergency|
