@@ -32,7 +32,10 @@ worker1.save!
 worker2 = Worker.create(name: 'Keny Chun', occupation: 'paramedic')
 worker2.save!
 
-emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda', street: 'Rua jerico 193', neighborhood: 'Vila madalena', city: 'São Paulo', emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1})
+schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292821132864, current_lon: -46.65384091724742)
+schedule1.save!
+
+emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda', street: 'Rua jerico 193', neighborhood: 'Vila madalena', city: 'São Paulo', emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1, schedule_id: 1})
 emergency1.save!
 emergency2 = Emergency.new({ n_people: 2, gravity: 16, category: 1, description: 'Dois pacientes homens feridos em um acidente de carro', street: 'Rua apinajes 200', neighborhood: 'Perdizes', city: 'São Paulo', emergency_lat:-23.533192, emergency_lon:-46.67713, user_id: 2})
 emergency2.save!
@@ -41,9 +44,8 @@ emergency3.save!
 emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, description: 'crianca com sintomas leves de alergia', street: 'Avenida Do Estado 200, São Paulo - São Paulo, 01107-000, Brasil', neighborhood: 'Cambuci', city: 'São Paulo', emergency_lat:-23.564691, emergency_lon:-46.611123, user_id: 2})
 emergency4.save!
 
-schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292, current_lon: -46.653840)
-schedule1.save!
-schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283, current_lon: -46.643098)
+
+schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283021475413, current_lon: -46.64309817497531)
 schedule2.save!
 schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.608856, current_lon: -46.715081)
 schedule3.save!
