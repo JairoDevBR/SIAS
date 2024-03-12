@@ -11,7 +11,6 @@ class SchedulesController < ApplicationController
     @chatroom = Chatroom.find(1)
     @schedule = Schedule.find(params[:id])
     authorize @schedule
-    # criacao dos markers de emergencias
     @emergencies = Emergency.all
     @markers = []
     @markers = @emergencies.map do |emergency|
@@ -29,6 +28,12 @@ class SchedulesController < ApplicationController
     # @name = @schedule.worker1.name
     @worker = Worker.new
     authorize @schedule
+    @workers = Worker.all
+    @login = {}
+    @workers.each do |worker|
+      @login[worker.id.to_s] = worker.name
+    end
+    @login = JSON.generate(@login)
   end
 
   def create
