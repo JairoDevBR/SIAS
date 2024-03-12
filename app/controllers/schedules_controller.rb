@@ -17,7 +17,7 @@ class SchedulesController < ApplicationController
       {
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "marker")
+        marker_html: render_to_string(partial: "emergency")
       }
     end
   end
@@ -25,6 +25,8 @@ class SchedulesController < ApplicationController
   def new
     @schedule = Schedule.new
     @schedule.user = current_user
+    # @name = @schedule.worker1.name
+    @worker = Worker.new
     authorize @schedule
     @workers = Worker.all
     @login = {}
@@ -40,7 +42,7 @@ class SchedulesController < ApplicationController
     @schedule.active = true
     authorize @schedule
     if @schedule.save!
-      redirect_to schedules_path, notice: 'Você está logado.'
+      redirect_to schedule_path(@schedule), notice: 'Você está logado.'
     else
       render :new, status: :unprocessable_entity
     end
