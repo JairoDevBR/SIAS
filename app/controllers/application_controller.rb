@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   # private
 
   def skip_pundit?
-    devise_controller? || (params[:controller] == "pages" && params[:action] == "home")
+    devise_controller? || (params[:controller] == "pages" && params[:action] == "home") || (params[:controller] == "pages" && params[:action] == "botao")
   end
 
 end
