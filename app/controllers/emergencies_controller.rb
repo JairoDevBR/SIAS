@@ -148,6 +148,8 @@ class EmergenciesController < ApplicationController
     if check_if_is_free(nearest_ambulance)
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
+      emergency.start_lon = nearest_ambulance.current_lon
+      emergency.start_lat = nearest_ambulance.current_lat
       emergency.save
 
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
@@ -163,6 +165,9 @@ class EmergenciesController < ApplicationController
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
+      emergency.schedule_id = nearest_ambulance.id
+      emergency.start_lon = nearest_ambulance.current_lon
+      emergency.start_lat = nearest_ambulance.current_lat
       emergency.save
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       ChatroomChannel.broadcast_to(
