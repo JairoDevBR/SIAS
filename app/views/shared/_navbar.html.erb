@@ -12,7 +12,7 @@
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <% unless controller_path == "schedules" %>
+            <% unless (controller_path == "schedules") || (request.fullpath == root_path)%>
               <%= link_to "Home", "#", class: "nav-link" %>
             <% end %>
           </li>
