@@ -1,11 +1,11 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
     <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "logo-sias-white-home.png" %>
+      <%= image_tag "SIAS-CREME.png" %>
     <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <i class="fa-solid fa-bars"></i>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -20,6 +20,7 @@
           </a>
             <div class="dropdown-menu dropdown-menu-end background-color-azul drop-jairo" aria-labelledby="navbarDropdown">
               <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+               <%= link_to "Voltar ao Login", new_schedule_path, class: "dropdown-item" %>
             </div>
           </li>
         <% else %>

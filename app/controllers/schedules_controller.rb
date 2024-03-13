@@ -18,7 +18,7 @@ class SchedulesController < ApplicationController
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
         marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
       }
     end
 
@@ -52,7 +52,7 @@ class SchedulesController < ApplicationController
     @schedule.active = true
     authorize @schedule
     if @schedule.save!
-      redirect_to schedule_path(@schedule), notice: 'Você está logado.'
+      redirect_to @schedule, notice: 'Você está logado.'
     else
       render :new, status: :unprocessable_entity
     end
