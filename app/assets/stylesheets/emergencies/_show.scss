@@ -29,6 +29,23 @@
   border-radius: 24px;
 }
 
+.emergency-show {
+
+  position: absolute;
+
+  .button-finish-emergency {
+    position: relative;
+    top: -100px;
+    left: 300px;
+  }
+
+  .button-finish {
+    border-radius: 24px;
+    color: white;
+    font-weight: bold;
+  }
+}
+
 .pop-up-emergency{
   position: absolute;
   z-index: 2;
@@ -92,27 +109,27 @@
   filter: blur(4rem);
 }
 
-h1{
-  color: #f5e5e5;
-  text-align: center;
-
-}
-
-button{
-  margin: auto;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-  border-radius: 40px;
-  padding: 12px 24px;
-  font-weight: bold;
-  font-size: larger;
-}
-
 .interno{
   margin: auto;
   display: flex;
   flex-direction: column;
+
+  h1{
+    color: #f5e5e5;
+    text-align: center;
+
+  }
+
+  button{
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    border-radius: 40px;
+    padding: 12px 24px;
+    font-weight: bold;
+    font-size: larger;
+  }
 }
 
 .background-image-gradient{

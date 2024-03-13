@@ -58,7 +58,6 @@ class EmergenciesController < ApplicationController
     @emergency.save!
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
-
   end
 
   def show
@@ -98,6 +97,20 @@ class EmergenciesController < ApplicationController
       }
     end
     # aqui vamos atualizar o time final, local final
+  end
+
+  def finish
+    @emergency = Emergency.find(params[:id])
+    schedule = @emergency.schedule
+    authorize @emergency
+    @emergency.time_end = Time.now
+    @emergency.end_lat = schedule.current_lat
+    @emergency.end_lon = schedule.current_lon
+    if @emergency.save
+      redirect_to schedule_path(schedule.id)
+    else
+      render "show", status: :unprocessable_entity
+    end
   end
 
   private

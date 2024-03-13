@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   resources :emergencies, only: %i[new create show]
 
   post '/update_schedule_location/:id', to: 'schedules#update_location'
+  patch '/emergencies/:id/finish', to: 'emergencies#finish', as: :finish_emergency
 end

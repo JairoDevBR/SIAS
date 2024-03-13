@@ -18,6 +18,10 @@ class EmergencyPolicy < ApplicationPolicy
     is_ambulance?
   end
 
+  def finish?
+    is_ambulance?
+  end
+
   private
 
   def is_central?
