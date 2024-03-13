@@ -10,8 +10,8 @@ export default class extends Controller {
   };
 
   connect() {
-    console.log(this.slatValue);
-    console.log(this.slonValue);
+    // console.log(this.slatValue);
+    // console.log(this.slonValue);
     mapboxgl.accessToken = this.apiKeyValue;
 
     this.map = new mapboxgl.Map({

@@ -65,7 +65,7 @@ class EmergenciesController < ApplicationController
     @long = @emergency.emergency_lon
     @schedule = Schedule.find(@emergency.schedule.id)
     @slat = @schedule.current_lon
-    @slon =@schedule.current_lat
+    @slon = @schedule.current_lat
     authorize @emergency
     # @markerhtml = render_to_string(partial: "emergency")
     # aqui vamos atualizar o time final, local final
