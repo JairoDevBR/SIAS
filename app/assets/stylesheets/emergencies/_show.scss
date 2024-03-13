@@ -28,3 +28,20 @@
 .border-radius-24{
   border-radius: 24px;
 }
+
+.emergency-show {
+
+  position: absolute;
+
+  .button-finish-emergency {
+    position: relative;
+    top: -100px;
+    left: 300px;
+  }
+
+  .button-finish {
+    border-radius: 24px;
+    color: white;
+    font-weight: bold;
+  }
+}
