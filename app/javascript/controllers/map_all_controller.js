@@ -43,7 +43,7 @@ export default class extends Controller {
   #addScheduleMarkersToMap() {
     this.schedulesMarkersValue.forEach((marker) => {
 
-      const popup = new mapboxgl.Popup().setHTML(marker.info_window_schedule_html)
+      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
 
       const customMarker = document.createElement("div")
       customMarker.innerHTML = marker.marker_html
