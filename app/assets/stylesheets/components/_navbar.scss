@@ -20,7 +20,7 @@
 }
 
 .navbar-lewagon .navbar-brand img {
-  width: 40px;
+  width: 200px;
 }
 
 .botão-login-navbar {
@@ -42,4 +42,18 @@
     box-shadow: 2px 2px 4px 0 #403e3e;
     background-color: $azul;
   }
+}
+
+.dropdown-item {
+  background-color: $azul;
+  border-radius: 10px;
+  text-align: center;
+  &:hover {
+    background-color: $azul;
+  }
+}
+
+.navbar-toggler {
+  color: $creme;
+  border: 1px solid;
 }
