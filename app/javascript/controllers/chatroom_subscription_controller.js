@@ -11,9 +11,7 @@ export default class extends Controller {
       {
         received: data => {
           if (data.type === "emergency") {
-            console.log('Emergencia chegou');
             if (this.scheduleIdValue == data.scheduleId) {
-              console.log('E é pra mim');
               window.location.replace(`/emergencies/${data.emergencyId}`);
             }
           }
