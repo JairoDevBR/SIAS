@@ -17,38 +17,54 @@
 # DÁ ERROR PQ OS USERS CRIADOS SEM DROPAR O DATABASE POSSUEM ACIMA DE ID:4
 
 p "starting the Seed!"
-ambulancia = User.new(email: "ambulancia1@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
-ambulancia.save!
-
+ambulancia1 = User.new(email: "ambulancia1@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
+ambulancia1.save!
 central = User.new(email: "central1@email.com", admin: "false", central: "true", password: '123123')
 central.save!
-
 admin = User.new(email: "admin1@email.com", admin: "true", central: "false", password: '123123')
 admin.save!
-
+ambulancia2 = User.new(email: "ambulancia2@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
+ambulancia2.save!
+ambulancia3 = User.new(email: "ambulancia3@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
+ambulancia3.save!
+ambulancia4 = User.new(email: "ambulancia4@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
+ambulancia4.save!
 
 worker1 = Worker.create(name: 'Guilherme Marques', occupation: 'paramedic')
 worker1.save!
 worker2 = Worker.create(name: 'Keny Chun', occupation: 'paramedic')
 worker2.save!
+worker3 = Worker.create(name: 'Jairo', occupation: 'paramedic')
+worker3.save!
+worker4 = Worker.create(name: 'Rebeca', occupation: 'paramedic')
+worker4.save!
+worker5 = Worker.create(name: 'Joao', occupation: 'paramedic')
+worker5.save!
+worker6 = Worker.create(name: 'Pedro', occupation: 'paramedic')
+worker6.save!
+worker7 = Worker.create(name: 'Mario', occupation: 'paramedic')
+worker7.save!
+worker8 = Worker.create(name: 'Jose', occupation: 'paramedic')
+worker8.save!
 
-schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292821132864, current_lon: -46.65384091724742)
+schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.53929282113, current_lon: -46.65384091724)
 schedule1.save!
+schedule2 = Schedule.new(worker1_id: 3, worker2_id: 4, user_id: 4, active: true, current_lat: -23.60028302147, current_lon: -46.64309817497)
+schedule2.save!
+schedule3 = Schedule.new(worker1_id: 5, worker2_id: 6, user_id: 5, active: true, current_lat: -23.608856, current_lon: -46.715081)
+schedule3.save!
+schedule4 = Schedule.new(worker1_id: 7, worker2_id: 8, user_id: 6, active: true, current_lat: -23.5380547, current_lon: -46.7056035)
+schedule4.save!
 
-emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda', street: 'Rua jerico 193', neighborhood: 'Vila madalena', city: 'São Paulo', emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1, schedule_id: 1})
+emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, street: 'Rua Jericó 193, São Paulo - São Paulo, 05435-040, Brasil', neighborhood: 'Pinheiros', city: 'São Paulo', emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1, schedule_id: 1, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda',})
 emergency1.save!
-emergency2 = Emergency.new({ n_people: 2, gravity: 16, category: 1, description: 'Dois pacientes homens feridos em um acidente de carro', street: 'Rua apinajes 200', neighborhood: 'Perdizes', city: 'São Paulo', emergency_lat:-23.533192, emergency_lon:-46.67713, user_id: 2})
+emergency2 = Emergency.new({ n_people: 2, gravity: 16, category: 1, street: 'Rua Apinajés 200, São Paulo - São Paulo, 05017-000, Brasil', neighborhood: 'Perdizes', city: 'São Paulo', emergency_lat:-23.533192, emergency_lon:-46.67713, user_id: 2, schedule_id: 2, description: 'Dois pacientes homens feridos em um acidente de carro'})
 emergency2.save!
-emergency3 = Emergency.new({ n_people: 1, gravity: 18, category: 4, description: 'Homem com sintomas de infarto', street: 'avenida paulista 1300', neighborhood: 'bela vista', city: 'São Paulo', emergency_lat:-23.563842, emergency_lon:-46.653326, user_id: 2})
+emergency3 = Emergency.new({ n_people: 1, gravity: 18, category: 4, street: 'Avenida Paulista 1300, São Paulo - São Paulo, 01310-100, Brasil', neighborhood: 'Bela Vista', city: 'São Paulo', emergency_lat:-23.563842, emergency_lon:-46.653326, user_id: 2, schedule_id: 3, description: 'Homem com sintomas de infarto'})
 emergency3.save!
-emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, description: 'crianca com sintomas leves de alergia', street: 'Avenida Do Estado 200, São Paulo - São Paulo, 01107-000, Brasil', neighborhood: 'Cambuci', city: 'São Paulo', emergency_lat:-23.564691, emergency_lon:-46.611123, user_id: 2})
+emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, street: 'Avenida Do Estado 200, São Paulo - São Paulo, 01107-000, Brasil', neighborhood: 'Cambuci', city: 'São Paulo', emergency_lat:-23.564691, emergency_lon:-46.611123, user_id: 2, schedule_id: 4, description: 'crianca com sintomas leves de alergia'})
 emergency4.save!
 
-
-schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283021475413, current_lon: -46.64309817497531)
-schedule2.save!
-schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.608856, current_lon: -46.715081)
-schedule3.save!
 
 chatroom = Chatroom.create!(name: "general")
 
