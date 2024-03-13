@@ -60,7 +60,7 @@ class EmergenciesController < ApplicationController
     @emergency.save!
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
-raise
+
   end
 
   def show
