@@ -12,7 +12,8 @@ class EmergenciesController < ApplicationController
       {
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "emergency")
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
       }
     end
 
@@ -65,7 +66,7 @@ class EmergenciesController < ApplicationController
     @long = @emergency.emergency_lon
     @schedule = Schedule.find(@emergency.schedule.id)
     @slat = @schedule.current_lon
-    @slon =@schedule.current_lat
+    @slon = @schedule.current_lat
     authorize @emergency
     # @markerhtml = render_to_string(partial: "emergency")
     # aqui vamos atualizar o time final, local final
@@ -122,9 +123,6 @@ class EmergenciesController < ApplicationController
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       # FALTA FAZER cria um PopUp na view da central de que foi criada a nova emergencia
 
-      # Defina o texto específico para exibir no popup
-      # Define o texto na popup
-
     else
       # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
@@ -132,13 +130,9 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       # FALTA FAZER cria um PopUp na view da central de que a emergencia x da ambulancia reatribuida para a ambulancia x foi criada nova emergencia para amb y
-
       # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
       find_ambulance(emergency_to_be_reattributed)
-
-      # Define o texto na popup
     end
-    alert("<%= j(@texto_popup) %>");
   end
 
   def calculate_distance(schedule, emergency)
