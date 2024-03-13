@@ -21,6 +21,15 @@ class SchedulesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
       }
     end
+
+    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
+      }
+    end
   end
 
   def new

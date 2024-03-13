@@ -13,7 +13,7 @@ class EmergenciesController < ApplicationController
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
         marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
       }
     end
 
@@ -22,7 +22,8 @@ class EmergenciesController < ApplicationController
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
-        marker_html: render_to_string(partial: "schedule_marker")
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
   end
@@ -69,6 +70,33 @@ class EmergenciesController < ApplicationController
     @slon = @schedule.current_lat
     authorize @emergency
     # @markerhtml = render_to_string(partial: "emergency")
+    @emergencies = Emergency.all
+    @emergencies_markers = Emergency.where("id != #{params[:id]}").map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+      }
+    end
+
+    @emergency_marker = Emergency.where("id = #{params[:id]}").map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "marker"),
+        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+      }
+    end
+
+    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
+      }
+    end
     # aqui vamos atualizar o time final, local final
   end
 
@@ -119,16 +147,29 @@ class EmergenciesController < ApplicationController
     # verifica se a ambulancia esta atendendo alguma emergencia
     if check_if_is_free(nearest_ambulance)
       # atribui a ambulancia com a menor distancia a emergencia
-      emergency.schedule_id = nearest_ambulance
+      emergency.schedule_id = nearest_ambulance.id
+      emergency.save
+
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      ChatroomChannel.broadcast_to(
+        Chatroom.find(1),
+        { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
+      )
+      head :ok
       # FALTA FAZER cria um PopUp na view da central de que foi criada a nova emergencia
 
     else
       # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
       # atribui a ambulancia com a menor distancia a emergencia
-      emergency.schedule_id = nearest_ambulance
+      emergency.schedule_id = nearest_ambulance.id
+      emergency.save
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      ChatroomChannel.broadcast_to(
+        Chatroom.find(1),
+        { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
+      )
+      head :ok
       # FALTA FAZER cria um PopUp na view da central de que a emergencia x da ambulancia reatribuida para a ambulancia x foi criada nova emergencia para amb y
       # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
       find_ambulance(emergency_to_be_reattributed)

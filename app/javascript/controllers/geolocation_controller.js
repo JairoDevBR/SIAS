@@ -7,6 +7,7 @@ export default class extends Controller {
     navigator.geolocation.getCurrentPosition((position) => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
+      console.log(position);
 
       // Extrair o ID da URL
     const url = window.location.href;

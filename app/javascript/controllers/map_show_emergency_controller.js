@@ -6,7 +6,10 @@ export default class extends Controller {
     lat: Number,
     long: Number,
     slon: Number,
-    slat: Number
+    slat: Number,
+    emergenciesMarkers: Array,
+    schedulesMarkers: Array,
+    emergencyMarker: Array
   };
 
   connect() {
@@ -23,24 +26,53 @@ export default class extends Controller {
 
     this.addMarker();
     this.addAmbulance();
+    this.addEmergency();
     this.fitMapToMarkers();
   }
 
   addMarker() {
-    // const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+    this.emergenciesMarkersValue.forEach((marker) => {
 
-    new mapboxgl.Marker()
-      .setLngLat([this.longValue, this.latValue])
-      // .setPopup(popup)
-      .addTo(this.map);
+      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+
+      const customMarker = document.createElement("div")
+      customMarker.innerHTML = marker.marker_html
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([ marker.lng, marker.lat ])
+        .setPopup(popup)
+        .addTo(this.map)
+    })
   }
 
-  addAmbulance(){
-    new mapboxgl.Marker()
+  addAmbulance() {
+    this.schedulesMarkersValue.forEach((marker) => {
 
+      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
 
-    .setLngLat([ this.slatValue, this.slonValue])
-    .addTo(this.map);
+      const customMarker = document.createElement("div")
+      customMarker.innerHTML = marker.marker_html
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([ marker.lng, marker.lat ])
+        .setPopup(popup)
+        .addTo(this.map)
+    })
+  }
+
+  addEmergency() {
+    this.emergencyMarkerValue.forEach((marker) => {
+
+      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+
+      const customMarker = document.createElement("div")
+      customMarker.innerHTML = marker.marker_html
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([ marker.lng, marker.lat ])
+        .setPopup(popup)
+        .addTo(this.map)
+    })
   }
 
   fitMapToMarkers() {
