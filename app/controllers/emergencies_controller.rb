@@ -13,7 +13,7 @@ class EmergenciesController < ApplicationController
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
         marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
       }
     end
 
@@ -22,7 +22,8 @@ class EmergenciesController < ApplicationController
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
-        marker_html: render_to_string(partial: "schedule_marker")
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
   end
@@ -69,6 +70,24 @@ class EmergenciesController < ApplicationController
     @slon = @schedule.current_lat
     authorize @emergency
     # @markerhtml = render_to_string(partial: "emergency")
+    @emergencies = Emergency.all
+    @emergencies_markers = @emergencies.map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+      }
+    end
+
+    @schedules_markers = Schedule.all.map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
+      }
+    end
     # aqui vamos atualizar o time final, local final
   end
 
