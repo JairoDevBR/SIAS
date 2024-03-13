@@ -1,4 +1,5 @@
 require 'json'
+require 'date'
 
 class EmergenciesController < ApplicationController
   before_action :authenticate_user!
@@ -33,7 +34,8 @@ class EmergenciesController < ApplicationController
     authorize @emergency
 
     @chat_response = JSON.parse(
-      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
+      chatgpt_service("Data atual: #{Date.today}
+        Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
         Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
         Acidentes de trânsito = 1;
@@ -57,7 +59,7 @@ class EmergenciesController < ApplicationController
     @emergency.save!
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
-
+raise
   end
 
   def show

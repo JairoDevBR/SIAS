@@ -14,7 +14,7 @@ export default class extends Controller {
     const id = url.substring(url.lastIndexOf('/') + 1);
 
     // Enviar os dados para o servidor
-    fetch(`/update_schedule_location/${id}`, {
+    fetch(`/update_schedule_location_from_schedules_show_view/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
