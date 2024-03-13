@@ -12,16 +12,17 @@
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <%= link_to "Home", "#", class: "nav-link" %>
+            <% unless controller_path == "schedules" %>
+              <%= link_to "Home", "#", class: "nav-link" %>
+            <% end %>
           </li>
           <li class="nav-item dropdown">
-            <p>Olá, </p>
           <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <%= image_tag "logo-sias-white-home.png", class: "avatar", alt: "dropdown menu" %>
           </a>
             <div class="dropdown-menu dropdown-menu-end background-color-azul drop-jairo" aria-labelledby="navbarDropdown">
+              <%= link_to "Voltar ao Login", new_schedule_path, class: "dropdown-item" %>
               <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-               <%= link_to "Voltar ao Login", new_schedule_path, class: "dropdown-item" %>
             </div>
           </li>
         <% else %>
