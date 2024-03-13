@@ -17,7 +17,8 @@ class SchedulesController < ApplicationController
       {
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "emergency")
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
       }
     end
   end
