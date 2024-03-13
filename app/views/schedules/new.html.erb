@@ -13,7 +13,7 @@
           data: { ambulance_id_name_target: "worker1Id",
           action: "input->ambulance-id-name#fillName" } } %>
 
-          <%= f.input :worker1_id.name, as: :string,
+          <%= f.input :worker1_name, as: :string,
           label: 'Nome', label_html: { class: 'form-schedule-label' },
           input_html: { class: 'custom-input-worker',
           data: {ambulance_id_name_target: "worker1Name"}} %>
@@ -24,10 +24,11 @@
           data: {ambulance_id_name_target: "worker2Id",
           action: "input->ambulance-id-name#fillName"}} %>
 
-          <%= f.input :worker2_id.name, as: :string,
+          <%= f.input :worker2_name, as: :string,
           label: false, label_html: { class: 'form-schedule-label' },
           input_html: { class: 'custom-input-worker',
           data: {ambulance_id_name_target: "worker2Name"}} %>
+
         </div>
         <div class="btn-schedule">
          <%= f.button :submit, value: 'Iniciar Turno', class: "btn-gui" %>
