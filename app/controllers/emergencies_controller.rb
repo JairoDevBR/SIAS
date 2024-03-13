@@ -73,7 +73,7 @@ class EmergenciesController < ApplicationController
     authorize @emergency
     # @markerhtml = render_to_string(partial: "emergency")
     @emergencies = Emergency.all
-    @emergencies_markers = @emergencies.map do |emergency|
+    @emergencies_markers = Emergency.where("id != #{params[:id]}").map do |emergency|
       {
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
@@ -82,7 +82,16 @@ class EmergenciesController < ApplicationController
       }
     end
 
-    @schedules_markers = Schedule.all.map do |schedule|
+    @emergency_marker = Emergency.where("id = #{params[:id]}").map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "marker"),
+        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+      }
+    end
+
+    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
