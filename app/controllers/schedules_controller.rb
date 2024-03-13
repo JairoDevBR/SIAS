@@ -51,6 +51,7 @@ class SchedulesController < ApplicationController
     @schedule.user = current_user
     @schedule.active = true
     authorize @schedule
+
     if @schedule.save!
       redirect_to @schedule, notice: 'Você está logado.'
     else
