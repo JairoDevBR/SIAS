@@ -28,3 +28,20 @@
 .border-radius-24{
   border-radius: 24px;
 }
+
+.pop-up-emergency{
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background-color: red;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 24px;
+
+  .alinhar{
+    align-items: center;
+    justify-content: center;
+  }
+}
