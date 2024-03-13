@@ -8,7 +8,8 @@ export default class extends Controller {
     slon: Number,
     slat: Number,
     emergenciesMarkers: Array,
-    schedulesMarkers: Array
+    schedulesMarkers: Array,
+    emergencyMarker: Array
   };
 
   connect() {
@@ -25,6 +26,7 @@ export default class extends Controller {
 
     this.addMarker();
     this.addAmbulance();
+    this.addEmergency();
     this.fitMapToMarkers();
   }
 
@@ -43,8 +45,23 @@ export default class extends Controller {
     })
   }
 
-  addAmbulance(){
+  addAmbulance() {
     this.schedulesMarkersValue.forEach((marker) => {
+
+      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+
+      const customMarker = document.createElement("div")
+      customMarker.innerHTML = marker.marker_html
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([ marker.lng, marker.lat ])
+        .setPopup(popup)
+        .addTo(this.map)
+    })
+  }
+
+  addEmergency() {
+    this.emergencyMarkerValue.forEach((marker) => {
 
       const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
 
