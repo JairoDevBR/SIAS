@@ -2,10 +2,16 @@
   <div class="container ">
     <div class="display-para-flex mb-3">
       <div class="mapa-pegando-emergencia">
-        <div id='map' style='width: 100%; height: 400px;' data-controller="map" data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
+        <div id='map' style='width: 100%; height: 400px;'
+          data-controller="map"
+          data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
       </div>
       <div class="todas-ocorrencias ms-4">
-        <div id='map-all' style='width: 100%; height: 400px;' data-controller="map-all" data-map-all-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" data-map-all-emergencies-markers-value="<%= @emergencies_markers.to_json %>" data-map-all-schedules-markers-value="<%= @schedules_markers.to_json %>" ></div>
+        <div id='map-all' style='width: 100%; height: 400px;'
+          data-controller="map-all"
+          data-map-all-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+          data-map-all-emergencies-markers-value="<%= @emergencies_markers.to_json %>"
+          data-map-all-schedules-markers-value="<%= @schedules_markers.to_json %>" ></div>
       </div>
     </div>
 <div class="w-100">
