@@ -3,7 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = {
     apiKey: String,
-    markers: Array
+    markers: Array,
+    schedulesMarkers: Array
   }
 
 
@@ -19,6 +20,7 @@ export default class extends Controller {
     })
 
     this.#addMarkersToMap()
+    this.#addAmbulance()
     this.#fitMapToMarkers()
   }
 
@@ -26,6 +28,23 @@ export default class extends Controller {
     this.markersValue.forEach((marker) => {
 
       const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+
+      const customMarker = document.createElement("div")
+      customMarker.innerHTML = marker.marker_html
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([ marker.lng, marker.lat ])
+        .setPopup(popup)
+        .addTo(this.map)
+    })
+  }
+
+  #addAmbulance(){
+    this.schedulesMarkersValue.forEach((marker) => {
+
+      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+
+      console.log(marker.info_window_schedule_html);
 
       const customMarker = document.createElement("div")
       customMarker.innerHTML = marker.marker_html
