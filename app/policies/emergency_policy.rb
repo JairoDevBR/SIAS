@@ -18,6 +18,10 @@ class EmergencyPolicy < ApplicationPolicy
     is_ambulance?
   end
 
+  def obtain_routes?
+    is_central?
+  end
+
   private
 
   def is_central?

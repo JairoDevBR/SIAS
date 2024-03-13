@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get '/emergencies/get_routes', to: 'emergencies#obtain_routes', as: 'get_routes'
 
   resources :chatrooms, only: :show do
     resources :messages, only: :create

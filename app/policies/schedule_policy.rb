@@ -30,9 +30,17 @@ class SchedulePolicy < ApplicationPolicy
     ambulance?
   end
 
+  def obtain_routes?
+    central?
+  end
+
   private
 
   def ambulance?
     user.admin == user.central
+  end
+
+  def central?
+    user.central == true
   end
 end

@@ -29,6 +29,30 @@ class EmergenciesController < ApplicationController
     end
   end
 
+  def obtain_routes
+    @schedule = Schedule.new
+    authorize @schedule
+    @emergency = Emergency.new
+    authorize @emergency
+    routes = []
+    @schedules = Schedule.joins(:emergencies).where(emergencies: { time_end: nil })
+    # Iterar sobre cada schedule e seu emergency correspondente
+    @schedules.each do |schedule|
+      emergency = Emergency.find_by(schedule_id: schedule)
+      # Calcular rota usando Mapbox Directions API
+      # Suponha que você obtenha a rota na forma de um conjunto de coordenadas
+      route_coordinates = [
+        [schedule.current_lon, schedule.current_lat],  # Ponto de partida (schedule)
+        [emergency.emergency_lon, emergency.emergency_lat]  # Ponto de destino (emergency)
+      ]
+
+      routes << route_coordinates
+    end
+
+    render json: { routes: routes }
+  end
+
+
   def create
     @emergency = Emergency.new(emergency_params)
     @emergency.user = current_user
@@ -100,7 +124,6 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
-    # aqui vamos atualizar o time final, local final
   end
 
   private
@@ -167,12 +190,12 @@ class EmergenciesController < ApplicationController
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
       emergency.save
-      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
       )
       head :ok
+      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       # FALTA FAZER cria um PopUp na view da central de que a emergencia x da ambulancia reatribuida para a ambulancia x foi criada nova emergencia para amb y
       # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
       find_ambulance(emergency_to_be_reattributed)

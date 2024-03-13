@@ -4,14 +4,11 @@ export default class extends Controller {
   static values = {
     apiKey: String,
     emergenciesMarkers: Array,
-    schedulesMarkers: Array
-  }
+    schedulesMarkers: Array,
+  };
 
   connect() {
-    // console.log(this.markersValue);
     mapboxgl.accessToken = this.apiKeyValue
-    // console.log(this.emergenciesMarkersValue);
-    // console.log(this.schedulesMarkersValue);
 
     this.map = new mapboxgl.Map({
       container: this.element,
@@ -22,6 +19,7 @@ export default class extends Controller {
 
     this.#addMarkersToMap()
     this.#addScheduleMarkersToMap()
+    this.#drawRoutes()
     this.#fitMapToMarkers()
   }
 
@@ -54,6 +52,47 @@ export default class extends Controller {
         .addTo(this.map)
     })
   }
+
+  #drawRoutes() {
+    fetch('/emergencies/get_routes')
+    .then(response => response.json())
+    .then(data => {
+      const routes = data.routes;
+      // Iterar sobre cada rota e adicionar ao mapa
+      routes.forEach((routeCoordinates, index) => {
+        // Verificar se a camada já existe no mapa
+        const layerId = `route-layer-${index}`;
+        if (!this.map.getLayer(layerId)) {
+          // Criar uma nova camada de rota no mapa
+          this.map.addLayer({
+            'id': layerId,
+            'type': 'line',
+            'source': {
+              'type': 'geojson',
+              'data': {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                  'type': 'LineString',
+                  'coordinates': routeCoordinates
+                }
+              }
+            },
+            'layout': {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            'paint': {
+              'line-color': '#888',
+              'line-width': 4
+            }
+          });
+        }
+      });
+    })
+    };
+
+
 
   #fitMapToMarkers() {
     const bounds = new mapboxgl.LngLatBounds()
