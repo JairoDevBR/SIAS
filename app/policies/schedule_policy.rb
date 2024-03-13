@@ -22,6 +22,10 @@ class SchedulePolicy < ApplicationPolicy
     ambulance?
   end
 
+  def update_location?
+    ambulance?
+  end
+
   private
 
   def ambulance?

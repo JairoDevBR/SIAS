@@ -10,8 +10,8 @@ export default class extends Controller {
   };
 
   connect() {
-    console.log(this.slatValue);
-    console.log(this.slonValue);
+    // console.log(this.slatValue);
+    // console.log(this.slonValue);
     mapboxgl.accessToken = this.apiKeyValue;
 
     this.map = new mapboxgl.Map({
@@ -27,8 +27,11 @@ export default class extends Controller {
   }
 
   addMarker() {
+    // const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+
     new mapboxgl.Marker()
       .setLngLat([this.longValue, this.latValue])
+      // .setPopup(popup)
       .addTo(this.map);
   }
 
