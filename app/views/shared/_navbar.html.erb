@@ -2,11 +2,11 @@
   <div class="container-fluid">
       <% if request.fullpath == new_emergency_path %>
         <div class="navbar-brand">
-          <%= image_tag "SIAS-VERMELHO.png" %>
+          <%= image_tag "SIAS-CREME.png" %>
         </div>
       <% else %>
         <%= link_to root_path, class: "navbar-brand" do %>
-          <%= image_tag "SIAS-VERMELHO.png" %>
+          <%= image_tag "SIAS-CREME.png" %>
         <% end %>
       <% end %>
 
@@ -25,7 +25,7 @@
           <li class="nav-item dropdown">
           <a href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <% if current_user.admin  %>
-              <p>Olá ADMIN</p>
+              <p class="m-0 p-0">Olá ADMIN</p>
             <% elsif current_user.central %>
               <p>Olá CENTRAL</p>
             <% else %>
