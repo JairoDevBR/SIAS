@@ -12,4 +12,5 @@ Rails.application.routes.draw do
 
   post '/update_schedule_location/:id', to: 'schedules#update_location'
   patch '/emergencies/:id/finish', to: 'emergencies#finish', as: :finish_emergency
+  get '/adm', to: 'adms#inicial', as: :home_adm
 end
