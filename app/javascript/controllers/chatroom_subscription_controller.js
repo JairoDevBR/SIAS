@@ -17,7 +17,7 @@ export default class extends Controller {
           }
           else this.insertMessage(data);
         },
-      }
+      },
     )
 
     console.log(`Subscribe to the chatroom with the id ${1}.`)
