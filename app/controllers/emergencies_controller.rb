@@ -102,7 +102,7 @@ class EmergenciesController < ApplicationController
       }
     end
 
-    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
+    @schedules_markers = Schedule.where("id = #{@schedule.id}").map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
