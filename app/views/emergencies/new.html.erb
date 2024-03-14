@@ -1,13 +1,15 @@
-<div class="background-color-azul py-5">
+<div class=" py-5">
   <div class="container ">
+  <div class="bg-body-tertiary p-4 border-radius-60">
+
     <div class="display-para-flex mb-3">
-      <div class="mapa-pegando-emergencia">
-        <div id='map' style='width: 100%; height: 400px;'
+      <div class="mapa-pegando-emergencia border-radius-24">
+        <div id='map' style='width: 100%; height: 400px;' class="border-radius-24"
           data-controller="map"
           data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
       </div>
-      <div class="todas-ocorrencias ms-4">
-        <div id='map-all' style='width: 100%; height: 400px;'
+      <div class="todas-ocorrencias ms-4 border-radius-24">
+        <div id='map-all' style='width: 100%; height: 400px;' class="border-radius-24"
           data-controller="map-all"
           data-map-all-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
           data-map-all-emergencies-markers-value="<%= @emergencies_markers.to_json %>"
@@ -54,3 +56,4 @@
    </div>
 </div>
 </div>
+  </div>
