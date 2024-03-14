@@ -32,8 +32,6 @@ worker1.save!
 worker2 = Worker.create(name: 'Keny Chun', occupation: 'paramedic')
 worker2.save!
 
-schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292821132864, current_lon: -46.65384091724742)
-schedule1.save!
 
 emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda', street: 'Rua jerico 193', neighborhood: 'Vila madalena', city: 'São Paulo', emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1,})
 emergency1.save!
@@ -45,10 +43,14 @@ emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, description:
 emergency4.save!
 
 
+schedule1 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.539292821132864, current_lon: -46.65384091724742)
+schedule1.save!
 schedule2 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.600283021475413, current_lon: -46.64309817497531)
 schedule2.save!
 schedule3 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.608856, current_lon: -46.715081)
 schedule3.save!
+schedule4 = Schedule.new(worker1_id: 1, worker2_id: 2, user_id: 1, active: true, current_lat: -23.5629, current_lon: -46.6544)
+schedule4.save!
 
 chatroom = Chatroom.create!(name: "general")
 
