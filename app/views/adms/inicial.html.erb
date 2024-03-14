@@ -1,15 +1,23 @@
 
 <div class="container ">
-  <h1 class="text-vermelho fw-bold text-center mt-5">Bem vindo Admin</h1>
+  <h1 class="text-vermelho fw-bolder text-center mt-5">Bem vindo Admin</h1>
   <div class="bg-body-tertiary p-5 mt-5 border-radius-60 box-shadow-leve">
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-user-plus"></i> Criar usuario</h1>
     <p class="lead text-grey">Ao criar um novo usuário em nosso website, você pode conceder acesso a diferentes áreas e funcionalidades, adaptando-se às necessidades específicas de sua equipe.</p>
-    <a class="botao-azul" href="/docs/5.3/components/navbar/" role="button">Novo usuario »</a>
+    <%# <a class="botao-azul" href="/docs/5.3/components/navbar/" role="button">Novo usuario »</a> %>
+  <div class="d-flex gap-5">
+    <%= link_to "<i class='fa-solid fa-plus'></i>  Novo Usuario".html_safe, new_worker_path , class:"botao-verde" %>
+    <%= link_to "<i class='fa-solid fa-user-pen'></i>  Editar Usuario".html_safe, new_worker_path , class:"botao-azul-especial" %>
+    <%= link_to "<i class='fa-solid fa-x'></i>  Deletar Usuario".html_safe, new_worker_path , class:"botao-vermelho" %>
+  </div>
   </div>
   <div class="bg-body-tertiary p-5 mt-5 border-radius-60 box-shadow-leve">
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-user-nurse"></i> Criar Novo Socorrista</h1>
     <p class="lead text-grey">Adicione novos socorristas ao quadro de serviço</p>
-    <a class="botao-azul" href="/docs/5.3/components/navbar/" role="button">Novo Socorrista »</a>
+      <div class="d-flex gap-5">
+        <%= link_to "<i class='fa-solid fa-plus'></i>  Novo Socorrista".html_safe, new_worker_path , class:"botao-verde" %>
+        <%= link_to "<i class='fa-solid fa-user-pen'></i>  Editar/Deletar Socorrista".html_safe, workers_path , class:"botao-azul-especial" %>
+    </div>
   </div>
   <div class="bg-body-tertiary p-5 mt-5 border-radius-60 box-shadow-leve">
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-chart-simple"></i> Graficos</h1>

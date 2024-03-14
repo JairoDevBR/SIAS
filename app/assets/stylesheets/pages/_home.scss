@@ -23,7 +23,7 @@
 }
 
 .text-white{
-  color: #fff;
+  color: #ebe5e5;
 }
 
 .background-color-azul{
@@ -71,6 +71,47 @@
     color: $vermelho;
     box-shadow: 2px 2px 4px 0 #403e3e;
     background-color: $azul;
+  }
+}
+
+.botao-verde{
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bolder;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #166906;
+  color: #FFF;
+  border-radius: 12px;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.1);
+    color: #FFF;
+    box-shadow: 1px 1px 2px 0 #403e3e;
+    background-color: #166906;
+  }
+}
+
+.botao-vermelho{
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bolder;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: $vermelho;
+  border: 2px solid $vermelho;
+  background-color: #FFF;
+  border-radius: 12px;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.1);
+    color: $vermelho;
+    box-shadow: 1px 1px 2px 0 #403e3e;
+    background-color: #FFF;
   }
 }
 

@@ -1,0 +1,14 @@
+<h1>Socorrista</h1>
+<ul>
+  <% @workers.each do |worker| %>
+    <li>
+    <div class="d-flex gap-3 my-2">
+      <%= worker.name %>
+      <%= link_to "<i class='fa-solid fa-user-pen'></i>  Editar Socorrista".html_safe, worker_path(worker) , class:"botao-azul-especial" %>
+      <%= link_to "<i class='fa-solid fa-x'></i>  Deletar Socorrista".html_safe, worker_path(worker),  data: { "turbo-method": :delete }, class: "botao-vermelho" %>
+    </div>
+
+    </li>
+  <% end %>
+</ul>
+<%= link_to "voltar", home_adm_path, class: "back-link" %>

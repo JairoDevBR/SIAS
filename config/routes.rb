@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
   resources :schedules, only: %i[new create index show]
   resources :emergencies, only: %i[new create show]
+  resources :workers
 
   post '/update_schedule_location/:id', to: 'schedules#update_location'
   patch '/emergencies/:id/finish', to: 'emergencies#finish', as: :finish_emergency

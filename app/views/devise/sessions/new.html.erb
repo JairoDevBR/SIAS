@@ -1,5 +1,5 @@
 <div class="log-in-jairo">
-  <div class="wrapper-jairo">
+  <div class="wrapper-jairo bg-body-tertiary">
       <h2 class="text-vermelho fw-bolder text-center">Log in</h2>
 
       <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-actions">
-          <%= f.button :submit, "Log in", class:"button-log-in" %>
+          <%= f.button :submit, "Log in", class:"botao-azul w-100" %>
         </div>
       <% end %>
 
