@@ -2,7 +2,7 @@
   justify-content: center;
   background-color: $azul;
   a {
-      color: #fff;
+      color: #fdfdfd;
       font-weight: bold;
   }
   a:hover{
@@ -56,4 +56,8 @@
 .navbar-toggler {
   color: $creme;
   border: 1px solid;
+}
+
+.navbar-nav {
+  margin-top: 16px;
 }
