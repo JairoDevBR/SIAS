@@ -15,12 +15,13 @@
       </div>
     </div>
 <div class="w-100" data-controller="reset-emergency-form">
+
     <%= simple_form_for @emergency, data: {
       action: "submit->reset-emergency-form#refreshPage"
     } do |f| %>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :street, label: 'Rua e número', input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
         <div class="col">
           <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-white fw-bold" } %>
