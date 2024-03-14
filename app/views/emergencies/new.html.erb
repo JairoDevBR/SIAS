@@ -1,53 +1,69 @@
-<div class="background-color-azul py-5">
-  <div class="container ">
+<div class="p-3">
+<h1 class="fw-bolder text-vermelho text-center py-2">Central de Atendimento</h1>
+  <div class="container mt-5">
+  <div class="bg-body-tertiary p-5 border-radius-60 box-shadow-leve">
+
     <div class="display-para-flex mb-3">
-      <div class="mapa-pegando-emergencia">
-        <div id='map' style='width: 100%; height: 400px;'
+      <div class="mapa-pegando-emergencia border-radius-24">
+        <div id='map' style='width: 100%; height: 400px;' class="border-radius-24 box-shadow-leve"
           data-controller="map"
           data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
       </div>
-      <div class="todas-ocorrencias ms-4">
-        <div id='map-all' style='width: 100%; height: 400px;'
+      <div class="todas-ocorrencias ms-4 border-radius-24">
+        <div id='map-all' style='width: 100%; height: 400px;' class="border-radius-24 box-shadow-leve"
           data-controller="map-all"
           data-map-all-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
           data-map-all-emergencies-markers-value="<%= @emergencies_markers.to_json %>"
           data-map-all-schedules-markers-value="<%= @schedules_markers.to_json %>" ></div>
       </div>
     </div>
-<div class="w-100">
-    <%= simple_form_for @emergency do |f| %>
+<div class="w-100 text-azul" data-controller="reset-emergency-form">
+
+    <%= simple_form_for @emergency, data: {
+      action: "submit->reset-emergency-form#refreshPage"
+    } do |f| %>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :street, label: "Rua e número", input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :street, label: "<i class='fa-solid fa-road '></i>  Rua e número".html_safe, input_html: { data: { info_transfer_target: "streetOutput" } }, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
         <div class="col">
-          <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :neighborhood, label:"<i class='fa-solid fa-map-location-dot'></i> Bairro".html_safe, input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
       </div>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :city, label: "Cidade", input_html: {data: {info_transfer_target:"cityOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :city, label: "<i class='fa-solid fa-city '></i>  Cidade".html_safe, input_html: {data: {info_transfer_target:"cityOutput"}}, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
         <div class="col">
-          <%= f.input :local_type, label: "Tipo de local", input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :local_type, label: "<i class='fa-solid fa-location-dot'></i> Tipo de local".html_safe, input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
       </div>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :n_people, label: "<i class='fa-solid fa-person-falling-burst'></i> Número de acidentados".html_safe,label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
         <div class="col">
-          <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :emergency_lat, label: "<i class='fa-solid fa-map-pin'></i> Latitude".html_safe, input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
         <div class="col">
-          <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :emergency_lon, label: "<i class='fa-solid fa-map-pin'></i> Longitude".html_safe, input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" } %>
         </div>
       </div>
       <div class="row w-100">
-        <%= f.input :description, label: "Descrição da ocorrência",label_html: { class: "text-white fw-bold" }  %>
+        <%= f.input :description, label: "<i class='fa-solid fa-pencil'></i> Descrição da ocorrência".html_safe,label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24" }  %>
       </div>
-        <%= f.button :submit, "Criar nova emergência", class:"btn button-vermelho", id:"btn-vermelho", remote: true %>
+        <%= f.button :submit, "Criar nova emergência", class:"botao-azul mt-2", remote: true %>
     <% end %>
    </div>
 </div>
 </div>
+</div>
+
+<footer class="py-3">
+  <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+  </ul>
+  <p class="text-center text-muted">© 2024 SIAS, Inc</p>
+</footer>

@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resourse)
     if current_user.admin
-      return root_path
+      # return home_adm_path
+
+      return home_adm_path
     elsif current_user.central
       return new_emergency_path
     else

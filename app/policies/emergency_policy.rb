@@ -25,6 +25,10 @@ class EmergencyPolicy < ApplicationPolicy
   def obtain_markers?
     is_central?
   end
+  
+  def finish?
+    is_ambulance?
+  end
 
   private
 

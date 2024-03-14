@@ -65,8 +65,7 @@ class EmergenciesController < ApplicationController
     authorize @emergency
 
     @chat_response = JSON.parse(
-      chatgpt_service("Data atual: #{Date.today}
-        Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
+      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
         Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
         Acidentes de trânsito = 1;
@@ -92,6 +91,16 @@ class EmergenciesController < ApplicationController
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
 
+    @chatroom = Chatroom.find(1)
+    @message = Message.new(content: @emergency.description)
+    @message.chatroom = @chatroom
+    @message.user = current_user
+    if @message.save
+      ChatroomChannel.broadcast_to(
+        @chatroom,
+        render_to_string(partial: "messages/message", locals: { message: @message })
+      )
+    end
   end
 
   def show
@@ -102,7 +111,6 @@ class EmergenciesController < ApplicationController
     @slat = @schedule.current_lon
     @slon = @schedule.current_lat
     authorize @emergency
-    # @markerhtml = render_to_string(partial: "emergency")
     @emergencies = Emergency.all
     @emergencies_markers = Emergency.where("id != #{params[:id]}").map do |emergency|
       {
@@ -122,13 +130,27 @@ class EmergenciesController < ApplicationController
       }
     end
 
-    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
+    @schedules_markers = Schedule.where("id = #{@schedule.id}").map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
+    end
+  end
+
+  def finish
+    @emergency = Emergency.find(params[:id])
+    schedule = @emergency.schedule
+    authorize @emergency
+    @emergency.time_end = Time.now
+    @emergency.end_lat = schedule.current_lat
+    @emergency.end_lon = schedule.current_lon
+    if @emergency.save
+      redirect_to schedule_path(schedule.id)
+    else
+      render "show", status: :unprocessable_entity
     end
   end
 
@@ -175,11 +197,17 @@ class EmergenciesController < ApplicationController
     # acha o id da ambulancia mais proxima
     nearest_ambulance_id = distances.min_by { |id, distance| distance }&.first
     # acha a ambulancia mais proxima
-    nearest_ambulance = Schedule.find(nearest_ambulance_id)
+    nearest_ambulance = Schedule.find_by(id: nearest_ambulance_id)
+
+    # FALTA FAZER oq fazer se nao tiver nenhuma ambulancia
+    return if nearest_ambulance.nil?
+
     # verifica se a ambulancia esta atendendo alguma emergencia
     if check_if_is_free(nearest_ambulance)
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
+      emergency.start_lon = nearest_ambulance.current_lon
+      emergency.start_lat = nearest_ambulance.current_lat
       emergency.save
 
       # FALTA FAZER mandar msg via webhook para o chat das ambulancias
@@ -195,6 +223,9 @@ class EmergenciesController < ApplicationController
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
+      emergency.schedule_id = nearest_ambulance.id
+      emergency.start_lon = nearest_ambulance.current_lon
+      emergency.start_lat = nearest_ambulance.current_lat
       emergency.save
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
@@ -220,4 +251,5 @@ class EmergenciesController < ApplicationController
             .where("emergencies.id IS NULL OR emergencies.time_end IS NULL")
             .exists?
   end
+
 end

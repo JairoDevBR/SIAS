@@ -1,28 +1,69 @@
-<div class="accordion" id="accordionPanelsStayOpenExample" data-controller="emergencies-show-view-geolocation">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-        Informações sobre a occorência:
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
-      <div class="accordion-body">
-        <p class="fw-bold">Endereço: <%= @emergency.street %></p>
-        <p class="fw-bold">Descrição: <%= @emergency.description %></p>
-      </div>
+<div data-controller="class-invisible">
+  <div class="background-image-gradient w-100"  data-class-invisible-target="background"></div>
+  <div  data-class-invisible-target="classe">
+  <div class="body pop-up-emergency ">
+    <div class="d-flex card-jairo">
+      <div class="alinhar d-flex interno">
+        <h1 class="alinhar text-azul">Voce tem uma nova emergencia!</h1>
+        <button class="alinhar text-azul" data-action="click->class-invisible#invisible">OK</button>
 
+      </div>
     </div>
   </div>
 </div>
-<div class="centraliziation-of-the-map ">
-  <div class="" id='map' style='width: 100%; height: 100%;'
-    data-controller="map-show-emergency"
-    data-map-show-emergency-emergencies-markers-value="<%= @emergencies_markers.to_json %>"
-    data-map-show-emergency-schedules-markers-value="<%= @schedules_markers.to_json %>"
-    data-map-show-emergency-emergency-marker-value="<%= @emergency_marker.to_json %>"
-    data-map-show-emergency-lat-value="<%= @lat %>"
-    data-map-show-emergency-long-value="<%= @long %>"
-    data-map-show-emergency-slon-value="<%= @slon %>"
-    data-map-show-emergency-slat-value="<%= @slat %>"
-    data-map-show-emergency-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
+  <div class="accordion" id="accordionPanelsStayOpenExample" data-controller="emergencies-show-view-geolocation">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+          Informações sobre a occorência:
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
+        <div class="accordion-body">
+          <p class="fw-bold">Endereço: <%= @emergency.street %></p>
+          <p class="fw-bold">Descrição: <%= @emergency.description %></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="centraliziation-of-the-map ">
+    <div class="" id='map' style='width: 100%; height: 100%;'
+      data-controller="map-show-emergency"
+      data-map-show-emergency-emergencies-markers-value="<%= @emergencies_markers.to_json %>"
+      data-map-show-emergency-schedules-markers-value="<%= @schedules_markers.to_json %>"
+      data-map-show-emergency-emergency-marker-value="<%= @emergency_marker.to_json %>"
+      data-map-show-emergency-lat-value="<%= @lat %>"
+      data-map-show-emergency-long-value="<%= @long %>"
+      data-map-show-emergency-slon-value="<%= @slon %>"
+      data-map-show-emergency-slat-value="<%= @slat %>"
+      data-map-show-emergency-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
+  </div>
+
+
+<div class="emergency-show">
+  <!-- Button trigger modal -->
+  <div class="button-finish-emergency">
+    <button type="button" class="btn btn-warning button-finish" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Finalizar
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Ambulância #<%= @schedule.id %></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Gostaria de finalizar a ocorrência #<%= @emergency.id %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <%= button_to 'Continuar', finish_emergency_path(@emergency.id), method: :patch, class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

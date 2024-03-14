@@ -1,25 +1,39 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
-    <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "logo-sias-white-home.png" %>
-    <% end %>
+      <% if request.fullpath == new_emergency_path %>
+        <div class="navbar-brand">
+          <%= image_tag "SIAS-CREME.png" %>
+        </div>
+      <% else %>
+        <%= link_to root_path, class: "navbar-brand" do %>
+          <%= image_tag "SIAS-CREME.png" %>
+        <% end %>
+      <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <i class="fa-solid fa-bars"></i>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <%= link_to "Home", "#", class: "nav-link" %>
           </li>
           <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "logo-sias-white-home.png", class: "avatar", alt: "dropdown menu" %>
+          <a href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <% if current_user.admin  %>
+              <p class="m-0 p-0">Olá ADMIN</p>
+            <% elsif current_user.central %>
+              <p>Olá CENTRAL</p>
+            <% else %>
+              <p><em>Olá, SOCORRISTAS</em></p>
+            <% end %>
           </a>
             <div class="dropdown-menu dropdown-menu-end background-color-azul drop-jairo" aria-labelledby="navbarDropdown">
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+              <% unless (request.fullpath == new_emergency_path) || (request.fullpath == home_adm_path)%>
+              <%= link_to "Voltar ao Login", new_schedule_path, class: "dropdown-item" %>
+              <% end %>
+              <%= link_to "<i class='fa-solid fa-right-from-bracket'></i> Log out".html_safe, destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
             </div>
           </li>
         <% else %>
