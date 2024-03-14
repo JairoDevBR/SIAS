@@ -144,7 +144,7 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.find(params[:id])
     schedule = @emergency.schedule
     authorize @emergency
-    @emergency.time_end = Time.now
+    @emergency.time_end = DateTime.now.to_formatted_s(:db)
     @emergency.end_lat = schedule.current_lat
     @emergency.end_lon = schedule.current_lon
     if @emergency.save
@@ -199,7 +199,7 @@ class EmergenciesController < ApplicationController
     # acha a ambulancia mais proxima
     nearest_ambulance = Schedule.find_by(id: nearest_ambulance_id)
 
-    # FALTA FAZER oq fazer se nao tiver nenhuma ambulancia
+    # oq fazer se nao tiver nenhuma ambulancia
     return if nearest_ambulance.nil?
 
     # verifica se a ambulancia esta atendendo alguma emergencia
@@ -208,9 +208,9 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
-      emergency.save
+      emergency.save!
 
-      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      # mandar msg via webhook para o chat das ambulancias
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
@@ -221,12 +221,13 @@ class EmergenciesController < ApplicationController
     else
       # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
+      emergency_to_be_reattributed.schedule_id = nil
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
-      emergency.save
+      emergency.save!
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }

@@ -15,6 +15,8 @@
 # Emergency.destroy_all
 # User.destroy_all
 # DÁ ERROR PQ OS USERS CRIADOS SEM DROPAR O DATABASE POSSUEM ACIMA DE ID:4
+require 'date'
+
 
 p "starting the Seed!"
 ambulancia1 = User.new(email: "ambulancia1@email.com", admin: "false", central: "false", kind: 1, plate: "ABC-1234", password: '123123')
@@ -56,13 +58,13 @@ schedule3.save!
 schedule4 = Schedule.new(worker1_id: 7, worker2_id: 8, user_id: 6, active: true, current_lat: -23.5380547, current_lon: -46.7056035)
 schedule4.save!
 
-emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, street: 'Rua Jericó 193, São Paulo - São Paulo, 05435-040, Brasil', neighborhood: 'Pinheiros', city: 'São Paulo', emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1, schedule_id: 1, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda',})
+emergency1 = Emergency.new({ n_people: 1, gravity: 8, category: 3, street: 'Rua Jericó 193, São Paulo - São Paulo, 05435-040, Brasil', neighborhood: 'Pinheiros', city: 'São Paulo', time_start: DateTime.now.to_formatted_s(:db), emergency_lat:-23.551826, emergency_lon:-46.6894, user_id: 1, schedule_id: 1, description: 'Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda',})
 emergency1.save!
-emergency2 = Emergency.new({ n_people: 2, gravity: 16, category: 1, street: 'Rua Apinajés 200, São Paulo - São Paulo, 05017-000, Brasil', neighborhood: 'Perdizes', city: 'São Paulo', emergency_lat:-23.533192, emergency_lon:-46.67713, user_id: 2, schedule_id: 2, description: 'Dois pacientes homens feridos em um acidente de carro'})
+emergency2 = Emergency.new({ n_people: 2, gravity: 16, category: 1, street: 'Rua Apinajés 200, São Paulo - São Paulo, 05017-000, Brasil', neighborhood: 'Perdizes', city: 'São Paulo', time_start: DateTime.now.to_formatted_s(:db), emergency_lat:-23.533192, emergency_lon:-46.67713, user_id: 2, schedule_id: 2, description: 'Dois pacientes homens feridos em um acidente de carro'})
 emergency2.save!
-emergency3 = Emergency.new({ n_people: 1, gravity: 18, category: 4, street: 'Avenida Paulista 1300, São Paulo - São Paulo, 01310-100, Brasil', neighborhood: 'Bela Vista', city: 'São Paulo', emergency_lat:-23.563842, emergency_lon:-46.653326, user_id: 2, schedule_id: 3, description: 'Homem com sintomas de infarto'})
+emergency3 = Emergency.new({ n_people: 1, gravity: 18, category: 4, street: 'Avenida Paulista 1300, São Paulo - São Paulo, 01310-100, Brasil', neighborhood: 'Bela Vista', city: 'São Paulo', time_start: DateTime.now.to_formatted_s(:db), emergency_lat:-23.563842, emergency_lon:-46.653326, user_id: 2, schedule_id: 3, description: 'Homem com sintomas de infarto'})
 emergency3.save!
-emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, street: 'Avenida Do Estado 200, São Paulo - São Paulo, 01107-000, Brasil', neighborhood: 'Cambuci', city: 'São Paulo', emergency_lat:-23.564691, emergency_lon:-46.611123, user_id: 2, schedule_id: 4, description: 'crianca com sintomas leves de alergia'})
+emergency4 = Emergency.new({ n_people: 1, gravity: 7, category: 10, street: 'Avenida Do Estado 200, São Paulo - São Paulo, 01107-000, Brasil', neighborhood: 'Cambuci', city: 'São Paulo',time_start: DateTime.now.to_formatted_s(:db), emergency_lat:-23.564691, emergency_lon:-46.611123, user_id: 2, schedule_id: 4, description: 'crianca com sintomas leves de alergia'})
 emergency4.save!
 
 
