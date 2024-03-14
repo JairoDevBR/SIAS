@@ -51,4 +51,16 @@
       }
     }
   }
+
+  #schedule_worker1_name, #schedule_worker2_name {
+    background-color: #b6b6b6;
+    pointer-events: none;
+    text-align: center;
+    font-size: 20px;
+  }
+  #schedule_worker1_id, #schedule_worker2_id {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
 }

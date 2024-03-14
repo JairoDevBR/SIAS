@@ -21,33 +21,33 @@
     } do |f| %>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :street, label: 'Rua e número', input_html: {data: {info_transfer_target:"streetOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :street, label: "<i class='fa-solid fa-road '></i>  Rua e número".html_safe, input_html: { data: { info_transfer_target: "streetOutput" } }, label_html: { class: "text-white fw-bold" } %>
         </div>
         <div class="col">
-          <%= f.input :neighborhood, label:"Bairro", input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :neighborhood, label:"<i class='fa-solid fa-map-location-dot'></i> Bairro".html_safe, input_html: {data: {info_transfer_target:"neighborhoodOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
       </div>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :city, label: "Cidade", input_html: {data: {info_transfer_target:"cityOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :city, label: "<i class='fa-solid fa-city '></i>  Cidade".html_safe, input_html: {data: {info_transfer_target:"cityOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
         <div class="col">
-          <%= f.input :local_type, label: "Tipo de local", input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :local_type, label: "<i class='fa-solid fa-location-dot'></i> Tipo de local".html_safe, input_html: {data: {info_transfer_target:"categoryOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
       </div>
       <div class="row w-100">
         <div class="col">
-          <%= f.input :n_people, label: "Número de acidentados",label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :n_people, label: "<i class='fa-solid fa-person-falling-burst'></i> Número de acidentados".html_safe,label_html: { class: "text-white fw-bold" } %>
         </div>
         <div class="col">
-          <%= f.input :emergency_lat, label: "Latitude", input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :emergency_lat, label: "<i class='fa-solid fa-map-pin'></i> Latitude".html_safe, input_html: {data: {info_transfer_target:"latitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
         <div class="col">
-          <%= f.input :emergency_lon, label: "Longitude", input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
+          <%= f.input :emergency_lon, label: "<i class='fa-solid fa-map-pin'></i> Longitude".html_safe, input_html: {data: {info_transfer_target:"longitudeOutput"}}, label_html: { class: "text-white fw-bold" } %>
         </div>
       </div>
       <div class="row w-100">
-        <%= f.input :description, label: "Descrição da ocorrência",label_html: { class: "text-white fw-bold" }  %>
+        <%= f.input :description, label: "<i class='fa-solid fa-pencil'></i> Descrição da ocorrência".html_safe,label_html: { class: "text-white fw-bold" }  %>
       </div>
         <%= f.button :submit, "Criar nova emergência", class:"btn button-vermelho", id:"btn-vermelho", remote: true %>
     <% end %>
