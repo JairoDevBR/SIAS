@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Adicionar novo Usuario</h1>
+  <%= form_with model: @worker do |form| %>
+
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= form.label :occupation %>
+      <%= form.number_field :occupation %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% end %>
+  <%= link_to "voltar", home_adm_path, class: "back-link" %>
+</div>

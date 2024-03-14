@@ -1,3 +1,24 @@
 .box-shadow-leve{
   box-shadow: 2px 2px 4px 4px #e2e2e2;
 }
+
+.botao-azul-especial{
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bolder;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: $azul;
+  border: 2px solid $azul;
+  background-color: #FFF;
+  border-radius: 12px;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.1);
+    color: $azul;
+    box-shadow: 1px 1px 2px 0 #403e3e;
+    background-color: #FFF;
+  }
+}
