@@ -141,3 +141,12 @@
     width: 100%;
   }
 }
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: linear-gradient(to bottom, #141E46, rgba(15, 24, 53, 0));
+
+}
