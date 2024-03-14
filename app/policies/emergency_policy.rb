@@ -22,6 +22,10 @@ class EmergencyPolicy < ApplicationPolicy
     is_central?
   end
 
+  def obtain_markers?
+    is_central?
+  end
+
   private
 
   def is_central?

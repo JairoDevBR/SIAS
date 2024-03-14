@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
   get '/emergencies/get_routes', to: 'emergencies#obtain_routes', as: 'get_routes'
+  get '/emergencies_obtain_markers', to: 'emergencies#obtain_markers'
 
   resources :chatrooms, only: :show do
     resources :messages, only: :create

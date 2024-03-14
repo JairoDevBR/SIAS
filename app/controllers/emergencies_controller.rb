@@ -7,19 +7,24 @@ class EmergenciesController < ApplicationController
   def new
     @emergency = Emergency.new
     authorize @emergency
-    # criacao dos markers de emergencias
-    @emergencies = Emergency.all
-    @emergencies_markers = @emergencies.map do |emergency|
+  end
+
+  def obtain_markers
+    @emergency = Emergency.new
+    authorize @emergency
+    @schedule = Schedule.new
+    authorize @schedule
+
+    emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
       {
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
         marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency }),
       }
     end
 
-    # criacao dos markers das ambulancias
-    @schedules_markers = Schedule.all.map do |schedule|
+    schedules_markers = Schedule.all.map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
@@ -27,6 +32,7 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
+    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
   end
 
   def obtain_routes
