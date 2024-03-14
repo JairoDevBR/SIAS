@@ -22,13 +22,29 @@ class SchedulePolicy < ApplicationPolicy
     ambulance?
   end
 
-  def update_location?
+  def update_location_from_emergencies_show_view?
     ambulance?
+  end
+
+  def update_location_from_schedules_show_view?
+    ambulance?
+  end
+
+  def obtain_routes?
+    central?
+  end
+
+  def obtain_markers?
+    central?
   end
 
   private
 
   def ambulance?
     user.admin == user.central
+  end
+
+  def central?
+    user.central == true
   end
 end
