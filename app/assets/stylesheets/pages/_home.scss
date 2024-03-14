@@ -70,6 +70,7 @@
     transform: scale(1.1);
     color: $vermelho;
     box-shadow: 2px 2px 4px 0 #403e3e;
+    background-color: $azul;
   }
 }
 
@@ -143,10 +144,6 @@
 }
 .navbar {
   width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  background: linear-gradient(to bottom, #141E46, rgba(15, 24, 53, 0));
+
 
 }
