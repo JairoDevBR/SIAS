@@ -1399,7 +1399,7 @@ User.create!(email: "central2@email.com", admin: "false", central: "true", passw
 
 # colocar a quantidade de ambulancias
 vehicles = 8
-p "criando #{vehicles} ambulancias de ID 4 ao #{vehicles + 4}"
+p "criando #{vehicles} ambulancias de ID 4 ao #{vehicles + 3}"
 
 def gerar_email(numero)
   "ambulancia#{numero}@email.com"
@@ -1417,7 +1417,7 @@ def gerar_placa
   placa
 end
 
-# Criar users
+# Criar ambulancias
 def criar_users(quantidade)
   quantidade.times do |i|
     email = gerar_email(i + 1)
@@ -1441,6 +1441,7 @@ workers_qtd = vehicles * 2
 p "criando #{workers_qtd} workers"
 nomes = ['Caio', 'Lucas', 'Fernando', 'Carolina', 'Joao', 'Pedro', 'Mario', 'Jose', 'Ana', 'Maria', 'Carlos', 'Paula', 'Fernando', 'Camila', 'Rafael', 'Juliana']
 sobrenomes = ['Silva', 'Santos', 'Oliveira', 'Pereira', 'Almeida', 'Rodrigues', 'Nascimento', 'Ferreira', 'Gomes', 'Carvalho', 'Martins', 'Araujo', 'Lima', 'Costa', 'Sousa', 'Barbosa']
+
 workers_qtd.times do |i|
   nome = "#{nomes.sample} #{sobrenomes.sample}"
   occupation = case i % 4
@@ -1459,9 +1460,7 @@ end
 desactivated_schedules_qtd = 200
 p "criando #{desactivated_schedules_qtd} schedules desativados"
 
-#  quantidade de schedules ativos = ambulancias ativas
-activated_schedules_qtd = vehicles
-p "criando #{activated_schedules_qtd} schedules ativos"
+
 
 # latitude e longitude para a Grande São Paulo
 MIN_LAT = -23.830833 # Latitude mínima para a Grande São Paulo
@@ -1492,22 +1491,6 @@ desactivated_schedules_qtd.times do |i|
   )
 end
 
-
-# Criar schedules ativados
-activated_schedules_qtd.times do |i|
-  worker1_id = ((i % workers_qtd) + 1)
-  worker2_id = (((i + 1) % workers_qtd) + 1)
-  user_id = (((i % vehicles) + 4))
-  current_lat, current_lon = gerar_localizacao
-  Schedule.create!(
-    worker1_id: worker1_id,
-    worker2_id: worker2_id,
-    user_id: user_id,
-    active: true,
-    current_lat: current_lat,
-    current_lon: current_lon
-  )
-end
 
 # Método para retornar um valor aleatório entre as datas inicial e final
 def generate_random_datetime(start_date, end_date)
@@ -1605,21 +1588,39 @@ old_emergencies_qtd.times do
 end
 
 
-
-
-
-# EMERGENCIAS NOVAS
+# EMERGENCIAS NOVAS COM EMERGENCIA EM ANDAMENTO
 
 # escolher a quantidade de emergencias de preferencia maior que a quantidade de schedules
-new_emergencies_qtd = 9
-p "criando #{new_emergencies_qtd} emergencias em andamento"
+new_emergencies_qtd = vehicles
+p "criando #{new_emergencies_qtd} emergencias em andamento com respectiva ambulancia a caminho"
 # definir quanto horas antes as emergencias ativas foram criadas
 horas_antes = 4
+
+# criando um array de IDs de ambulancias
+users_array =  (4..(vehicles + 3)).to_a
 
 new_emergencies_qtd.times do
   # Seleção aleatória de uma emergência e uma localização
   emergencia = emergencias.sample
   localizacao = localizacoes.sample
+
+
+  # Criando a schedule da ambulancia que receberá a emergencia
+  worker1_id = rand(1..workers_qtd)
+  worker2_id = rand(1..workers_qtd)
+  user_id = users_array.delete_at(0)
+
+  # criando localizacao para a ambulancia e para o inicio da emergencia
+  current_lat, current_lon = gerar_localizacao
+
+  schedule = Schedule.create!(
+    worker1_id: worker1_id,
+    worker2_id: worker2_id,
+    user_id: user_id,
+    active: true,
+    current_lat: current_lat,
+    current_lon: current_lon
+  )
 
   # Seleção aleatória de n_people, gravity, category e description
   n_people = emergencia[:n_people]
@@ -1638,9 +1639,6 @@ new_emergencies_qtd.times do
   # escolher quando qual a data e hora que comeca e finaliza as emergencias ativas
   start_date = random_datetime_last_x_hours(horas_antes)
 
-  # Valores aleatorios de localizacao da ambulancia para inicio da chamada
-  current_lat_start, current_lon_start = gerar_localizacao
-
   Emergency.create!(
     n_people: n_people,
     gravity: gravity,
@@ -1653,10 +1651,10 @@ new_emergencies_qtd.times do
     emergency_lon: emergency_lon,
     local_type: local_type,
     time_start: start_date,
-    start_lon: current_lon_start,
-    start_lat: current_lat_start,
+    start_lon: schedule.current_lon,
+    start_lat: schedule.current_lat,
     user_id: rand(1..2), # aleatorio user ID para centrais
-    schedule_id: rand(1..activated_schedules_qtd) # aleatorio user ID para schedules desativadas
+    schedule_id: schedule.id # aleatorio user ID para schedules desativadas
   )
 end
 
