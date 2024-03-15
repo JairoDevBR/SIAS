@@ -9,9 +9,7 @@ export default class extends Controller {
 
 
   connect() {
-    console.log(this.markersValue);
     mapboxgl.accessToken = this.apiKeyValue
-
     this.map = new mapboxgl.Map({
       container: this.element,
       style: "mapbox://styles/mapbox/streets-v9",
@@ -43,8 +41,6 @@ export default class extends Controller {
     this.schedulesMarkersValue.forEach((marker) => {
 
       const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
-
-      console.log(marker.info_window_schedule_html);
 
       const customMarker = document.createElement("div")
       customMarker.innerHTML = marker.marker_html

@@ -1,4 +1,4 @@
-<div class="accordion" data-controller="chatroom-subscription" data-chatroom-subscription-schedule-id-value="<%= @schedule.id %>" id="accordionShowSched" data-controller="schedules-show-view-geolocation">
+<div class="accordion" data-controller="chatroom-subscription" data-chatroom-subscription-schedule-id-value="<%= @schedule.id %>" id="accordionShowSched">
   <div class="accordion-item">
     <h2 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -19,7 +19,7 @@
     </div>
   </div>
 </div>
-<div class="map-mobile">
+<div class="map-mobile" data-controller="schedules-show-view-geolocation">
   <div id='map' style='width: 0 auto; height: 820px;'
     data-controller="map-mobile"
     data-map-mobile-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
