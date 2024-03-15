@@ -1548,7 +1548,7 @@ end
 old_emergencies_qtd = 300
 p "criando #{old_emergencies_qtd} emergencias ja socorridas"
 # escolher quando qual a data que comeca e finaliza as emergencias concluidas
-start_date = "2024-03-15"
+start_date = "2023-03-15"
 end_date = "2024-03-20"
 # escolher o maximo de horas q dura uma emergencia
 max_time_emergency = 6
