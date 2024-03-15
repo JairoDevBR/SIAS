@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   resources :chatrooms, only: :show do
     resources :messages, only: :create
   end
+
   resources :schedules, only: %i[new create index show]
-  resources :emergencies, only: %i[new create show]
+  resources :emergencies, only: %i[new create show index]
   resources :workers
 
   post '/update_schedule_location_from_schedules_show_view/:id', to: 'schedules#update_location_from_schedules_show_view'

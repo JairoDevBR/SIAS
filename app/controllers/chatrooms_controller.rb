@@ -1,6 +1,6 @@
 class ChatroomsController < ApplicationController
   def show
-    @chatroom = Chatroom.find(1)
+    @chatroom = Chatroom.find(params[:id])
     @message = Message.new
     authorize @chatroom
   end

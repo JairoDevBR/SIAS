@@ -4,6 +4,10 @@ require 'date'
 class EmergenciesController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @emergencies = policy_scope(Emergency)
+  end
+
   def new
     @emergency = Emergency.new
     authorize @emergency
@@ -84,12 +88,14 @@ class EmergenciesController < ApplicationController
         Não inclua nenhuma informação adicional além da hash.
         ").call)
 
+
     @emergency.gravity = @chat_response["gravidade"]
     @emergency.category = @chat_response["categoria"]
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     @emergency.save!
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
+    find_hospital(@emergency)
 
     @chatroom = Chatroom.find(1)
     @message = Message.new(content: @emergency.description)
@@ -101,6 +107,18 @@ class EmergenciesController < ApplicationController
         render_to_string(partial: "messages/message", locals: { message: @message })
       )
     end
+
+    # @chatroom = Chatroom.new(chatroom_params)
+    # @chatroom = Chatroom.find(1)
+    # @message = Message.new(content: @emergency.description)
+    # @message.chatroom = @chatroom
+    # @message.user = current_user
+    # if @message.save
+    #   ChatroomChannel.broadcast_to(
+    #     @chatroom,
+    #     render_to_string(partial: "messages/message", locals: { message: @message })
+    #   )
+    # end
   end
 
   def show
@@ -138,6 +156,12 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
+
+    @chatroom = Chatroom.find(@emergency.chatroom)
+
+
+    @patient = Patient.new(patient_params)
+
   end
 
   def finish
@@ -156,8 +180,16 @@ class EmergenciesController < ApplicationController
 
   private
 
+  def patient_params
+    params.require(:patient).permit(:heart_rate, :blood_pressure, :respiratory_rate, :oxygen_saturation, :consciousness, :pain, :medical_history, :description)
+  end
+
   def emergency_params
     params.require(:emergency).permit(:description, :n_people, :street, :neighborhood, :city, :local_type, :emergency_lat, :emergency_lon)
+  end
+
+  def chatroom_params
+    params.require(:chatroom).permit(:description, :n_people, :street, :neighborhood, :city, :local_type, :emergency_lat, :emergency_lon)
   end
 
   def save_without_validation
@@ -253,4 +285,22 @@ class EmergenciesController < ApplicationController
             .exists?
   end
 
+  def find_hospital(emergency)
+    @hospitals = Hospital.all
+
+    distances = {}
+    @hospitals.each do |hospital|
+      distances[hospital.id] = calculate_distance_hospital(hospital, emergency)
+    end
+    nearest_hospital_id = distances.min_by { |id, distance| distance }&.first
+    nearest_hospital = Hospital.find_by(id: nearest_hospital_id)
+
+    emergency.hospital_id = nearest_hospital.id
+    emergency.save!
+
+  end
+
+  def calculate_distance_hospital(hospital, emergency)
+    Math.sqrt((((hospital.latitude - emergency.emergency_lat) * 111.11) ** 2) + (((hospital.longitude - emergency.emergency_lon) * 111.1) ** 2))
+  end
 end

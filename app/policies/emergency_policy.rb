@@ -1,9 +1,9 @@
 class EmergencyPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.where(hospital: user.hospital)
+    end
   end
 
   def new?
@@ -25,7 +25,7 @@ class EmergencyPolicy < ApplicationPolicy
   def obtain_markers?
     is_central?
   end
-  
+
   def finish?
     is_ambulance?
   end
