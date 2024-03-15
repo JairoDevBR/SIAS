@@ -18,9 +18,8 @@
       </div>
     </div>
 <div class="w-100 text-azul" data-controller="reset-emergency-form">
-
     <%= simple_form_for @emergency, data: {
-      action: "submit->reset-emergency-form#refreshPage"
+      action: "submit->reset-emergency-form#resetForm"
     } do |f| %>
       <div class="row w-100">
         <div class="col">
