@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
+
   root to: "pages#home"
 
   get "up" => "rails/health#show", as: :rails_health_check
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
   resources :schedules, only: %i[new create index show]
   resources :emergencies, only: %i[new create show]
   resources :workers
+  resources :stocks, only: %i[new create show edit update ]
 
   patch '/emergencies/:id/finish', to: 'emergencies#finish', as: :finish_emergency
   get '/adm', to: 'adms#inicial', as: :home_adm
