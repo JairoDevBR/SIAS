@@ -1668,3 +1668,5 @@ message1 = Message.create!(content:"Ocorrência 1: Paciente mulher de 60 anos ac
 message2 = Message.create!(content:"Ocorrência 2: Dois pacientes homens feridos em um acidente de carro", chatroom_id:1, user_id: 2)
 
 p "finalizando o seed"
+stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 1)
+stock1.save!
