@@ -37,20 +37,25 @@
       <div class="modal-body">
           <%= form_with model: @worker do |form| %>
 
-    <div class="field">
-      <%= form.label :name %>
-      <%= form.text_field :name %>
-    </div>
+            <div class="field">
+              <%= form.label :name %>
+              <%= form.text_field :name %>
+            </div>
 
-    <div class="field">
-      <%= form.label :occupation %>
-      <%= form.number_field :occupation %>
-    </div>
+            <div class="field">
+              <%= form.label :occupation %>
+              <%= form.select :occupation,
+                  [['Bombeiro', 0], ['Medico', 1], ['Enfermeiro', 2]],
+                  { include_blank: "Select Occupation" },
+                  { required: true, autofocus: true }
+                %>
 
-    <div class="actions">
-      <%= form.submit %>
-    </div>
-  <% end %>
+            </div>
+
+            <div class="actions">
+              <%= form.submit %>
+            </div>
+         <% end %>
 
       </div>
       <div class="modal-footer">
