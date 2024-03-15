@@ -7,14 +7,13 @@ export default class extends Controller {
     navigator.geolocation.getCurrentPosition((position) => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      console.log(position);
 
       // Extrair o ID da URL
     const url = window.location.href;
     const id = url.substring(url.lastIndexOf('/') + 1);
 
     // Enviar os dados para o servidor
-    fetch(`/update_schedule_location_from_emergencies_show_view/${id}`, {
+    fetch(`/update_location_from_emergencies_show_view/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
