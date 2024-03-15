@@ -5,7 +5,6 @@ export default class extends Controller {
   static targets = ['counter']
 
   connect() {
-    console.log('hello world');
   }
 
   updateCounter(event) {
