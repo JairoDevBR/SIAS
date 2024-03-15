@@ -1,20 +1,19 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="geolocation"
+// Connects to data-controller="schedules-show-view-geolocation"
 export default class extends Controller {
   updateLocation() {
     // Obter dados de geolocalização
     navigator.geolocation.getCurrentPosition((position) => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      console.log(position);
 
-      // Extrair o ID da URL
+      // Extrair o ID da URL = SCHEDULE -> AMBULANCIA
     const url = window.location.href;
     const id = url.substring(url.lastIndexOf('/') + 1);
 
-    // Enviar os dados para o servidor
-    fetch(`/update_schedule_location_from_schedules_show_view/${id}`, {
+    // Enviar os dados para o servidor COM ID AMBULANCIA
+    fetch(`/update_location_from_schedules_show_view/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
