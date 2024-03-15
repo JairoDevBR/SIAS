@@ -1,4 +1,5 @@
 require 'json'
+require 'date'
 
 class EmergenciesController < ApplicationController
   before_action :authenticate_user!
@@ -6,19 +7,24 @@ class EmergenciesController < ApplicationController
   def new
     @emergency = Emergency.new
     authorize @emergency
-    # criacao dos markers de emergencias
-    @emergencies = Emergency.all
-    @emergencies_markers = @emergencies.map do |emergency|
+  end
+
+  def obtain_markers
+    @emergency = Emergency.new
+    authorize @emergency
+    @schedule = Schedule.new
+    authorize @schedule
+
+    emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
       {
         lat: emergency.emergency_lat,
         lng: emergency.emergency_lon,
         marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency }),
       }
     end
 
-    # criacao dos markers das ambulancias
-    @schedules_markers = Schedule.all.map do |schedule|
+    schedules_markers = Schedule.all.map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
@@ -26,10 +32,32 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
-
-    @chatroom = Chatroom.find(1)
-    @message = Message.new
+    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
   end
+
+  def obtain_routes
+    @schedule = Schedule.new
+    authorize @schedule
+    @emergency = Emergency.new
+    authorize @emergency
+    routes = []
+    @schedules = Schedule.joins(:emergencies).where(emergencies: { time_end: nil })
+    # Iterar sobre cada schedule e seu emergency correspondente
+    @schedules.each do |schedule|
+      emergency = Emergency.find_by(schedule_id: schedule)
+      # Calcular rota usando Mapbox Directions API
+      # Suponha que você obtenha a rota na forma de um conjunto de coordenadas
+      route_coordinates = [
+        [schedule.current_lon, schedule.current_lat],  # Ponto de partida (schedule)
+        [emergency.emergency_lon, emergency.emergency_lat]  # Ponto de destino (emergency)
+      ]
+
+      routes << route_coordinates
+    end
+
+    render json: { routes: routes }
+  end
+
 
   def create
     @emergency = Emergency.new(emergency_params)
@@ -37,7 +65,7 @@ class EmergenciesController < ApplicationController
     authorize @emergency
 
     @chat_response = JSON.parse(
-      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency.description}.
+      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
         Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
         Acidentes de trânsito = 1;
@@ -58,6 +86,7 @@ class EmergenciesController < ApplicationController
 
     @emergency.gravity = @chat_response["gravidade"]
     @emergency.category = @chat_response["categoria"]
+    @emergency.time_start = DateTime.now.to_formatted_s(:db)
     @emergency.save!
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
@@ -82,7 +111,6 @@ class EmergenciesController < ApplicationController
     @slat = @schedule.current_lon
     @slon = @schedule.current_lat
     authorize @emergency
-    # @markerhtml = render_to_string(partial: "emergency")
     @emergencies = Emergency.all
     @emergencies_markers = Emergency.where("id != #{params[:id]}").map do |emergency|
       {
@@ -110,14 +138,13 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
       }
     end
-    # aqui vamos atualizar o time final, local final
   end
 
   def finish
     @emergency = Emergency.find(params[:id])
     schedule = @emergency.schedule
     authorize @emergency
-    @emergency.time_end = Time.now
+    @emergency.time_end = DateTime.now.to_formatted_s(:db)
     @emergency.end_lat = schedule.current_lat
     @emergency.end_lon = schedule.current_lon
     if @emergency.save
@@ -172,7 +199,7 @@ class EmergenciesController < ApplicationController
     # acha a ambulancia mais proxima
     nearest_ambulance = Schedule.find_by(id: nearest_ambulance_id)
 
-    # FALTA FAZER oq fazer se nao tiver nenhuma ambulancia
+    # oq fazer se nao tiver nenhuma ambulancia
     return if nearest_ambulance.nil?
 
     # verifica se a ambulancia esta atendendo alguma emergencia
@@ -181,9 +208,9 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
-      emergency.save
+      emergency.save!
 
-      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      # mandar msg via webhook para o chat das ambulancias
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
@@ -194,18 +221,19 @@ class EmergenciesController < ApplicationController
     else
       # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
+      emergency_to_be_reattributed.schedule_id = nil
       # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
-      emergency.save
-      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
+      emergency.save!
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
       )
       head :ok
+      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       # FALTA FAZER cria um PopUp na view da central de que a emergencia x da ambulancia reatribuida para a ambulancia x foi criada nova emergencia para amb y
       # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
       find_ambulance(emergency_to_be_reattributed)

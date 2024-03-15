@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get '/emergencies/get_routes', to: 'emergencies#obtain_routes', as: 'get_routes'
+  get '/emergencies_obtain_markers', to: 'emergencies#obtain_markers'
 
   resources :chatrooms, only: :show do
     resources :messages, only: :create
@@ -11,7 +13,8 @@ Rails.application.routes.draw do
   resources :emergencies, only: %i[new create show]
   resources :workers
 
-  post '/update_schedule_location/:id', to: 'schedules#update_location'
+  post '/update_schedule_location_from_schedules_show_view/:id', to: 'schedules#update_location_from_schedules_show_view'
+  post '/update_schedule_location_from_emergencies_show_view/:id', to: 'schedules#update_location_from_emergencies_show_view'
   patch '/emergencies/:id/finish', to: 'emergencies#finish', as: :finish_emergency
   get '/adm', to: 'adms#inicial', as: :home_adm
 end
