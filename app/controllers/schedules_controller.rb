@@ -59,13 +59,26 @@ class SchedulesController < ApplicationController
     end
   end
 
-  def update_location
+  def update_location_from_emergencies_show_view
     @schedule = Schedule.new
     authorize @schedule
-    # id da emergencia
+    # id da EMERGENCIA
     id = params[:id]
     # Encontre a instância do modelo
     schedule = Schedule.joins(:emergencies).find_by(emergencies: { id: id })
+    # Atualize os atributos de latitude e longitude
+    schedule.update(current_lat: params[:latitude], current_lon: params[:longitude])
+    # Responda com JSON indicando o sucesso
+    render json: { message: "Localização atualizada com sucesso" }
+  end
+
+  def update_location_from_schedules_show_view
+    @schedule = Schedule.new
+    authorize @schedule
+    # id da SCHEDULE (ambulancia)
+    id = params[:id]
+    # Encontre a instância do modelo
+    schedule = Schedule.find_by(id)
     # Atualize os atributos de latitude e longitude
     schedule.update(current_lat: params[:latitude], current_lon: params[:longitude])
     # Responda com JSON indicando o sucesso
