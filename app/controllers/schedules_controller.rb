@@ -11,7 +11,7 @@ class SchedulesController < ApplicationController
     @chatroom = Chatroom.find(1)
     @schedule = Schedule.find(params[:id])
     authorize @schedule
-    @emergencies = Emergency.all
+    @emergencies = Emergency.where(time_end: nil)
     @markers = []
     @markers = @emergencies.map do |emergency|
       {

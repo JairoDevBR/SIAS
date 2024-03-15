@@ -63,7 +63,6 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.new(emergency_params)
     @emergency.user = current_user
     authorize @emergency
-
     @chat_response = JSON.parse(
       chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).

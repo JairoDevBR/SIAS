@@ -19,7 +19,7 @@ class ChatgptService
   def call
     body = {
       model: "gpt-3.5-turbo",
-      messages: [{ role: 'system', content: "Você é o ChatGPT, um modelo de linguagem grande treinado pela OpenAI, baseado na arquitetura GPT-3.5." }, { role: 'user', content: message }]
+      messages: [{ role: 'user', content: message }]
     }
     response = HTTParty.post(@api_url, body: body.to_json, headers: options[:headers], timeout: 10)
     raise response['error']['message'] unless response.code == 200
