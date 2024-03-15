@@ -5,29 +5,82 @@
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-user-plus"></i> Criar usuario</h1>
     <p class="lead text-grey">Ao criar um novo usuário em nosso website, você pode conceder acesso a diferentes áreas e funcionalidades, adaptando-se às necessidades específicas de sua equipe.</p>
     <%# <a class="botao-azul" href="/docs/5.3/components/navbar/" role="button">Novo usuario »</a> %>
-  <div class="d-flex gap-5">
-    <%= link_to "<i class='fa-solid fa-plus'></i>  Novo Usuario".html_safe, new_worker_path , class:"botao-verde" %>
-    <%= link_to "<i class='fa-solid fa-user-pen'></i>  Editar Usuario".html_safe, new_worker_path , class:"botao-azul-especial" %>
-    <%= link_to "<i class='fa-solid fa-x'></i>  Deletar Usuario".html_safe, new_worker_path , class:"botao-vermelho" %>
+  <div class="d-flex gap-4">
+    <%= link_to rails_admin.new_path(model_name: 'user'), class: "botao-verde" do %>
+      <i class='fa-solid fa-plus'></i> Novo Usuario
+    <% end %>
+<%= link_to "/admin/user", class: "botao-azul-especial" do %>
+  <i class='fa-solid fa-user-pen'></i>Editar/Deletar Usuario
+<% end %>
   </div>
   </div>
   <div class="bg-body-tertiary p-5 mt-5 border-radius-60 box-shadow-leve">
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-user-nurse"></i> Criar Novo Socorrista</h1>
     <p class="lead text-grey">Adicione novos socorristas ao quadro de serviço</p>
-      <div class="d-flex gap-5">
+      <div class="d-flex gap-4">
         <%= link_to "<i class='fa-solid fa-plus'></i>  Novo Socorrista".html_safe, new_worker_path , class:"botao-verde" %>
+        <!-- Scrollable modal -->
+        <!-- Button trigger modal -->
+
+<button type="button" class=" botao-verde" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  <i class='fa-solid fa-plus'></i> Novo Socorrista
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Adicione o Socorrista</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <%= form_with model: @worker do |form| %>
+
+            <div class="field">
+              <%= form.label :name %>
+              <%= form.text_field :name %>
+            </div>
+
+            <div class="field">
+              <%= form.label :occupation %>
+              <%= form.select :occupation,
+                  [['Bombeiro', 0], ['Medico', 1], ['Enfermeiro', 2]],
+                  { include_blank: "Select Occupation" },
+                  { required: true, autofocus: true }
+                %>
+
+            </div>
+
+            <div class="actions">
+              <%= form.submit %>
+            </div>
+         <% end %>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
         <%= link_to "<i class='fa-solid fa-user-pen'></i>  Editar/Deletar Socorrista".html_safe, workers_path , class:"botao-azul-especial" %>
     </div>
   </div>
   <div class="bg-body-tertiary p-5 mt-5 border-radius-60 box-shadow-leve">
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-chart-simple"></i> Graficos</h1>
     <p class="lead text-grey">Explore nossos poderosos recursos de visualização de dados nesta seção dedicada à demonstração de gráficos. Os gráficos fornecem uma representação visual clara e concisa de informações complexas, permitindo uma compreensão rápida e intuitiva dos dados.</p>
-    <a class="botao-azul" href="/docs/5.3/components/navbar/" role="button">Ver Graficos »</a>
+    <%= link_to "/blazer", class: "botao-azul-especial" do %>
+      Ver Graficos »
+    <% end %>
   </div>
   <div class="bg-body-tertiary p-5 mt-5 mb-5 border-radius-60 box-shadow-leve">
     <h1 class="text-vermelho fw-bold"><i class="fa-solid fa-cubes-stacked"></i> Estoque</h1>
     <p class="lead text-grey">Introduzindo nosso sistema de controle de estoque simples e intuitivo, projetado para simplificar o gerenciamento de inventário e otimizar suas operações. Com uma interface amigável e recursos poderosos, nosso sistema oferece uma solução eficaz para acompanhar e controlar seus produtos de forma eficiente..</p>
-    <a class="botao-azul" href="/docs/5.3/components/navbar/" role="button">Ver estoques »</a>
+    <a class="botao-azul-especial" href="/docs/5.3/components/navbar/" role="button">Ver estoques »</a>
   </div>
 </div>
 <footer class="py-3 margin-top-100">
