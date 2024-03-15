@@ -1,0 +1,15 @@
+<div class="container">
+    <h1>Informe</h1>
+      <%= simple_form_for @stock do |f| %>
+       <%= f.input :tesoura %>
+        <%= f.input :luvas %>
+        <%= f.input :pinça %>
+        <%= f.input :esparadrapo %>
+        <%= f.input :alcool %>
+        <%= f.input :gaze_esterilizada %>
+        <%= f.input :atadura %>
+        <%= f.input :bandagens %>
+        <%= f.input :medicamentos_basicos %>
+        <%= f.button :submit, class:"btn btn-success my-3", style: "width: 100%; border-radius: 40px; color:white;"  %>
+      <% end %>
+</div>
