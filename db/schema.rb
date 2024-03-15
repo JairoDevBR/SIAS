@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_15_134616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,6 +55,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "patients", force: :cascade do |t|
+    t.integer "heart_rate"
+    t.integer "blood_pressure"
+    t.integer "respiratory_rate"
+    t.integer "oxygen_saturation"
+    t.integer "consciousness"
+    t.integer "pain"
+    t.text "medical_history"
+    t.text "description"
+    t.bigint "emergency_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["emergency_id"], name: "index_patients_on_emergency_id"
+  end
+
   create_table "schedules", force: :cascade do |t|
     t.bigint "worker1_id", null: false
     t.bigint "worker2_id", null: false
@@ -69,6 +84,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
     t.index ["worker2_id"], name: "index_schedules_on_worker2_id"
   end
 
+  create_table "stocks", force: :cascade do |t|
+    t.integer "tesoura"
+    t.integer "luvas"
+    t.integer "pinça"
+    t.integer "esparadrapo"
+    t.integer "alcool"
+    t.integer "gaze_esterilizada"
+    t.integer "atadura"
+    t.integer "bandagens"
+    t.integer "medicamentos_basicos"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_stocks_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -81,6 +112,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
     t.boolean "central"
     t.integer "kind"
     t.string "plate"
+    t.boolean "hospital"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -96,7 +128,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_181329) do
   add_foreign_key "emergencies", "users"
   add_foreign_key "messages", "chatrooms"
   add_foreign_key "messages", "users"
+  add_foreign_key "patients", "emergencies"
   add_foreign_key "schedules", "users"
   add_foreign_key "schedules", "workers", column: "worker1_id"
   add_foreign_key "schedules", "workers", column: "worker2_id"
+  add_foreign_key "stocks", "users"
 end
