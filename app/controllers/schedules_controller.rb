@@ -11,24 +11,6 @@ class SchedulesController < ApplicationController
     @chatroom = Chatroom.find(1)
     @schedule = Schedule.find(params[:id])
     authorize @schedule
-    @emergencies = Emergency.where(time_end: nil)
-    @markers = @emergencies.map do |emergency|
-      {
-        lat: emergency.emergency_lat,
-        lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
-      }
-    end
-
-    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
-      {
-        lat: schedule.current_lat,
-        lng: schedule.current_lon,
-        marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.where(schedule_id: schedule, time_end: nil).first })
-      }
-    end
   end
 
   def new

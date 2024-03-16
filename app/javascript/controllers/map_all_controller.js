@@ -96,10 +96,8 @@ export default class extends Controller {
             console.error('Erro ao obter direções:', error);
           });
       })
-
     })
-
- }
+  }
 
   fetchDirections(routeCoordinates) {
     const accessToken = this.apiKeyValue
