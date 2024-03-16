@@ -29,7 +29,7 @@ class EmergenciesController < ApplicationController
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.where(schedule_id: schedule, time_end: nil).first })
       }
     end
     render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
