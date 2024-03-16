@@ -1,6 +1,6 @@
 <div class="patient-new">
   <div class="form-patient">
-      <%= simple_form_for @patient do |f| %>
+      <%= simple_form_for [@emergency, @patient] do |f| %>
         <div class="form-patient-info">
           <%= f.input :gender, label: 'Gênero:',
             label_html: { class: 'form-patient-label' } %>

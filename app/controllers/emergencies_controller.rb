@@ -50,6 +50,60 @@ class EmergenciesController < ApplicationController
     render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers, hospitals_markers: hospitals_markers }
   end
 
+  def obtain_markers_to_emergencies_show
+    @emergency = Emergency.new
+    authorize @emergency
+    @schedule = Schedule.new
+    authorize @schedule
+
+
+    emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency }),
+      }
+    end
+
+    schedules_markers = Schedule.joins(:emergencies).where(active: true, emergencies: { id: params[:emergency_id]}).map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find_by(id: params[:emergency_id]) }) # nao estou conseguindo enviar a variavel local emergency para o popup
+      }
+    end
+    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
+  end
+
+  def obtain_markers_only_current_emergency
+    @emergency = Emergency.new
+    authorize @emergency
+    @schedule = Schedule.new
+    authorize @schedule
+
+
+    emergencies_markers = Emergency.where(id: params[:emergency_id]).map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency }),
+      }
+    end
+
+    schedules_markers = Schedule.joins(:emergencies).where(active: true, emergencies: { id: params[:emergency_id]}).map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find_by(id: params[:emergency_id]) }) # nao estou conseguindo enviar a variavel local emergency para o popup
+      }
+    end
+    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
+  end
+
   def obtain_routes
     @schedule = Schedule.new
     authorize @schedule
@@ -73,6 +127,21 @@ class EmergenciesController < ApplicationController
     render json: { routes: routes }
   end
 
+  def obtain_route_to_emergency_show
+    schedule = Schedule.joins(:emergencies).where(emergencies: { id: params[:emergency_id] }).first
+    authorize schedule
+    emergency = Emergency.find(params[:emergency_id])
+    authorize emergency
+    routes = []
+      # Suponha que você obtenha a rota na forma de um conjunto de coordenadas
+      route_coordinates = [
+        [schedule.current_lon, schedule.current_lat],  # Ponto de partida (schedule)
+        [emergency.emergency_lon, emergency.emergency_lat]  # Ponto de destino (emergency)
+      ]
+      routes << route_coordinates
+
+    render json: { routes: routes }
+  end
 
   def create
     @emergency = Emergency.new(emergency_params)

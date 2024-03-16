@@ -35,8 +35,21 @@ class SchedulePolicy < ApplicationPolicy
   end
 
   def obtain_markers?
-    central?
+    central? || ambulance?
   end
+
+  def obtain_markers_to_emergencies_show?
+    ambulance?
+  end
+
+  def obtain_route_to_emergency_show?
+    ambulance?
+  end
+
+  def obtain_markers_only_current_emergency?
+    ambulance?
+  end
+
 
   private
 

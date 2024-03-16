@@ -11,25 +11,6 @@ class SchedulesController < ApplicationController
     @chatroom = Chatroom.find(1)
     @schedule = Schedule.find(params[:id])
     authorize @schedule
-    @emergencies = Emergency.where(time_end: nil)
-    @markers = []
-    @markers = @emergencies.map do |emergency|
-      {
-        lat: emergency.emergency_lat,
-        lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency })
-      }
-    end
-
-    @schedules_markers = Schedule.where("id = #{params[:id]}").map do |schedule|
-      {
-        lat: schedule.current_lat,
-        lng: schedule.current_lon,
-        marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
-      }
-    end
   end
 
   def new
@@ -58,6 +39,32 @@ class SchedulesController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
+  def obtain_markers
+    @emergency = Emergency.new
+    authorize @emergency
+    @schedule = Schedule.new
+    authorize @schedule
+    emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
+      {
+        lat: emergency.emergency_lat,
+        lng: emergency.emergency_lon,
+        marker_html: render_to_string(partial: "emergency"),
+        info_window_html: render_to_string(partial: "info_window", locals: { emergency: emergency }),
+      }
+    end
+      # irá retornar apenas a schedule atual
+      schedules_markers = Schedule.where(id: params[:schedule_id] , active: true).map do |schedule|
+      {
+        lat: schedule.current_lat,
+        lng: schedule.current_lon,
+        marker_html: render_to_string(partial: "schedule_marker"),
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.where(schedule_id: schedule, time_end: nil).first })
+      }
+    end
+    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
+  end
+
 
   def update_location_from_schedules_show_view
     @schedule = Schedule.new

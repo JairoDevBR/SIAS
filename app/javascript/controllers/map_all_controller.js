@@ -75,7 +75,6 @@ export default class extends Controller {
 
     // remocao dos markers
     #removeMarkers() {
-      // this.markers.forEach(markerInstance => markerInstance.remove())
       this.markers.forEach(markerInstance => markerInstance.remove())
     };
 
@@ -108,10 +107,8 @@ export default class extends Controller {
             console.error('Erro ao obter direções:', error);
           });
       })
-
     })
-
- }
+  }
 
   fetchDirections(routeCoordinates) {
     const accessToken = this.apiKeyValue
