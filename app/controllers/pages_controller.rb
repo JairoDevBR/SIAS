@@ -10,4 +10,5 @@ class PagesController < ApplicationController
     @emergency = @emergency[0]
 
   end
+
 end

@@ -55,6 +55,8 @@ gem "geocoder"
 gem 'httparty'
 gem "ruby-openai"
 gem 'mapbox-sdk'
+gem "rails_admin", "3.0"
+gem "blazer"
 
 group :development, :test do
   gem "dotenv-rails"
@@ -80,3 +82,4 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+gem "sassc-rails"

@@ -35,6 +35,7 @@ class WorkersController < ApplicationController
   end
 
   def create
+
     @worker = Worker.new(worker_params)
     authorize @worker
 

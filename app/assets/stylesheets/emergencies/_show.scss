@@ -52,7 +52,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 24px;
+  border-radius: 60px;
 
 
 }
@@ -65,7 +65,7 @@
 }
 
 :root{
-  --clr-1: #cfcfcf;
+  --clr-1: #141E46;
   --clr-2: #FFF;
   --clr-3: #ff0000;
   --clr-4: #ffd0d0;
@@ -82,7 +82,7 @@
   height: 60vh;
   aspect-ratio: 1 / 1.5;
   background-color: var(--clr-1);
-  border-radius: 0.5rem;
+  border-radius: 60px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -102,7 +102,7 @@
       var(--clr-3)
   );
   border-radius: inherit;
-  animation: rotation 6s linear infinite;
+  animation: rotation 3s linear infinite;
 }
 
 .card-jairo::after{

@@ -7,36 +7,36 @@ class EmergencyPolicy < ApplicationPolicy
   end
 
   def new?
-    is_central?
+    central?
   end
 
   def create?
-    is_central?
+    central?
   end
 
   def show?
-    is_ambulance?
+    ambulance?
   end
 
   def obtain_routes?
-    is_central?
+    central?
   end
 
   def obtain_markers?
-    is_central?
+    central?
   end
 
   def finish?
-    is_ambulance?
+    ambulance?
   end
 
   private
 
-  def is_central?
+  def central?
     user.central == true
   end
 
-  def is_ambulance?
+  def ambulance?
     user.central == user.admin
   end
 end

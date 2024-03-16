@@ -9,7 +9,11 @@
 
     <div class="field">
       <%= form.label :occupation %>
-      <%= form.number_field :occupation %>
+       <%= form.select :occupation,
+          [['Bombeiro', 0], ['Medico', 1], ['Enfermeiro', 2]],
+          { include_blank: "Select Occupation" },
+          { required: true, autofocus: true }
+        %>
     </div>
 
     <div class="actions">

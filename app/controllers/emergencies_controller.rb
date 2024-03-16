@@ -28,12 +28,12 @@ class EmergenciesController < ApplicationController
       }
     end
 
-    schedules_markers = Schedule.all.map do |schedule|
+    schedules_markers = Schedule.where(active: true).map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.where(schedule_id: schedule, time_end: nil).first })
       }
     end
     render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
@@ -67,7 +67,6 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.new(emergency_params)
     @emergency.user = current_user
     authorize @emergency
-
     @chat_response = JSON.parse(
       chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).

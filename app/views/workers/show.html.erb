@@ -4,10 +4,10 @@
     <%= form.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= form.label :occupation %>
-    <%= form.number_field :occupation %>
-  </div>
+<div class="field">
+  <%= form.label :occupation %>
+  <%= form.collection_select :occupation, User::OCCUPATION_OPTIONS, :last, :first, prompt: "Select Occupation" %>
+</div>
 
   <div class="actions">
     <%= form.submit "Update Worker", class: "btn btn-primary" %>
