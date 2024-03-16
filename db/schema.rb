@@ -130,7 +130,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
     t.bigint "worker1_id", null: false
     t.bigint "worker2_id", null: false
     t.bigint "user_id", null: false
-    t.boolean "active"
+  t.boolean "active"
     t.float "current_lon"
     t.float "current_lat"
     t.datetime "created_at", null: false
