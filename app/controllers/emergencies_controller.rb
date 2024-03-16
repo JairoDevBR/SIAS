@@ -192,6 +192,7 @@ class EmergenciesController < ApplicationController
 
   def show
     @emergency = Emergency.find(params[:id])
+    @patient = Patient.new
     @lat = @emergency.emergency_lat
     @long = @emergency.emergency_lon
     @schedule = Schedule.find(@emergency.schedule.id)
@@ -226,7 +227,6 @@ class EmergenciesController < ApplicationController
       }
     end
 
-    @patients = Patient.new
   end
 
   def finish
