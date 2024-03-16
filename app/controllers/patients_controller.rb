@@ -1,4 +1,6 @@
 class PatientsController < ApplicationController
+  before_action :set_emergency
+
   def new
     @patient = Patient.new
     authorize @patient
@@ -6,9 +8,9 @@ class PatientsController < ApplicationController
 
   def create
     @patient = Patient.new(patient_params)
-    @emergency = Emergency.find(params[:emergency_id])
-    @patient.emergency_id = @emergency
+    @patient.emergency = @emergency
     authorize @patient
+
     if @patient.save
       redirect_to emergency_path(@emergency)
     else
@@ -17,6 +19,10 @@ class PatientsController < ApplicationController
   end
 
   private
+
+  def set_emergency
+    @emergency = Emergency.find(params[:emergency_id])
+  end
 
   def patient_params
     params.require(:patient).permit(:gender, :age, :heart_rate, :blood_pressure, :respiratory_rate, :oxygen_saturation, :consciousness, :pain, :gravity, :medical_history, :description)
