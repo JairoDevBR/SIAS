@@ -64,7 +64,6 @@ export default class extends Controller {
 
     // remocao dos markers
     #removeMarkers() {
-      // this.markers.forEach(markerInstance => markerInstance.remove())
       this.markers.forEach(markerInstance => markerInstance.remove())
     };
 

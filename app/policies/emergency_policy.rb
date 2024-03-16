@@ -23,7 +23,7 @@ class EmergencyPolicy < ApplicationPolicy
   end
 
   def obtain_markers?
-    central?
+    central? || ambulance?
   end
 
   def finish?
