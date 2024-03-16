@@ -6,7 +6,10 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
   get '/emergencies/get_routes', to: 'emergencies#obtain_routes', as: 'get_routes'
+  get '/obtain_markers_only_current_emergency/:emergency_id', to: 'emergencies#obtain_markers_only_current_emergency'
+  get '/emergencies_get_route/:emergency_id', to: 'emergencies#obtain_route_to_emergency_show', as: 'get_emergency_route'
   get '/emergencies_obtain_markers', to: 'emergencies#obtain_markers'
+  get '/emergencies_show_obtain_markers/:emergency_id', to: 'emergencies#obtain_markers_to_emergencies_show'
   get '/schedules_obtain_markers/:schedule_id', to: 'schedules#obtain_markers'
   post '/update_location_from_schedules_show_view/:id', to: 'schedules#update_location_from_schedules_show_view'
   post '/update_location_from_emergencies_show_view/:id', to: 'schedules#update_location_from_emergencies_show_view'

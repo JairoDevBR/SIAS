@@ -3,80 +3,161 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static values = {
     apiKey: String,
-    lat: Number,
-    long: Number,
-    slon: Number,
-    slat: Number,
-    emergenciesMarkers: Array,
-    schedulesMarkers: Array,
-    emergencyMarker: Array
   };
 
   connect() {
     mapboxgl.accessToken = this.apiKeyValue;
+    this.markers = []
 
     this.map = new mapboxgl.Map({
       container: this.element,
       style: "mapbox://styles/mapbox/streets-v9",
-      center: [this.longValue, this.latValue],
+      center: [-46.68898, -23.55185 ],
       zoom: 14,
     });
 
-    this.addMarker();
-    this.addAmbulance();
-    this.addEmergency();
-    this.fitMapToMarkers();
+    this.#removeMarkers()
+    this.#addMarkersToMap()
+    this.#addRoutes()
+    this.#fitMapToMarkers()
+
+
+    // Atualizacao dos markers e rotas a cada 5 segundos
+    setInterval(() => {
+      this.#removeMarkers()
+      this.#addMarkersToMap();
+      this.#addRoutes();
+    }, 5000);
   }
 
-  addMarker() {
-    this.emergenciesMarkersValue.forEach((marker) => {
+  // Adicao de novos markers
+  #addMarkersToMap() {
+      // Isso vai pegar o último segmento da URL, que deve ser o emergency_id
+    const url = window.location.href;
+    const emergencyId = url.split('/').pop();
 
-      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+    fetch(`/emergencies_show_obtain_markers/${emergencyId}`)
+    .then(response => response.json())
+    .then(data => {
+      data.emergencies_markers.forEach(marker => {
+        const popup = new mapboxgl.Popup().setHTML(marker.info_window_html);
+        const customMarker = document.createElement("div");
+        customMarker.innerHTML = marker.marker_html;
+        customMarker.className = "marker-emergency";
+        const emergencyMarkerInstance = new mapboxgl.Marker(customMarker)
+          .setLngLat([marker.lng, marker.lat])
+          .setPopup(popup)
+          .addTo(this.map);
+        this.markers.push(emergencyMarkerInstance);
+      });
+      data.schedules_markers.forEach(marker => {
+        const popup = new mapboxgl.Popup().setHTML(marker.info_window_html);
+        const customMarker = document.createElement("div");
+        customMarker.innerHTML = marker.marker_html;
+        customMarker.className = "marker-schedule";
+        const scheduleMarkerInstance = new mapboxgl.Marker(customMarker)
+          .setLngLat([marker.lng, marker.lat])
+          .setPopup(popup)
+          .addTo(this.map);
+        this.markers.push(scheduleMarkerInstance);
+      });
+    })
+    .catch(error => {
+      console.error('Erro ao obter marcadores de emergência:', error);
+    });
+  }
 
-      const customMarker = document.createElement("div")
-      customMarker.innerHTML = marker.marker_html
+  // remocao dos markers
+  #removeMarkers() {
+    this.markers.forEach(markerInstance => markerInstance.remove())
+  };
 
-      new mapboxgl.Marker(customMarker)
-        .setLngLat([ marker.lng, marker.lat ])
-        .setPopup(popup)
-        .addTo(this.map)
+  #addRoutes() {
+      // Isso vai pegar o último segmento da URL, que deve ser o emergency_id
+    const url = window.location.href;
+    const emergencyId = url.split('/').pop();
+
+    fetch(`/emergencies_get_route/${emergencyId}`)
+    .then(response => response.json())
+    .then(data => {
+      const routes = data.routes;
+
+      // Limpe as camadas de rota existentes
+
+      for (let i = 191; i < this.map.getStyle().layers.length; i++) {
+        const layer = this.map.getStyle().layers[i];
+        if (layer.id.startsWith("route-layer-")) {
+
+          this.map.removeLayer(layer.id);
+          this.map.removeSource(layer.id)
+        }
+      };
+
+      // Iterar sobre cada rota e adicionar ao mapa
+      routes.forEach((routeCoordinates, index) => {
+          // Enviar solicitação para o Mapbox Directions API
+          this.fetchDirections(routeCoordinates)
+          .then(directions => {
+            // Adicionar a rota ao mapa usando as coordenadas das curvas das ruas
+            this.drawRoute(directions.routes[0].geometry, index);
+          })
+          .catch(error => {
+            console.error('Erro ao obter direções:', error);
+          });
+      })
     })
   }
 
-  addAmbulance() {
-    this.schedulesMarkersValue.forEach((marker) => {
+  fetchDirections(routeCoordinates) {
+    const accessToken = this.apiKeyValue
+    const baseUrl = 'https://api.mapbox.com/directions/v5/mapbox/driving';
+    const query = `?access_token=${accessToken}&geometries=geojson&overview=full&steps=true`;
+    const coordinates = `/${routeCoordinates[0][0]},${routeCoordinates[0][1]};${routeCoordinates[1][0]},${routeCoordinates[1][1]}`;
 
-      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
+    return fetch(baseUrl + coordinates + query, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json());
+}
 
-      const customMarker = document.createElement("div")
-      customMarker.innerHTML = marker.marker_html
+  drawRoute(geometry, index) {
+  this.map.addLayer({
+    'id': `route-layer-${index}`,
+    'type': 'line',
+    'source': {
+      'type': 'geojson',
+      'data': {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': geometry
+      }
+    },
+    'layout': {
+      'line-join': 'round',
+      'line-cap': 'round'
+    },
+    'paint': {
+      'line-color': '#888',
+      'line-width': 8
+    }
+  });
+}
 
-      new mapboxgl.Marker(customMarker)
-        .setLngLat([ marker.lng, marker.lat ])
-        .setPopup(popup)
-        .addTo(this.map)
-    })
-  }
-
-  addEmergency() {
-    this.emergencyMarkerValue.forEach((marker) => {
-
-      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html)
-
-      const customMarker = document.createElement("div")
-      customMarker.innerHTML = marker.marker_html
-
-      new mapboxgl.Marker(customMarker)
-        .setLngLat([ marker.lng, marker.lat ])
-        .setPopup(popup)
-        .addTo(this.map)
-    })
-  }
-
-  fitMapToMarkers() {
+  #fitMapToMarkers() {
+    // Isso vai pegar o último segmento da URL, que deve ser o emergency_id
+    const url = window.location.href;
+    const emergencyId = url.split('/').pop();
     const bounds = new mapboxgl.LngLatBounds()
-    bounds.extend([this.longValue, this.latValue ])
-    bounds.extend([ this.slatValue, this.slonValue ])
-    this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+
+  fetch(`/obtain_markers_only_current_emergency/${emergencyId}`)
+    .then(response => response.json())
+    .then(data => {
+      data.emergencies_markers.forEach(marker => bounds.extend([ marker.lng, marker.lat ]))
+      data.schedules_markers.forEach(marker => bounds.extend([ marker.lng, marker.lat ]))
+      this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+    })
   }
 }
