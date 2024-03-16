@@ -35,7 +35,7 @@ class SchedulePolicy < ApplicationPolicy
   end
 
   def obtain_markers?
-    central?
+    central? || ambulance?
   end
 
   private

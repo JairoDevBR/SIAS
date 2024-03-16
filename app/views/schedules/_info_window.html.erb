@@ -1,2 +1,6 @@
-<p><strong>Ambulância: </strong><%= emergency.schedule_id %></p>
+<% if emergency.schedule.present? %>
+<p><strong>Ambulância: </strong><%= emergency.schedule.user_id %></p>
+<% end %>
+<p><strong>Ocorrência: </strong><%= emergency.description %></p>
 <p><strong>Endereço: </strong><%= emergency.street %></p>
+<p><strong>Gravidade: </strong><%= emergency.gravity %></p>
