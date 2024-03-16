@@ -1,4 +1,4 @@
-class EmergencyMessagePolicy < ApplicationPolicy
+class PatientPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     # def resolve
@@ -6,21 +6,17 @@ class EmergencyMessagePolicy < ApplicationPolicy
     # end
   end
 
+  def new?
+    ambulance?
+  end
+
   def create?
-    is_ambulance? || is_central? || is_hospital?
+    ambulance?
   end
 
   private
 
-  def is_ambulance?
+  def ambulance?
     user.central == user.admin
-  end
-
-  def is_central?
-    user.central
-  end
-
-  def is_hospital?
-    user.hospital
   end
 end

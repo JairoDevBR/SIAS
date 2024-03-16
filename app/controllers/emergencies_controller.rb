@@ -18,6 +18,8 @@ class EmergenciesController < ApplicationController
     authorize @emergency
     @schedule = Schedule.new
     authorize @schedule
+    @hospital = Hospital.new
+    authorize @hospital
 
     emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
       {
@@ -36,7 +38,16 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.where(schedule_id: schedule, time_end: nil).first })
       }
     end
-    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
+
+    hospitals_markers = Hospital.all.map do |hospital|
+      {
+        lat: hospital.latitude,
+        lng: hospital.longitude,
+        marker_html: render_to_string(partial: "hospital_marker"),
+        info_window_html: render_to_string(partial: "info_window_hospital", locals: { hospital: hospital })
+      }
+    end
+    render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers, hospitals_markers: hospitals_markers }
   end
 
   def obtain_routes
@@ -95,17 +106,7 @@ class EmergenciesController < ApplicationController
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
     find_hospital(@emergency)
-
-    @chatroom = Chatroom.find(1)
-    @message = Message.new(content: @emergency.description)
-    @message.chatroom = @chatroom
-    @message.user = current_user
-    if @message.save
-      ChatroomChannel.broadcast_to(
-        @chatroom,
-        render_to_string(partial: "messages/message", locals: { message: @message })
-      )
-    end
+    send_to_all_chat
 
     # @chatroom = Chatroom.new(chatroom_params)
     # @chatroom = Chatroom.find(1)
@@ -152,15 +153,11 @@ class EmergenciesController < ApplicationController
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule })
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find(params[:id]) })
       }
     end
 
-    @chatroom = Chatroom.find(@emergency.chatroom)
-
-
-    @patient = Patient.new(patient_params)
-
+    @patients = Patient.new
   end
 
   def finish
@@ -301,5 +298,18 @@ class EmergenciesController < ApplicationController
 
   def calculate_distance_hospital(hospital, emergency)
     Math.sqrt((((hospital.latitude - emergency.emergency_lat) * 111.11) ** 2) + (((hospital.longitude - emergency.emergency_lon) * 111.1) ** 2))
+  end
+
+  def send_to_all_chat
+    @chatroom = Chatroom.find(1)
+    @message = Message.new(content: @emergency.description)
+    @message.chatroom = @chatroom
+    @message.user = current_user
+    if @message.save
+      ChatroomChannel.broadcast_to(
+        @chatroom,
+        render_to_string(partial: "messages/message", locals: { message: @message })
+      )
+    end
   end
 end
