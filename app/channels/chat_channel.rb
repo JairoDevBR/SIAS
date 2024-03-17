@@ -1,10 +1,6 @@
 class ChatChannel < ApplicationCable::Channel
   def subscribed
-    if Emergency.exists?(params[:id])
-      stream_from "emergency_#{params[:id]}"
-    else
-      reject
-    end
+    stream_from "emergency_#{params[:emergency_id]}"
   end
 
   def unsubscribed
