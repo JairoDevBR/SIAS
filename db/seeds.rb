@@ -1675,6 +1675,249 @@ end
 chatroom = Chatroom.create!(name: "general")
 
 
+
+# >>>>>>>>>>>>>>> BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
+  # Criar um novo dashboard
+  dashboard = Blazer::Dashboard.create!(
+    name: "Ocorrências Por Data"
+  )
+
+  query = Blazer::Query.create!(
+    name: "Ocorrências por bairro (data)",
+    description: "Visao por data",
+    statement: "SELECT
+    neighborhood,
+    COUNT(*) AS total_occurrences
+  FROM
+    emergencies
+  WHERE
+    time_start >= {start_time}
+    AND time_start <= {end_time}
+  GROUP BY
+    neighborhood
+  ORDER BY
+    total_occurrences DESC;"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 0)
+
+
+  query = Blazer::Query.create!(
+    name: "Categoria das ocorrências (data)",
+    description: "Visao por data",
+    statement: "SELECT
+    CASE category
+        WHEN 1 THEN 'Acidentes de trânsito'
+        WHEN 2 THEN 'Mal súbito'
+        WHEN 3 THEN 'Ferimentos por queda'
+        WHEN 4 THEN 'Parada cardiorrespiratória'
+        WHEN 5 THEN 'Intoxicação ou envenenamento'
+        WHEN 6 THEN 'Problemas respiratórios'
+        WHEN 7 THEN 'Crises hipertensivas'
+        WHEN 8 THEN 'Complicações durante a gravidez ou parto'
+        WHEN 9 THEN 'Ferimentos por arma branca ou de fogo'
+        WHEN 10 THEN 'Reações alérgicas graves'
+        WHEN 11 THEN 'Outros'
+        ELSE 'Desconhecido'
+    END AS category_name,
+    COUNT(*) AS total_occurrences
+  FROM
+    emergencies
+  WHERE
+    time_start >= {start_time}
+    AND time_start <= {end_time}
+  GROUP BY
+    category
+  ORDER BY
+    total_occurrences DESC;"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 1)
+
+  query = Blazer::Query.create!(
+    name: "Detalhado (data)",
+    description: "Visao por data",
+    statement: "SELECT
+    description AS Descrição,
+    time_start AS Data,
+    gravity AS Gravidade,
+    n_people AS Número_de_vítimas_socorridas
+  FROM
+    emergencies
+  WHERE
+    time_start >= {start_time}
+    AND time_start <= {end_time}
+  ORDER BY
+    time_start;"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 2)
+
+
+
+  # Criar um novo dashboard
+  dashboard = Blazer::Dashboard.create!(
+    name: "Visao Geral por Cidade"
+  )
+
+  query = Blazer::Query.create!(
+    name: "Total de ocorrências por bairro (cidade)",
+    description: "Visao Cidade",
+    statement: "SELECT
+    neighborhood,
+    COUNT(*) AS total_occurrences
+  FROM
+    emergencies
+  WHERE
+    city = {Cidade}
+  GROUP BY
+    neighborhood
+  ORDER BY
+    total_occurrences DESC;"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 0)
+
+  query = Blazer::Query.create!(
+    name: "Categoria das ocorrências (cidade)",
+    description: "Visao Cidade",
+    statement: "SELECT
+    CASE category
+        WHEN 1 THEN 'Acidentes de trânsito'
+        WHEN 2 THEN 'Mal súbito'
+        WHEN 3 THEN 'Ferimentos por queda'
+        WHEN 4 THEN 'Parada cardiorrespiratória'
+        WHEN 5 THEN 'Intoxicação ou envenenamento'
+        WHEN 6 THEN 'Problemas respiratórios'
+        WHEN 7 THEN 'Crises hipertensivas'
+        WHEN 8 THEN 'Complicações durante a gravidez ou parto'
+        WHEN 9 THEN 'Ferimentos por arma branca ou de fogo'
+        WHEN 10 THEN 'Reações alérgicas graves'
+        WHEN 11 THEN 'Outros'
+        ELSE 'Desconhecido'
+    END AS category_name,
+    COUNT(*) AS occurrences_count
+  FROM
+    emergencies
+  WHERE
+    city = {Cidade}
+  GROUP BY
+    category_name  -- Usando category_name em vez de category para manter o alias
+  ORDER BY
+    occurrences_count DESC;"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 1)
+
+  query = Blazer::Query.create!(
+    name: "Mapa das ocorrência (cidade)",
+    description: "Visao Cidade",
+    statement: "SELECT
+    id,
+    description,
+    emergency_lon AS longitude,
+    emergency_lat AS latitude,
+    time_start,
+    gravity,
+    category
+  FROM
+    emergencies
+  WHERE
+    city = {Cidade};"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 2)
+
+
+
+  # Criar um novo dashboard
+  dashboard = Blazer::Dashboard.create!(
+    name: "Visao Geral por Bairro"
+  )
+
+  query = Blazer::Query.create!(
+    name: "Categoria das ocorrências (bairro)",
+    description: "Visao bairro",
+    statement: "SELECT
+    CASE category
+        WHEN 1 THEN 'Acidentes de trânsito'
+        WHEN 2 THEN 'Mal súbito'
+        WHEN 3 THEN 'Ferimentos por queda'
+        WHEN 4 THEN 'Parada cardiorrespiratória'
+        WHEN 5 THEN 'Intoxicação ou envenenamento'
+        WHEN 6 THEN 'Problemas respiratórios'
+        WHEN 7 THEN 'Crises hipertensivas'
+        WHEN 8 THEN 'Complicações durante a gravidez ou parto'
+        WHEN 9 THEN 'Ferimentos por arma branca ou de fogo'
+        WHEN 10 THEN 'Reações alérgicas graves'
+        WHEN 11 THEN 'Outros'
+        ELSE 'Desconhecido'
+    END AS category_name,
+    SUM(CASE WHEN city = {Cidade} AND neighborhood = {Bairro} THEN 1 ELSE 0 END) AS total_occurrences
+  FROM
+    emergencies
+  GROUP BY
+    category_name
+  ORDER BY
+    total_occurrences DESC;"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 0)
+
+  query = Blazer::Query.create!(
+    name: "Mapa das ocorrências (bairro)",
+    description: "Visao bairro",
+    statement: "SELECT
+    id,
+    description,
+    emergency_lon AS longitude,
+    emergency_lat AS latitude,
+    time_start,
+    gravity,
+    category
+  FROM
+    emergencies
+  WHERE
+    city = {Cidade}
+    AND neighborhood = {Bairro};"
+  )
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 1)
+
+  query = Blazer::Query.create!(
+    name: "Detalhado (bairro)",
+    description: "Visao bairro",
+    statement: "SELECT
+    description AS Descrição,
+    time_start AS Data,
+    gravity AS Gravidade,
+    n_people AS Número_de_vitimas_socorridas
+  FROM
+    emergencies
+  WHERE
+    city = {Cidade}
+    AND neighborhood = {Bairro}
+  ORDER BY
+    time_start;"
+  )
+
+
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 2)
+
+
+
+# >>>>>>>>>>>>>>>FIM BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
+
+
 message1 = Message.create!(content:"Ocorrência 1: Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda. Local: Rua jerico 193", chatroom: chatroom, user: central)
 message2 = Message.create!(content:"Ocorrência 2: Dois pacientes homens feridos em um acidente de carro", chatroom: chatroom, user: central)
 
