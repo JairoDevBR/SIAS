@@ -179,8 +179,7 @@ class EmergenciesController < ApplicationController
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
     find_hospital(@emergency)
-    send_to_all_chat
-
+    send_to_all_chat(@emergency, @recomendation)
   end
 
   def show
@@ -363,9 +362,9 @@ class EmergenciesController < ApplicationController
   end
 
   # colocar no content da msg a descricao, gravidade, recomendacao
-  def send_to_all_chat
-    msg = "Ocorrência nº#{@emergency.id}: #{@emergency.description}
-    gravidade: #{@emergency.gravity} => #{recomend}"
+  def send_to_all_chat(emergency, recomendation)
+    msg = "Ocorrência nº#{emergency.id}: #{emergency.description}
+    gravidade: #{emergency.gravity} => #{recomendation}"
     @chatroom = Chatroom.find(1)
     @message = Message.new(content: msg)
     @message.chatroom = @chatroom
