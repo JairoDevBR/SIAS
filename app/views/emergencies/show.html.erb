@@ -64,7 +64,7 @@
       </div>
 
       <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        
+        <%= render partial: "chats/show", locals: {chat: @chat, post: @post} %>
       </div>
     </div>
   </div>

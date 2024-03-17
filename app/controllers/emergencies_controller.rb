@@ -189,6 +189,8 @@ class EmergenciesController < ApplicationController
     #     render_to_string(partial: "messages/message", locals: { message: @message })
     #   )
     # end
+
+
   end
 
   def show
@@ -228,6 +230,7 @@ class EmergenciesController < ApplicationController
       }
     end
 
+    send_to_emergency
   end
 
   def finish
@@ -380,6 +383,24 @@ class EmergenciesController < ApplicationController
         @chatroom,
         render_to_string(partial: "messages/message", locals: { message: @message })
       )
+    end
+  end
+
+  def send_to_emergency
+    @posts = Post.all
+    @chat = Chat.where("id = #{params[:id]}")
+    # raise
+    @post = Post.new(content: @emergency.description)
+    @post.chat = @chat
+    @post.user = current_user
+    if @post.save
+      ChatChannel.broadcast_to(
+        @chat,
+        render_to_string(partial: "post", locals: {post: @post})
+      )
+      head :ok
+    else
+      render "chatrooms/show", status: :unprocessable_entity
     end
   end
 end
