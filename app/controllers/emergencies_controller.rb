@@ -176,23 +176,10 @@ class EmergenciesController < ApplicationController
     @recomendation = @chat_response["recomendacao"]
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     @emergency.save!
-      # ActionCable.server.broadcast
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
     find_hospital(@emergency)
-    send_to_all_chat
-
-    # @chatroom = Chatroom.new(chatroom_params)
-    # @chatroom = Chatroom.find(1)
-    # @message = Message.new(content: @emergency.description)
-    # @message.chatroom = @chatroom
-    # @message.user = current_user
-    # if @message.save
-    #   ChatroomChannel.broadcast_to(
-    #     @chatroom,
-    #     render_to_string(partial: "messages/message", locals: { message: @message })
-    #   )
-    # end
+    send_to_all_chat(@emergency, @recomendation)
   end
 
   def show
@@ -375,9 +362,11 @@ class EmergenciesController < ApplicationController
   end
 
   # colocar no content da msg a descricao, gravidade, recomendacao
-  def send_to_all_chat
+  def send_to_all_chat(emergency, recomendation)
+    msg = "Ocorrência nº#{emergency.id}: #{emergency.description}
+    gravidade: #{emergency.gravity} => #{recomendation}"
     @chatroom = Chatroom.find(1)
-    @message = Message.new(content: @emergency.description)
+    @message = Message.new(content: msg)
     @message.chatroom = @chatroom
     @message.user = current_user
     if @message.save

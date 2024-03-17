@@ -142,7 +142,7 @@ export default class extends Controller {
       'line-cap': 'round'
     },
     'paint': {
-      'line-color': '#b22222',
+      'line-color': '#ae4545',
       'line-width': 5
     }
   });

@@ -32,6 +32,9 @@ class SchedulesController < ApplicationController
     @schedule.user = current_user
     @schedule.active = true
     authorize @schedule
+    # logica para atribuir active = false para todas as schedules do mesmo user, com excecao da atual (@schedule ainda nao criada, portando nao precisa de um where.not)
+    old_schedules = Schedule.where(active: true).where(user_id: current_user)
+    old_schedules.each { |old_schedule| old_schedule.update(active: false) }
 
     if @schedule.save!
       redirect_to @schedule, notice: 'Você está logado.'
