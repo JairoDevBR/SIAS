@@ -11,8 +11,7 @@ class Emergency < ApplicationRecord
   def create_chat_channel_stream
     ActionCable.server.broadcast(
       "chat_channel",
-      command: "create_stream",
-      emergency_id: self.id
+      { command: "create_stream", emergency_id: self.id }
     )
   end
 end

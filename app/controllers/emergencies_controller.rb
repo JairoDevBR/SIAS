@@ -180,6 +180,7 @@ class EmergenciesController < ApplicationController
     find_ambulance(@emergency)
     find_hospital(@emergency)
     send_to_all_chat(@emergency, @recomendation)
+    send_to_emergency
   end
 
   def show
@@ -218,7 +219,6 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find(params[:id]) })
       }
     end
-
     send_to_emergency
   end
 
@@ -379,8 +379,8 @@ class EmergenciesController < ApplicationController
   end
 
   def send_to_emergency
-    @posts = Post.all
-    @chat = Chat.where("id = #{params[:id]}")
+    @chat = Chat.new
+    @chat = Chat.find("id = #{params[:id]}")
     # raise
     @post = Post.new(content: @emergency.description)
     @post.chat = @chat
@@ -394,5 +394,7 @@ class EmergenciesController < ApplicationController
     else
       render "chatrooms/show", status: :unprocessable_entity
     end
+
+
   end
 end
