@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_17_012412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "emergencies", force: :cascade do |t|
     t.integer "gravity"
     t.datetime "time_start"
@@ -97,8 +103,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
     t.bigint "schedule_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "hospital_id"
+    t.index ["hospital_id"], name: "index_emergencies_on_hospital_id"
     t.index ["schedule_id"], name: "index_emergencies_on_schedule_id"
     t.index ["user_id"], name: "index_emergencies_on_user_id"
+  end
+
+  create_table "hospitals", force: :cascade do |t|
+    t.string "name"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -112,12 +128,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
   end
 
   create_table "patients", force: :cascade do |t|
+    t.string "gender"
+    t.integer "age"
     t.integer "heart_rate"
     t.integer "blood_pressure"
     t.integer "respiratory_rate"
     t.integer "oxygen_saturation"
     t.integer "consciousness"
     t.integer "pain"
+    t.integer "gravity"
     t.text "medical_history"
     t.text "description"
     t.bigint "emergency_id", null: false
@@ -126,11 +145,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
     t.index ["emergency_id"], name: "index_patients_on_emergency_id"
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.string "content"
+    t.bigint "chat_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_posts_on_chat_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
   create_table "schedules", force: :cascade do |t|
     t.bigint "worker1_id", null: false
     t.bigint "worker2_id", null: false
     t.bigint "user_id", null: false
-  t.boolean "active"
+    t.boolean "active"
     t.float "current_lon"
     t.float "current_lat"
     t.datetime "created_at", null: false
@@ -180,11 +209,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_162346) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "emergencies", "hospitals"
   add_foreign_key "emergencies", "schedules"
   add_foreign_key "emergencies", "users"
   add_foreign_key "messages", "chatrooms"
   add_foreign_key "messages", "users"
   add_foreign_key "patients", "emergencies"
+  add_foreign_key "posts", "chats"
+  add_foreign_key "posts", "users"
   add_foreign_key "schedules", "users"
   add_foreign_key "schedules", "workers", column: "worker1_id"
   add_foreign_key "schedules", "workers", column: "worker2_id"
