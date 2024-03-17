@@ -1,3 +1,12 @@
+
+p "destroying all Seed!"
+Emergency.destroy_all
+Schedule.destroy_all
+Worker.destroy_all
+Message.destroy_all
+Chatroom.destroy_all
+Hospital.destroy_all
+User.destroy_all
 require 'date'
 
 # DATABASE OBTIDO PELO GPT
@@ -1660,13 +1669,11 @@ end
 
 
 
+
+
+
 chatroom = Chatroom.create!(name: "general")
 
-message1 = Message.create!(content:"Ocorrência 1: Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda. Local: Rua jerico 193", chatroom_id:1, user_id: 2)
-message2 = Message.create!(content:"Ocorrência 2: Dois pacientes homens feridos em um acidente de carro", chatroom_id:1, user_id: 2)
-
-stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 1)
-stock1.save!
 
 
 # >>>>>>>>>>>>>>> BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
@@ -1909,5 +1916,19 @@ stock1.save!
 
 
 # >>>>>>>>>>>>>>>FIM BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
+
+
+message1 = Message.create!(content:"Ocorrência 1: Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda. Local: Rua jerico 193", chatroom: chatroom, user: central)
+message2 = Message.create!(content:"Ocorrência 2: Dois pacientes homens feridos em um acidente de carro", chatroom: chatroom, user: central)
+
+stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 1)
+stock1.save!
+
+hospital01 = Hospital.create!(name: "Le Wagon Hospital", latitude: -23.55195, longitude: -46.68898)
+hospital02 = Hospital.create!(name: "Hospital São Paulo", latitude: -23.56334, longitude: -46.65454)
+hospital03 = Hospital.create!(name: "Hospital das Clínicas", latitude: -23.56063, longitude: -46.72899)
+hospital04 = Hospital.create!(name: "Hospital Albert Einstein", latitude: -23.58829, longitude: -46.66477)
+hospital05 = Hospital.create!(name: "Hospital Sírio-Libanês", latitude: -23.55984, longitude: -46.67787)
+hospital06 = Hospital.create!(name: "Hospital Israelita Albert Sabin", latitude: -23.55414, longitude: -46.65555)
 
 p "finalizando o seed"

@@ -1,0 +1,41 @@
+<div class="form-patient">
+  <%= simple_form_for [@emergency, @patient] do |f| %>
+    <div class="form-patient-info">
+      <%= f.input :gender, collection: Patient::GENDERS, label: 'Gênero:',
+        label_html: { class: 'form-patient-label' }, wrapper_html: { class: 'username' } %>
+
+      <%= f.input :age, label: 'Faixa etária:',
+        label_html: { class: 'form-patient-label' }, wrapper_html: { class: 'username' } %>
+
+      <%= f.input :heart_rate, label: 'Frequência cardíaca:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :respiratory_rate, label: 'Frequência respiratória:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :blood_pressure, label: 'Pressão arterial:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :oxygen_saturation, label: 'Saturação de oxigênio:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :consciousness, label: 'Nível de consciência:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :pain, label: 'Escala de dor:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :gravity, label: 'Gravidade:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :medical_history, label: 'Histórico médico:',
+        label_html: { class: 'form-patient-label' } %>
+
+    <%= f.input :description, label: 'Descrição:', as: :text,
+        label_html: { class: 'form-patient-label' } %>
+    </div>
+    <div class="form-patient-button">
+      <%= f.button :submit, value: 'Enviar' %>
+    </div>
+  <% end %>
+</div>
