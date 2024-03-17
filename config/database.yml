@@ -82,3 +82,4 @@ production:
   database: sias_production
   username: sias
   password: <%= ENV["SIAS_DATABASE_PASSWORD"] %>
+  url: <%= ENV["BLAZER_DATABASE_URL"] %>
