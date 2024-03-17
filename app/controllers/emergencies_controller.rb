@@ -172,6 +172,7 @@ class EmergenciesController < ApplicationController
     @emergency.category = @chat_response["categoria"]
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     @emergency.save!
+      # ActionCable.server.broadcast
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
     find_hospital(@emergency)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_210248) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_17_012412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_210248) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "emergencies", force: :cascade do |t|
     t.integer "gravity"
     t.datetime "time_start"
@@ -122,18 +128,31 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_210248) do
   end
 
   create_table "patients", force: :cascade do |t|
+    t.string "gender"
+    t.integer "age"
     t.integer "heart_rate"
     t.integer "blood_pressure"
     t.integer "respiratory_rate"
     t.integer "oxygen_saturation"
     t.integer "consciousness"
     t.integer "pain"
+    t.integer "gravity"
     t.text "medical_history"
     t.text "description"
     t.bigint "emergency_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["emergency_id"], name: "index_patients_on_emergency_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "content"
+    t.bigint "chat_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_posts_on_chat_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "schedules", force: :cascade do |t|
@@ -196,6 +215,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_210248) do
   add_foreign_key "messages", "chatrooms"
   add_foreign_key "messages", "users"
   add_foreign_key "patients", "emergencies"
+  add_foreign_key "posts", "chats"
+  add_foreign_key "posts", "users"
   add_foreign_key "schedules", "users"
   add_foreign_key "schedules", "workers", column: "worker1_id"
   add_foreign_key "schedules", "workers", column: "worker2_id"
