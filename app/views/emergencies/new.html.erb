@@ -14,7 +14,8 @@
           data-controller="map-all"
           data-map-all-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
           data-map-all-emergencies-markers-value="<%= @emergencies_markers.to_json %>"
-          data-map-all-schedules-markers-value="<%= @schedules_markers.to_json %>" ></div>
+          data-map-all-schedules-markers-value="<%= @schedules_markers.to_json %>"
+          data-map-all-hospitals-markers-value="<%= @hospitals_markers.to_json %>" ></div>
       </div>
     </div>
 <div class="w-100 text-azul" data-controller="reset-emergency-form">

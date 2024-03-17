@@ -56,6 +56,17 @@ export default class extends Controller {
           .addTo(this.map);
         this.markers.push(scheduleMarkerInstance);
       });
+      data.hospitals_markers.forEach(marker => {
+        const popup = new mapboxgl.Popup().setHTML(marker.info_window_html);
+        const customMarker = document.createElement("div");
+        customMarker.innerHTML = marker.marker_html;
+        customMarker.className = "marker-hospital";
+        const hospitalMarkerInstance = new mapboxgl.Marker(customMarker)
+          .setLngLat([marker.lng, marker.lat])
+          .setPopup(popup)
+          .addTo(this.map);
+        this.markers.push(hospitalMarkerInstance);
+      });
     })
     .catch(error => {
       console.error('Erro ao obter marcadores de emergência:', error);
