@@ -148,8 +148,10 @@ class EmergenciesController < ApplicationController
     @emergency.user = current_user
     authorize @emergency
     @chat_response = JSON.parse(
-      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency_description}.
+      chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency.description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
+        Para a descrição, reescreva a emergência sem acrescentar ou remover informações, porém de forma clara e sucinta.
+        Informe também o número de pessoas machucadas.
         Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
         Acidentes de trânsito = 1;
         Mal súbito = 2;
@@ -162,35 +164,22 @@ class EmergenciesController < ApplicationController
         Ferimentos por arma branca ou de fogo = 9;
         Reações alérgicas graves = 10;
         Outros = 11;
+        Forneça de forma resumida e com até 50 caracteres recomedação/recomendações para a equipe de socorrista que irá atender a ocorrência.
         A resposta deve ser uma única hash na seguinte estrutura:
-        {\"gravidade\":integer, \"numero_pessoas_machucadas\":integer, \"categoria\":integer}.
+        {\"gravidade\":integer, \"descricao\":string, \"numero_pessoas_machucadas\":integer, \"categoria\":integer, \"recomendacao\":string}.
         Não inclua nenhuma informação adicional além da hash.
         ").call)
 
-
     @emergency.gravity = @chat_response["gravidade"]
+    @emergency.description = @chat_response["descricao"]
     @emergency.category = @chat_response["categoria"]
+    @recomendation = @chat_response["recomendacao"]
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     @emergency.save!
-      # ActionCable.server.broadcast
     prioritize_emergencies_by_gravity
     find_ambulance(@emergency)
     find_hospital(@emergency)
-    send_to_all_chat
-
-    # @chatroom = Chatroom.new(chatroom_params)
-    # @chatroom = Chatroom.find(1)
-    # @message = Message.new(content: @emergency.description)
-    # @message.chatroom = @chatroom
-    # @message.user = current_user
-    # if @message.save
-    #   ChatroomChannel.broadcast_to(
-    #     @chatroom,
-    #     render_to_string(partial: "messages/message", locals: { message: @message })
-    #   )
-    # end
-
-
+    send_to_all_chat(@emergency, @recomendation)
   end
 
   def show
@@ -373,9 +362,12 @@ class EmergenciesController < ApplicationController
     Math.sqrt((((hospital.latitude - emergency.emergency_lat) * 111.11) ** 2) + (((hospital.longitude - emergency.emergency_lon) * 111.1) ** 2))
   end
 
-  def send_to_all_chat
+  # colocar no content da msg a descricao, gravidade, recomendacao
+  def send_to_all_chat(emergency, recomendation)
+    msg = "Ocorrência nº#{emergency.id}: #{emergency.description}
+    gravidade: #{emergency.gravity} => #{recomendation}"
     @chatroom = Chatroom.find(1)
-    @message = Message.new(content: @emergency.description)
+    @message = Message.new(content: msg)
     @message.chatroom = @chatroom
     @message.user = current_user
     if @message.save

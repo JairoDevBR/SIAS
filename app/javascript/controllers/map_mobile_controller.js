@@ -20,12 +20,12 @@ export default class extends Controller {
 
     this.#addMarkersToMap()
     this.#fitMapToMarkers()
-    // Atualizacao dos markers e rotas a cada 10 segundos
+    // Atualizacao dos markers e rotas a cada 5 segundos
     setInterval(() => {
       this.#removeMarkers();
       this.#addMarkersToMap();
       this.#fitMapToMarkers()
-    }, 10000);
+    }, 5000);
   }
 
 
