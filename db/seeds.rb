@@ -1,12 +1,3 @@
-
-p "destroying all Seed!"
-Emergency.destroy_all
-Schedule.destroy_all
-Worker.destroy_all
-Message.destroy_all
-Chatroom.destroy_all
-Hospital.destroy_all
-User.destroy_all
 require 'date'
 
 # DATABASE OBTIDO PELO GPT
@@ -1668,23 +1659,18 @@ new_emergencies_qtd.times do
 end
 
 
-
-
-
-
-chatroom = Chatroom.create!(name: "general")
-
-
-
 # >>>>>>>>>>>>>>> BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
-  # Criar um novo dashboard
-  dashboard = Blazer::Dashboard.create!(
-    name: "Ocorrências Por Data"
-  )
 
+p "Criacao dos dashboards e queries do Blazer"
+  # Criar um novo dashboard
+  p "Criacao de 1 dashboards"
+  dashboard = Blazer::Dashboard.create!(
+    name: "3-Ocorrências Por Data"
+  )
   query = Blazer::Query.create!(
     name: "Ocorrências por bairro (data)",
     description: "Visao por data",
+    data_source: "main",
     statement: "SELECT
     neighborhood,
     COUNT(*) AS total_occurrences
@@ -1698,7 +1684,7 @@ chatroom = Chatroom.create!(name: "general")
   ORDER BY
     total_occurrences DESC;"
   )
-
+  p "Adicionando query ao dashboard"
   # Adicionar a query ao dashboard
   dashboard.dashboard_queries.create!(query: query, position: 0)
 
@@ -1706,6 +1692,7 @@ chatroom = Chatroom.create!(name: "general")
   query = Blazer::Query.create!(
     name: "Categoria das ocorrências (data)",
     description: "Visao por data",
+    data_source: "main",
     statement: "SELECT
     CASE category
         WHEN 1 THEN 'Acidentes de trânsito'
@@ -1739,6 +1726,7 @@ chatroom = Chatroom.create!(name: "general")
   query = Blazer::Query.create!(
     name: "Detalhado (data)",
     description: "Visao por data",
+    data_source: "main",
     statement: "SELECT
     description AS Descrição,
     time_start AS Data,
@@ -1760,12 +1748,13 @@ chatroom = Chatroom.create!(name: "general")
 
   # Criar um novo dashboard
   dashboard = Blazer::Dashboard.create!(
-    name: "Visao Geral por Cidade"
+    name: "1-Visao Geral por Cidade"
   )
 
   query = Blazer::Query.create!(
     name: "Total de ocorrências por bairro (cidade)",
     description: "Visao Cidade",
+    data_source: "main",
     statement: "SELECT
     neighborhood,
     COUNT(*) AS total_occurrences
@@ -1785,6 +1774,7 @@ chatroom = Chatroom.create!(name: "general")
   query = Blazer::Query.create!(
     name: "Categoria das ocorrências (cidade)",
     description: "Visao Cidade",
+    data_source: "main",
     statement: "SELECT
     CASE category
         WHEN 1 THEN 'Acidentes de trânsito'
@@ -1817,6 +1807,7 @@ chatroom = Chatroom.create!(name: "general")
   query = Blazer::Query.create!(
     name: "Mapa das ocorrência (cidade)",
     description: "Visao Cidade",
+    data_source: "main",
     statement: "SELECT
     id,
     description,
@@ -1838,12 +1829,13 @@ chatroom = Chatroom.create!(name: "general")
 
   # Criar um novo dashboard
   dashboard = Blazer::Dashboard.create!(
-    name: "Visao Geral por Bairro"
+    name: "2-Visao Geral por Bairro"
   )
 
   query = Blazer::Query.create!(
     name: "Categoria das ocorrências (bairro)",
     description: "Visao bairro",
+    data_source: "main",
     statement: "SELECT
     CASE category
         WHEN 1 THEN 'Acidentes de trânsito'
@@ -1874,6 +1866,7 @@ chatroom = Chatroom.create!(name: "general")
   query = Blazer::Query.create!(
     name: "Mapa das ocorrências (bairro)",
     description: "Visao bairro",
+    data_source: "main",
     statement: "SELECT
     id,
     description,
@@ -1895,6 +1888,7 @@ chatroom = Chatroom.create!(name: "general")
   query = Blazer::Query.create!(
     name: "Detalhado (bairro)",
     description: "Visao bairro",
+    data_source: "main",
     statement: "SELECT
     description AS Descrição,
     time_start AS Data,
@@ -1909,21 +1903,20 @@ chatroom = Chatroom.create!(name: "general")
     time_start;"
   )
 
-
   # Adicionar a query ao dashboard
   dashboard.dashboard_queries.create!(query: query, position: 2)
 
-
-
 # >>>>>>>>>>>>>>>FIM BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
 
+p 'Criacao do chatroom e 2 mensagens'
+Chatroom.create!(name: "General")
+# Chat.create!(name: "Le Wagon`s Hospital")
 
-message1 = Message.create!(content:"Ocorrência 1: Paciente mulher de 60 anos acidentada ao lado da calçada após uma queda. Local: Rua jerico 193", chatroom: chatroom, user: central)
-message2 = Message.create!(content:"Ocorrência 2: Dois pacientes homens feridos em um acidente de carro", chatroom: chatroom, user: central)
-
-stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 1)
+p 'Criacao de 1 estoque'
+stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 4)
 stock1.save!
 
+p 'criacao de 6 hospitais'
 hospital01 = Hospital.create!(name: "Le Wagon Hospital", latitude: -23.55195, longitude: -46.68898)
 hospital02 = Hospital.create!(name: "Hospital São Paulo", latitude: -23.56334, longitude: -46.65454)
 hospital03 = Hospital.create!(name: "Hospital das Clínicas", latitude: -23.56063, longitude: -46.72899)
