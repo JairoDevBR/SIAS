@@ -190,7 +190,7 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.find(params[:id])
     @chat = Chat.find(@emergency.chat_id)
     @post = Post.new
-    @post.chat = @Chat
+    @post.chat = @chat
     @post.user = current_user
     @patient = Patient.new
     @lat = @emergency.emergency_lat

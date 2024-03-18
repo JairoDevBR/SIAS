@@ -1396,6 +1396,7 @@ User.create!(email: "admin1@email.com", admin: "true", central: "false", passwor
 p "criando 2 centrais ID 2 ao 3"
 User.create!(email: "central1@email.com", admin: "false", central: "true", password: '123123')
 User.create!(email: "central2@email.com", admin: "false", central: "true", password: '123123')
+User.create!(email: "ambulancia1@email.com", admin: "false", central: "false", password: '123123')
 
 # colocar a quantidade de ambulancias
 vehicles = 8
@@ -1417,23 +1418,23 @@ def gerar_placa
   placa
 end
 
-# Criar ambulancias
-def criar_users(quantidade)
-  quantidade.times do |i|
-    email = gerar_email(i + 1)
-    placa = gerar_placa
-    User.create!(
-      email: email,
-      admin: false,
-      central: false,
-      kind: 1,
-      plate: placa,
-      password: '123123'
-    )
-  end
-end
+# # Criar ambulancias
+# def criar_users(quantidade)
+#   quantidade.times do |i|
+#     email = gerar_email(i + 1)
+#     placa = gerar_placa
+#     User.create!(
+#       email: email,
+#       admin: false,
+#       central: false,
+#       kind: 1,
+#       plate: placa,
+#       password: '123123'
+#     )
+#   end
+# end
 
-criar_users(vehicles)
+# criar_users(vehicles)
 
 #  a quantidade de workers vehicles x 2
 workers_qtd = vehicles * 2
@@ -1475,21 +1476,21 @@ def gerar_localizacao
   [lat, lon]
 end
 
-# Criar schedules desativadas
-desactivated_schedules_qtd.times do |i|
-  worker1_id = ((i % workers_qtd) + 1)
-  worker2_id = (((i + 1) % workers_qtd) + 1)
-  user_id = (((i % vehicles) + 4))
-  current_lat, current_lon = gerar_localizacao
-  Schedule.create!(
-    worker1_id: worker1_id,
-    worker2_id: worker2_id,
-    user_id: user_id,
-    active: false,
-    current_lat: current_lat,
-    current_lon: current_lon
-  )
-end
+# # Criar schedules desativadas
+# desactivated_schedules_qtd.times do |i|
+#   worker1_id = ((i % workers_qtd) + 1)
+#   worker2_id = (((i + 1) % workers_qtd) + 1)
+#   user_id = (((i % vehicles) + 4))
+#   current_lat, current_lon = gerar_localizacao
+#   Schedule.create!(
+#     worker1_id: worker1_id,
+#     worker2_id: worker2_id,
+#     user_id: user_id,
+#     active: false,
+#     current_lat: current_lat,
+#     current_lon: current_lon
+#   )
+# end
 
 
 # Método para retornar um valor aleatório entre as datas inicial e final
@@ -1526,15 +1527,15 @@ def random_datetime_last_x_hours(x)
   random_time.strftime("%Y-%m-%d %H:%M:%S")
 end
 
-# # EMERGENCIAS ANTIGAS
-# # escolher a quantidade de emergencias de preferencia maior que a quantidade de schedules
-# old_emergencies_qtd = 300
-# p "criando #{old_emergencies_qtd} emergencias ja socorridas"
-# # escolher quando qual a data que comeca e finaliza as emergencias concluidas
-# start_date = "2023-03-15"
-# end_date = "2024-03-20"
-# # escolher o maximo de horas q dura uma emergencia
-# max_time_emergency = 6
+# EMERGENCIAS ANTIGAS
+# escolher a quantidade de emergencias de preferencia maior que a quantidade de schedules
+old_emergencies_qtd = 300
+p "criando #{old_emergencies_qtd} emergencias ja socorridas"
+# escolher quando qual a data que comeca e finaliza as emergencias concluidas
+start_date = "2023-03-15"
+end_date = "2024-03-20"
+# escolher o maximo de horas q dura uma emergencia
+max_time_emergency = 6
 
 # old_emergencies_qtd.times do
 #   # Seleção aleatória de uma emergência e uma localização
@@ -1588,16 +1589,16 @@ end
 # end
 
 
-# # EMERGENCIAS NOVAS COM EMERGENCIA EM ANDAMENTO
+# EMERGENCIAS NOVAS COM EMERGENCIA EM ANDAMENTO
 
-# # escolher a quantidade de emergencias de preferencia maior que a quantidade de schedules
-# new_emergencies_qtd = vehicles
-# p "criando #{new_emergencies_qtd} emergencias em andamento com respectiva ambulancia a caminho"
-# # definir quanto horas antes as emergencias ativas foram criadas
-# horas_antes = 4
+# escolher a quantidade de emergencias de preferencia maior que a quantidade de schedules
+new_emergencies_qtd = vehicles
+p "criando #{new_emergencies_qtd} emergencias em andamento com respectiva ambulancia a caminho"
+# definir quanto horas antes as emergencias ativas foram criadas
+horas_antes = 4
 
-# # criando um array de IDs de ambulancias
-# users_array =  (4..(vehicles + 3)).to_a
+# criando um array de IDs de ambulancias
+users_array =  (4..(vehicles + 3)).to_a
 
 # new_emergencies_qtd.times do
 #   # Seleção aleatória de uma emergência e uma localização
@@ -1913,8 +1914,8 @@ Chatroom.create!(name: "General")
 # Chat.create!(name: "Le Wagon`s Hospital")
 
 p 'Criacao de 1 estoque'
-stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 4)
-stock1.save!
+# stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 4)
+# stock1.save!
 
 p 'criacao de 6 hospitais'
 hospital01 = Hospital.create!(name: "Le Wagon Hospital", latitude: -23.55195, longitude: -46.68898)

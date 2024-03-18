@@ -11,10 +11,18 @@ class PatientsController < ApplicationController
     @patient.emergency = @emergency
     authorize @patient
     @patient.save
+    message = "Idade: #{@patient.age}\nGênero: #{@patient.gender}\nFrequência cardíaca: #{@patient.heart_rate}\n
+    Frequência respiratória: #{@patient.respiratory_rate}\n
+    Pressão arterial: #{@patient.blood_pressure}\n
+    Saturação de oxigênio: #{@patient.oxygen_saturation}\n
+    Nível de consciência: #{@patient.consciousness}\n
+    Escala de dor: #{@patient.pain}\n
+    Gravidade: #{@patient.gravity}\n
+    Histórico médico: #{@patient.medical_history}\n
+    Descrição: #{@patient.description}"
     @chat = Chat.find(@emergency.chat_id)
-    # raise
     @emergency.chat = @chat
-    @post = Post.new(content: @patient)
+    @post = Post.new(content: message)
     @post.chat = @chat
     @post.user = current_user
     if @post.save
@@ -26,22 +34,6 @@ class PatientsController < ApplicationController
     else
       render "chats/show", status: :unprocessable_entity
     end
-    # if @patient.save
-    #   @emergency.chat = @chat
-    #   @post = Post.new(content: @patient)
-    #   @post.chat = @chat
-    #   @post.user = current_user
-    #   if @post.save
-    #     ChatChannel.broadcast_to(
-    #       chat,
-    #       render_to_string(partial: "post", locals: {post: post})
-    #     )
-    #     head :ok
-    #   else
-    #     render :new, status: :unprocessable_entity
-    #   end
-    # end
-
   end
 
   private
