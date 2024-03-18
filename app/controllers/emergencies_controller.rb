@@ -291,7 +291,7 @@ class EmergenciesController < ApplicationController
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
       emergency.save!
-
+      raise
       # mandar msg via webhook para o chat das ambulancias
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
@@ -309,6 +309,7 @@ class EmergenciesController < ApplicationController
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
       emergency.save!
+      raise
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
