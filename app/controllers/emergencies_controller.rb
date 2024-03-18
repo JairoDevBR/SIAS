@@ -280,7 +280,7 @@ class EmergenciesController < ApplicationController
     nearest_ambulance_id = distances.min_by { |id, distance| distance }&.first
     # acha a ambulancia mais proxima
     nearest_ambulance = Schedule.find_by(id: nearest_ambulance_id)
-    
+
     # oq fazer se nao tiver nenhuma ambulancia
     return if nearest_ambulance.nil?
 
@@ -305,7 +305,6 @@ class EmergenciesController < ApplicationController
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
       emergency_to_be_reattributed.schedule_id = nil
       # atribui a ambulancia com a menor distancia a emergencia
-      emergency.schedule_id = nearest_ambulance.id
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat

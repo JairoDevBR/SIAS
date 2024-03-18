@@ -24,7 +24,6 @@ export default class extends Controller {
     setInterval(() => {
       this.#removeMarkers();
       this.#addMarkersToMap();
-      this.#fitMapToMarkers()
     }, 5000);
   }
 

@@ -128,12 +128,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_012412) do
   end
 
   create_table "patients", force: :cascade do |t|
+    t.string "gender"
+    t.integer "age"
     t.integer "heart_rate"
     t.integer "blood_pressure"
     t.integer "respiratory_rate"
     t.integer "oxygen_saturation"
     t.integer "consciousness"
     t.integer "pain"
+    t.integer "gravity"
     t.text "medical_history"
     t.text "description"
     t.bigint "emergency_id", null: false
@@ -194,7 +197,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_012412) do
     t.boolean "central"
     t.integer "kind"
     t.string "plate"
-    t.boolean "hospital"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

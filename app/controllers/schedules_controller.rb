@@ -33,8 +33,27 @@ class SchedulesController < ApplicationController
     @schedule.active = true
     authorize @schedule
     # logica para atribuir active = false para todas as schedules do mesmo user, com excecao da atual (@schedule ainda nao criada, portando nao precisa de um where.not)
+    # caso o old_schedule tenha uma emergencia ativa, ela precisa receber schedule_id = nil
     old_schedules = Schedule.where(active: true).where(user_id: current_user)
-    old_schedules.each { |old_schedule| old_schedule.update(active: false) }
+    old_schedules.each do |old_schedule|
+      old_schedule.update(active: false)
+      if old_schedule.emergencies.exists?(time_end: nil)
+        old_schedule.emergencies.where(time_end: nil).update_all(schedule_id: nil)
+      end
+    end
+
+#   TEMPORARIO ATE CHAMAR QDO RECEBER A PRIMEIRA LOCALIZACAO
+      # # Verifica se há emergencias acima de 15 sem atendimento
+      # if Emergency.where("gravity >= ? AND time_end IS NULL", 15).exists?
+      #   high_gravity_emergencies = Emergency.where("gravity >= ? AND time_end IS NULL", 15)
+      #   high_gravity_emergencies.each do |emergency|
+      #     distances[emergency.id] = calculate_distance(schedule, emergency)
+      #   end
+      # end
+
+      # # Verifica se há emergencias com gravidade < 15, caso estejam mais proximas do que a ambulancia em andamento
+      # Emergency.where()
+# ---------------------------------------------------------------
 
     if @schedule.save!
       redirect_to @schedule, notice: 'Você está logado.'
@@ -99,5 +118,9 @@ class SchedulesController < ApplicationController
 
   def schedule_params
     params.require(:schedule).permit(:worker1_id, :worker2_id)
+  end
+
+  def calculate_distance(schedule, emergency)
+    Math.sqrt((((schedule.current_lat - emergency.emergency_lat) * 111.11) ** 2) + (((schedule.current_lon - emergency.emergency_lon) * 111.1) ** 2))
   end
 end
