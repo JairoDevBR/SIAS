@@ -43,11 +43,12 @@ export default class extends Controller {
     // Configura um intervalo para chamar a função updateLocation() a cada 10 segundos
     this.intervalId = setInterval(() => {
       this.updateLocation();
-    }, 10000); // Intervalo de 10 segundos
+    }, 5000); // Intervalo de 10 segundos
   }
 
   disconnect() {
     // Limpa o intervalo quando o controlador é desconectado (por exemplo, quando a página é atualizada ou o controlador é removido)
     clearInterval(this.intervalId);
   }
+
 }

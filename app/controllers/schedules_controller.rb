@@ -41,26 +41,40 @@ class SchedulesController < ApplicationController
         old_schedule.emergencies.where(time_end: nil).update_all(schedule_id: nil)
       end
     end
-
-#   TEMPORARIO ATE CHAMAR QDO RECEBER A PRIMEIRA LOCALIZACAO
-      # # Verifica se há emergencias acima de 15 sem atendimento
-      # if Emergency.where("gravity >= ? AND time_end IS NULL", 15).exists?
-      #   high_gravity_emergencies = Emergency.where("gravity >= ? AND time_end IS NULL", 15)
-      #   high_gravity_emergencies.each do |emergency|
-      #     distances[emergency.id] = calculate_distance(schedule, emergency)
-      #   end
-      # end
-
-      # # Verifica se há emergencias com gravidade < 15, caso estejam mais proximas do que a ambulancia em andamento
-      # Emergency.where()
-# ---------------------------------------------------------------
-
     if @schedule.save!
       redirect_to @schedule, notice: 'Você está logado.'
     else
       render :new, status: :unprocessable_entity
     end
   end
+
+  def find_emergency
+    schedule_latitude = params[:latitude]
+    schedule_longitude = params[:longitude]
+    schedule_id = params[:schedule_id]
+    distances = {}
+    # Verifica se há emergencias acima de 15, nao encerradas e sem atendimento
+    if Emergency.where("gravity >= ? AND time_end IS NULL AND schedule_id IS NULL", 15).exists?
+      high_gravity_emergencies = Emergency.where("gravity >= ? AND time_end IS NULL", 15)
+      high_gravity_emergencies.each do |emergency|
+        distances[emergency.id] = calculate_distance(schedule_latitude, schedule_longitude, emergency)
+      end
+      nearest_high_gravity_emergency_id = distances.min_by { |id, distance| distance }&.first
+      nearest_high_gravity_emergency = Emergency.find(nearest_high_gravity_emergency_id)
+      nearest_high_gravity_emergency.schedule_id = schedule_id
+
+      ChatroomChannel.broadcast_to(
+        Chatroom.find(1),
+        { type: "emergency", scheduleId: schedule_id, emergencyId: nearest_high_gravity_emergency_id }
+      )
+      head :ok
+    end
+
+    # Verifica se há emergencias com gravidade < 15, caso estejam mais proximas do que a ambulancia em andamento
+    # Emergency.where()
+    # end
+  end
+
 
   def obtain_markers
     @emergency = Emergency.new
@@ -120,7 +134,7 @@ class SchedulesController < ApplicationController
     params.require(:schedule).permit(:worker1_id, :worker2_id)
   end
 
-  def calculate_distance(schedule, emergency)
-    Math.sqrt((((schedule.current_lat - emergency.emergency_lat) * 111.11) ** 2) + (((schedule.current_lon - emergency.emergency_lon) * 111.1) ** 2))
+  def calculate_distance(schedule_latitude, schedule_longitude, emergency)
+    Math.sqrt((((schedule_latitude - emergency.emergency_lat) * 111.11) ** 2) + (((schedule_longitude - emergency.emergency_lon) * 111.1) ** 2))
   end
 end

@@ -333,20 +333,20 @@ class EmergenciesController < ApplicationController
             .exists?
   end
 
-  def find_hospital(emergency)
-    @hospitals = Hospital.all
+  # def find_hospital(emergency)
+  #   @hospitals = Hospital.all
 
-    distances = {}
-    @hospitals.each do |hospital|
-      distances[hospital.id] = calculate_distance_hospital(hospital, emergency)
-    end
-    nearest_hospital_id = distances.min_by { |id, distance| distance }&.first
-    nearest_hospital = Hospital.find_by(id: nearest_hospital_id)
+  #   distances = {}
+  #   @hospitals.each do |hospital|
+  #     distances[hospital.id] = calculate_distance_hospital(hospital, emergency)
+  #   end
+  #   nearest_hospital_id = distances.min_by { |id, distance| distance }&.first
+  #   nearest_hospital = Hospital.find_by(id: nearest_hospital_id)
 
-    emergency.hospital_id = nearest_hospital.id
-    emergency.save!
+  #   emergency.hospital_id = nearest_hospital.id
+  #   emergency.save!
 
-  end
+  # end
 
   def calculate_distance_hospital(hospital, emergency)
     Math.sqrt((((hospital.latitude - emergency.emergency_lat) * 111.11) ** 2) + (((hospital.longitude - emergency.emergency_lon) * 111.1) ** 2))
