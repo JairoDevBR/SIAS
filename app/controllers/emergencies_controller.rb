@@ -178,7 +178,7 @@ class EmergenciesController < ApplicationController
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     if @emergency.save
       find_ambulance(@emergency)
-      find_hospital(@emergency)
+      # find_hospital(@emergency)
       send_to_all_chat(@emergency, @recomendation)
     else
       p "#{@emergency.errors.messages}"
@@ -226,16 +226,6 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find(params[:id]) })
       }
     end
-
-    # if @post.save
-    #   ChatChannel.broadcast_to(
-    #     @chat,
-    #     render_to_string(partial: "post", locals: {post: @post})
-    #   )
-    #   head :ok
-    # else
-    #   render "chats/show", status: :unprocessable_entity
-    # end
 
   end
 
@@ -353,20 +343,20 @@ class EmergenciesController < ApplicationController
             .exists?
   end
 
-  def find_hospital(emergency)
-    @hospitals = Hospital.all
+  # def find_hospital(emergency)
+  #   @hospitals = Hospital.all
 
-    distances = {}
-    @hospitals.each do |hospital|
-      distances[hospital.id] = calculate_distance_hospital(hospital, emergency)
-    end
-    nearest_hospital_id = distances.min_by { |id, distance| distance }&.first
-    nearest_hospital = Hospital.find_by(id: nearest_hospital_id)
+  #   distances = {}
+  #   @hospitals.each do |hospital|
+  #     distances[hospital.id] = calculate_distance_hospital(hospital, emergency)
+  #   end
+  #   nearest_hospital_id = distances.min_by { |id, distance| distance }&.first
+  #   nearest_hospital = Hospital.find_by(id: nearest_hospital_id)
 
-    emergency.hospital_id = nearest_hospital.id
-    emergency.save!
+  #   emergency.hospital_id = nearest_hospital.id
+  #   emergency.save!
 
-  end
+  # end
 
   def calculate_distance_hospital(hospital, emergency)
     Math.sqrt((((hospital.latitude - emergency.emergency_lat) * 111.11) ** 2) + (((hospital.longitude - emergency.emergency_lon) * 111.1) ** 2))

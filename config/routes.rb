@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   post '/update_location_from_schedules_show_view/:id', to: 'schedules#update_location_from_schedules_show_view'
   post '/update_location_from_emergencies_show_view/:id', to: 'schedules#update_location_from_emergencies_show_view'
   post '/send_message_to_ambulance/:chat_id', to: 'posts#create'
+  post '/find_emergency_after_login/', to: 'schedules#find_emergency'
 
   resources :chatrooms, only: :show do
     resources :messages, only: :create
