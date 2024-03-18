@@ -178,7 +178,7 @@ class EmergenciesController < ApplicationController
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     @emergency.save
     find_ambulance(@emergency)
-    find_hospital(@emergency)
+    # find_hospital(@emergency)
     send_to_all_chat(@emergency, @recomendation)
   end
 
