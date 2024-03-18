@@ -379,15 +379,15 @@ class EmergenciesController < ApplicationController
   end
 
   def send_to_emergency(emergency)
-    chat = Chat.create(name: "Chat da emergência #{emergency.id}")
-    emergency.chat = chat
-    post = Post.new(content: emergency.description)
-    post.chat = chat
-    post.user = current_user
-    if post.save
+    @chat = Chat.create(name: "Chat da emergência #{emergency.id}")
+    emergency.chat = @chat
+    @post = @Post.new(content: emergency.description)
+    @post.chat = @chat
+    @post.user = current_user
+    if @post.save
       ChatChannel.broadcast_to(
-        chat,
-        render_to_string(partial: "post", locals: {post: post})
+        @chat,
+        render_to_string(partial: "post", locals: {post: @post})
       )
       head :ok
     else
