@@ -61,6 +61,7 @@ class SchedulesController < ApplicationController
       end
       nearest_high_gravity_emergency_id = distances.min_by { |id, distance| distance }&.first
       nearest_high_gravity_emergency = Emergency.find(nearest_high_gravity_emergency_id)
+      raise
       nearest_high_gravity_emergency.schedule_id = schedule_id
 
       ChatroomChannel.broadcast_to(
