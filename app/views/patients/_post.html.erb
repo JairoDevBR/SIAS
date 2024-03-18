@@ -1,0 +1,7 @@
+<div id="post-<%= post.id %>">
+  <small>
+    <strong><%= post.user %></strong>
+    <i><%= post.created_at.strftime("%a %b %e at %l:%M %p") %></i>
+  </small>
+  <p><%= post.content %></p>
+</div>

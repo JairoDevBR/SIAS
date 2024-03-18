@@ -80,8 +80,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_164300) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "emergency_id"
-    t.index ["emergency_id"], name: "index_chats_on_emergency_id"
   end
 
   create_table "emergencies", force: :cascade do |t|
@@ -215,7 +213,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_164300) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "chats", "emergencies"
   add_foreign_key "emergencies", "chats"
   add_foreign_key "emergencies", "hospitals"
   add_foreign_key "emergencies", "schedules"

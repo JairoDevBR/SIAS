@@ -150,7 +150,7 @@ class EmergenciesController < ApplicationController
     @chat_response = JSON.parse(
       chatgpt_service("Por favor, avalie a seguinte ocorrência: #{@emergency.description}.
         Forneça uma avaliação da gravidade em uma escala de 0 (menos grave) a 20 (mais grave).
-        Para a descrição, reescreva a emergência sem acrescentar ou remover informações, porém de forma clara e sucinta e com mais de 80 caracteres.
+        Para a descrição, reescreva a emergência sem acrescentar ou remover informações, porém de forma clara e sucinta e obrigatoriamente com mais de 80 caracteres.
         Informe também o número de pessoas machucadas.
         Para determinar a categoria da ocorrência, atribua o número correspondente à categoria que melhor a descreve, de acordo com as seguintes opções (caso não se enquadre em nenhuma, selecione 'Outros', ou seja, número 11):
         Acidentes de trânsito = 1;
@@ -180,7 +180,6 @@ class EmergenciesController < ApplicationController
       find_ambulance(@emergency)
       # find_hospital(@emergency)
       send_to_all_chat(@emergency, @recomendation)
-      send_to_emergency(@emergency)
     else
       p "#{@emergency.errors.messages}"
       render :new, status: :unprocessable_entity
@@ -189,6 +188,10 @@ class EmergenciesController < ApplicationController
 
   def show
     @emergency = Emergency.find(params[:id])
+    @chat = Chat.find(@emergency.chat_id)
+    @post = Post.new
+    @post.chat = @Chat
+    @post.user = current_user
     @patient = Patient.new
     @lat = @emergency.emergency_lat
     @long = @emergency.emergency_lon
@@ -223,7 +226,7 @@ class EmergenciesController < ApplicationController
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find(params[:id]) })
       }
     end
-    send_to_emergency(@emergency)
+
   end
 
   def finish
@@ -295,6 +298,7 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
+      send_to_emergency(emergency)
       emergency.save!
 
       # mandar msg via webhook para o chat das ambulancias
@@ -375,21 +379,19 @@ class EmergenciesController < ApplicationController
   end
 
   def send_to_emergency(emergency)
-    @chat = Chat.create(name: "Chat da emergência #{emergency.id}")
-    emergency.chat = @chat
-    @post = @Post.new(content: emergency.description)
-    @post.chat = @chat
-    @post.user = current_user
-    if @post.save
+    chat = Chat.create(name: "Chat da emergência #{emergency.id}")
+    emergency.chat = chat
+    post = Post.new(content: emergency.description)
+    post.chat = chat
+    post.user = current_user
+    if post.save
       ChatChannel.broadcast_to(
-        @chat,
-        render_to_string(partial: "post", locals: {post: @post})
+        chat,
+        render_to_string(partial: "post", locals: {post: post})
       )
       head :ok
     else
-      render "chatrooms/show", status: :unprocessable_entity
+      render "chats/show", status: :unprocessable_entity
     end
-
-
   end
 end
