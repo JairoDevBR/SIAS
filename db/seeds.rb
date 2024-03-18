@@ -3,188 +3,188 @@ require 'date'
 # DATABASE OBTIDO PELO GPT
 
 # exemplos de emergencias criado pelo GPT
-# emergencias = [
-#   {
-#     description: "Vítima de acidente de trânsito com ferimentos graves. Motorista embriagado invadiu a pista contrária. Idade: 35 anos. Sem doenças pré-existentes.",
-#     category: 1, # Acidentes de trânsito
-#     gravity: 15, # Gravidade média-alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Paciente com sintomas de infarto. Pressão arterial elevada e dor no peito há mais de 30 minutos. Idade: 60 anos. Diagnóstico prévio de hipertensão.",
-#     category: 4, # Parada cardiorrespiratória
-#     gravity: 18, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Criança com crise alérgica grave após picada de inseto. Inchaço severo e dificuldade respiratória. Idade: 10 anos. Sem doenças pré-existentes.",
-#     category: 10, # Reações alérgicas graves
-#     gravity: 12, # Gravidade média
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Idoso com histórico de problemas respiratórios em estado crítico. Insuficiência respiratória aguda e cianose. Idade: 80 anos. Diagnóstico prévio de enfisema pulmonar.",
-#     category: 6, # Problemas respiratórios
-#     gravity: 17, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Pessoa ferida por arma branca durante briga. Perfuração no abdômen e sangramento profuso. Idade: 28 anos. Sem doenças pré-existentes.",
-#     category: 9, # Ferimentos por arma branca ou de fogo
-#     gravity: 16, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Mulher grávida com complicações durante o parto. Sangramento vaginal intenso e dor abdominal. Idade: 32 anos. Diagnóstico prévio de pré-eclâmpsia.",
-#     category: 8, # Complicações durante a gravidez ou parto
-#     gravity: 19, # Gravidade muito alta
-#     n_people: 2 # Duas pessoas afetadas (mãe e bebê)
-#   },
-#   {
-#     description: "Vítima de queda de altura com suspeita de fraturas múltiplas. Inconsciente e hemorragia interna. Idade: 45 anos. Sem doenças pré-existentes.",
-#     category: 3, # Ferimentos por queda
-#     gravity: 14, # Gravidade média-alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Pessoa inconsciente após intoxicação alimentar. Vômito persistente e sonolência extrema. Idade: 22 anos. Sem doenças pré-existentes.",
-#     category: 5, # Intoxicação ou envenenamento
-#     gravity: 13, # Gravidade média
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Ataque epiléptico em via pública. Convulsões recorrentes e dificuldade em respirar. Idade: 40 anos. Sem doenças pré-existentes.",
-#     category: 2, # Mal súbito
-#     gravity: 11, # Gravidade média-baixa
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Vítimas de acidente de trânsito múltiplo com ferimentos leves. Colisão em cadeia envolvendo três veículos. Idade: 25 anos. Sem doenças pré-existentes.",
-#     category: 1, # Acidentes de trânsito
-#     gravity: 10, # Gravidade média-baixa
-#     n_people: 3 # Três pessoas afetadas
-#   },
-#   {
-#     description: "Homem de 50 anos com fratura exposta após queda de andaime. Sangramento intenso e dor severa. Sem doenças pré-existentes.",
-#     category: 3, # Ferimentos por queda
-#     gravity: 16, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Pessoa de 28 anos com crise de asma grave. Dispneia extrema e uso de musculatura acessória. Sem doenças pré-existentes.",
-#     category: 6, # Problemas respiratórios
-#     gravity: 14, # Gravidade média-alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Idoso de 70 anos com hemorragia digestiva alta. Vômito com sangue e pressão arterial baixa. Diagnóstico prévio de úlcera péptica.",
-#     category: 5, # Intoxicação ou envenenamento
-#     gravity: 18, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Mulher grávida de 28 anos com contrações regulares. Dor abdominal intensa e ruptura da bolsa amniótica. Sem doenças pré-existentes.",
-#     category: 8, # Complicações durante a gravidez ou parto
-#     gravity: 16, # Gravidade alta
-#     n_people: 2 # Duas pessoas afetadas (mãe e bebê)
-#   },
-#   {
-#     description: "Criança de 6 anos com convulsões febris. Rigidez muscular e perda de consciência. Sem doenças pré-existentes.",
-#     category: 2, # Mal súbito
-#     gravity: 13, # Gravidade média
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Vítima de atropelamento com trauma cranioencefálico grave. Perda de consciência e respiração irregular. Sem doenças pré-existentes.",
-#     category: 1, # Acidentes de trânsito
-#     gravity: 20, # Gravidade muito alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Jovem de 20 anos com dor torácica aguda. História familiar de doença cardíaca. Sem doenças pré-existentes.",
-#     category: 4, # Parada cardiorrespiratória
-#     gravity: 17, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Pessoa de 35 anos com intoxicação alimentar. Diarreia profusa e desidratação. Sem doenças pré-existentes.",
-#     category: 5, # Intoxicação ou envenenamento
-#     gravity: 11, # Gravidade média-baixa
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Homem de 45 anos com ferimento por arma branca na região do tórax. Hemorragia controlada e respiração dificultada. Sem doenças pré-existentes.",
-#     category: 9, # Ferimentos por arma branca ou de fogo
-#     gravity: 15, # Gravidade média-alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Idoso de 75 anos com sintomas de AVC. Hemiparesia e fala arrastada. Sem doenças pré-existentes.",
-#     category: 4, # Parada cardiorrespiratória
-#     gravity: 19, # Gravidade muito alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Criança de 8 anos sofrendo de choque anafilático após ingestão de amendoim. Edema de língua e dificuldade respiratória. Sem doenças pré-existentes.",
-#     category: 10, # Reações alérgicas graves
-#     gravity: 16, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Pessoa de 50 anos com suspeita de fratura de coluna após queda de altura. Dor intensa na região lombar e incapacidade de movimento das pernas. Sem doenças pré-existentes.",
-#     category: 3, # Ferimentos por queda
-#     gravity: 18, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Idoso de 65 anos com queimaduras de segundo grau extensas após explosão em casa. Dor intensa e risco de infecção. Sem doenças pré-existentes.",
-#     category: 11, # Outros
-#     gravity: 17, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Mulher grávida de 30 anos com histórico de aborto espontâneo apresentando sangramento vaginal intenso. Dor abdominal e tontura. Sem doenças pré-existentes.",
-#     category: 8, # Complicações durante a gravidez ou parto
-#     gravity: 18, # Gravidade alta
-#     n_people: 2 # Duas pessoas afetadas (mãe e bebê)
-#   },
-#   {
-#     description: "Pessoa de 40 anos com asfixia por engasgamento com objeto estranho. Incapacidade de falar e respirar. Sem doenças pré-existentes.",
-#     category: 11, # Outros
-#     gravity: 15, # Gravidade média-alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Criança de 5 anos com febre alta e convulsões febris. Estado convulsivo e inconsciência. Sem doenças pré-existentes.",
-#     category: 2, # Mal súbito
-#     gravity: 14, # Gravidade média-alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Homem de 55 anos sofrendo de hipoglicemia grave. Confusão mental e sudorese profusa. Diagnóstico prévio de diabetes mellitus.",
-#     category: 11, # Outros
-#     gravity: 16, # Gravidade alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Jovem de 18 anos com ferimentos por arma de fogo no tórax após tentativa de assalto. Hemorragia ativa e instabilidade hemodinâmica. Sem doenças pré-existentes.",
-#     category: 9, # Ferimentos por arma branca ou de fogo
-#     gravity: 19, # Gravidade muito alta
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Pessoa de 25 anos com ataque de ansiedade agudo em local público. Taquicardia e respiração rápida. Sem doenças pré-existentes.",
-#     category: 11, # Outros
-#     gravity: 12, # Gravidade média
-#     n_people: 1 # Uma pessoa afetada
-#   },
-#   {
-#     description: "Idoso de 70 anos com hemorragia gastrointestinal maciça devido a úlcera péptica perfurada. Sangramento ativo e estado de choque. Diagnóstico prévio de úlcera péptica.",
-#     category: 11, # Outros
-#     gravity: 20, # Gravidade muito alta
-#     n_people: 1 # Uma pessoa afetada
-#   }
-# ]
+emergencias = [
+  {
+    description: "Vítima de acidente de trânsito com ferimentos graves. Motorista embriagado invadiu a pista contrária. Idade: 35 anos. Sem doenças pré-existentes.",
+    category: 1, # Acidentes de trânsito
+    gravity: 15, # Gravidade média-alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Paciente com sintomas de infarto. Pressão arterial elevada e dor no peito há mais de 30 minutos. Idade: 60 anos. Diagnóstico prévio de hipertensão.",
+    category: 4, # Parada cardiorrespiratória
+    gravity: 18, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Criança com crise alérgica grave após picada de inseto. Inchaço severo e dificuldade respiratória. Idade: 10 anos. Sem doenças pré-existentes.",
+    category: 10, # Reações alérgicas graves
+    gravity: 12, # Gravidade média
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Idoso com histórico de problemas respiratórios em estado crítico. Insuficiência respiratória aguda e cianose. Idade: 80 anos. Diagnóstico prévio de enfisema pulmonar.",
+    category: 6, # Problemas respiratórios
+    gravity: 17, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Pessoa ferida por arma branca durante briga. Perfuração no abdômen e sangramento profuso. Idade: 28 anos. Sem doenças pré-existentes.",
+    category: 9, # Ferimentos por arma branca ou de fogo
+    gravity: 16, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Mulher grávida com complicações durante o parto. Sangramento vaginal intenso e dor abdominal. Idade: 32 anos. Diagnóstico prévio de pré-eclâmpsia.",
+    category: 8, # Complicações durante a gravidez ou parto
+    gravity: 19, # Gravidade muito alta
+    n_people: 2 # Duas pessoas afetadas (mãe e bebê)
+  },
+  {
+    description: "Vítima de queda de altura com suspeita de fraturas múltiplas. Inconsciente e hemorragia interna. Idade: 45 anos. Sem doenças pré-existentes.",
+    category: 3, # Ferimentos por queda
+    gravity: 14, # Gravidade média-alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Pessoa inconsciente após intoxicação alimentar. Vômito persistente e sonolência extrema. Idade: 22 anos. Sem doenças pré-existentes.",
+    category: 5, # Intoxicação ou envenenamento
+    gravity: 13, # Gravidade média
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Ataque epiléptico em via pública. Convulsões recorrentes e dificuldade em respirar. Idade: 40 anos. Sem doenças pré-existentes.",
+    category: 2, # Mal súbito
+    gravity: 11, # Gravidade média-baixa
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Vítimas de acidente de trânsito múltiplo com ferimentos leves. Colisão em cadeia envolvendo três veículos. Idade: 25 anos. Sem doenças pré-existentes.",
+    category: 1, # Acidentes de trânsito
+    gravity: 10, # Gravidade média-baixa
+    n_people: 3 # Três pessoas afetadas
+  },
+  {
+    description: "Homem de 50 anos com fratura exposta após queda de andaime. Sangramento intenso e dor severa. Sem doenças pré-existentes.",
+    category: 3, # Ferimentos por queda
+    gravity: 16, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Pessoa de 28 anos com crise de asma grave. Dispneia extrema e uso de musculatura acessória. Sem doenças pré-existentes.",
+    category: 6, # Problemas respiratórios
+    gravity: 14, # Gravidade média-alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Idoso de 70 anos com hemorragia digestiva alta. Vômito com sangue e pressão arterial baixa. Diagnóstico prévio de úlcera péptica.",
+    category: 5, # Intoxicação ou envenenamento
+    gravity: 18, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Mulher grávida de 28 anos com contrações regulares. Dor abdominal intensa e ruptura da bolsa amniótica. Sem doenças pré-existentes.",
+    category: 8, # Complicações durante a gravidez ou parto
+    gravity: 16, # Gravidade alta
+    n_people: 2 # Duas pessoas afetadas (mãe e bebê)
+  },
+  {
+    description: "Criança de 6 anos com convulsões febris. Rigidez muscular e perda de consciência. Sem doenças pré-existentes.",
+    category: 2, # Mal súbito
+    gravity: 13, # Gravidade média
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Vítima de atropelamento com trauma cranioencefálico grave. Perda de consciência e respiração irregular. Sem doenças pré-existentes.",
+    category: 1, # Acidentes de trânsito
+    gravity: 20, # Gravidade muito alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Jovem de 20 anos com dor torácica aguda. História familiar de doença cardíaca. Sem doenças pré-existentes.",
+    category: 4, # Parada cardiorrespiratória
+    gravity: 17, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Pessoa de 35 anos com intoxicação alimentar. Diarreia profusa e desidratação. Sem doenças pré-existentes.",
+    category: 5, # Intoxicação ou envenenamento
+    gravity: 11, # Gravidade média-baixa
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Homem de 45 anos com ferimento por arma branca na região do tórax. Hemorragia controlada e respiração dificultada. Sem doenças pré-existentes.",
+    category: 9, # Ferimentos por arma branca ou de fogo
+    gravity: 15, # Gravidade média-alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Idoso de 75 anos com sintomas de AVC. Hemiparesia e fala arrastada. Sem doenças pré-existentes.",
+    category: 4, # Parada cardiorrespiratória
+    gravity: 19, # Gravidade muito alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Criança de 8 anos sofrendo de choque anafilático após ingestão de amendoim. Edema de língua e dificuldade respiratória. Sem doenças pré-existentes.",
+    category: 10, # Reações alérgicas graves
+    gravity: 16, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Pessoa de 50 anos com suspeita de fratura de coluna após queda de altura. Dor intensa na região lombar e incapacidade de movimento das pernas. Sem doenças pré-existentes.",
+    category: 3, # Ferimentos por queda
+    gravity: 18, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Idoso de 65 anos com queimaduras de segundo grau extensas após explosão em casa. Dor intensa e risco de infecção. Sem doenças pré-existentes.",
+    category: 11, # Outros
+    gravity: 17, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Mulher grávida de 30 anos com histórico de aborto espontâneo apresentando sangramento vaginal intenso. Dor abdominal e tontura. Sem doenças pré-existentes.",
+    category: 8, # Complicações durante a gravidez ou parto
+    gravity: 18, # Gravidade alta
+    n_people: 2 # Duas pessoas afetadas (mãe e bebê)
+  },
+  {
+    description: "Pessoa de 40 anos com asfixia por engasgamento com objeto estranho. Incapacidade de falar e respirar. Sem doenças pré-existentes.",
+    category: 11, # Outros
+    gravity: 15, # Gravidade média-alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Criança de 5 anos com febre alta e convulsões febris. Estado convulsivo e inconsciência. Sem doenças pré-existentes.",
+    category: 2, # Mal súbito
+    gravity: 14, # Gravidade média-alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Homem de 55 anos sofrendo de hipoglicemia grave. Confusão mental e sudorese profusa. Diagnóstico prévio de diabetes mellitus.",
+    category: 11, # Outros
+    gravity: 16, # Gravidade alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Jovem de 18 anos com ferimentos por arma de fogo no tórax após tentativa de assalto. Hemorragia ativa e instabilidade hemodinâmica. Sem doenças pré-existentes.",
+    category: 9, # Ferimentos por arma branca ou de fogo
+    gravity: 19, # Gravidade muito alta
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Pessoa de 25 anos com ataque de ansiedade agudo em local público. Taquicardia e respiração rápida. Sem doenças pré-existentes.",
+    category: 11, # Outros
+    gravity: 12, # Gravidade média
+    n_people: 1 # Uma pessoa afetada
+  },
+  {
+    description: "Idoso de 70 anos com hemorragia gastrointestinal maciça devido a úlcera péptica perfurada. Sangramento ativo e estado de choque. Diagnóstico prévio de úlcera péptica.",
+    category: 11, # Outros
+    gravity: 20, # Gravidade muito alta
+    n_people: 1 # Uma pessoa afetada
+  }
+]
 
 # exemplos de localizacoes criado pelo GPT
 localizacoes = [
@@ -1396,7 +1396,7 @@ User.create!(email: "admin1@email.com", admin: "true", central: "false", passwor
 p "criando 2 centrais ID 2 ao 3"
 User.create!(email: "central1@email.com", admin: "false", central: "true", password: '123123')
 User.create!(email: "central2@email.com", admin: "false", central: "true", password: '123123')
-User.create!(email: "ambulancia1@email.com", admin: "false", central: "false", password: '123123')
+
 
 # colocar a quantidade de ambulancias
 vehicles = 8
@@ -1418,23 +1418,23 @@ def gerar_placa
   placa
 end
 
-# # Criar ambulancias
-# def criar_users(quantidade)
-#   quantidade.times do |i|
-#     email = gerar_email(i + 1)
-#     placa = gerar_placa
-#     User.create!(
-#       email: email,
-#       admin: false,
-#       central: false,
-#       kind: 1,
-#       plate: placa,
-#       password: '123123'
-#     )
-#   end
-# end
+# Criar ambulancias
+def criar_users(quantidade)
+  quantidade.times do |i|
+    email = gerar_email(i + 1)
+    placa = gerar_placa
+    User.create!(
+      email: email,
+      admin: false,
+      central: false,
+      kind: 1,
+      plate: placa,
+      password: '123123'
+    )
+  end
+end
 
-# criar_users(vehicles)
+criar_users(vehicles)
 
 #  a quantidade de workers vehicles x 2
 workers_qtd = vehicles * 2
@@ -1476,21 +1476,21 @@ def gerar_localizacao
   [lat, lon]
 end
 
-# # Criar schedules desativadas
-# desactivated_schedules_qtd.times do |i|
-#   worker1_id = ((i % workers_qtd) + 1)
-#   worker2_id = (((i + 1) % workers_qtd) + 1)
-#   user_id = (((i % vehicles) + 4))
-#   current_lat, current_lon = gerar_localizacao
-#   Schedule.create!(
-#     worker1_id: worker1_id,
-#     worker2_id: worker2_id,
-#     user_id: user_id,
-#     active: false,
-#     current_lat: current_lat,
-#     current_lon: current_lon
-#   )
-# end
+# Criar schedules desativadas
+desactivated_schedules_qtd.times do |i|
+  worker1_id = ((i % workers_qtd) + 1)
+  worker2_id = (((i + 1) % workers_qtd) + 1)
+  user_id = (((i % vehicles) + 4))
+  current_lat, current_lon = gerar_localizacao
+  Schedule.create!(
+    worker1_id: worker1_id,
+    worker2_id: worker2_id,
+    user_id: user_id,
+    active: false,
+    current_lat: current_lat,
+    current_lon: current_lon
+  )
+end
 
 
 # Método para retornar um valor aleatório entre as datas inicial e final
@@ -1537,56 +1537,56 @@ end_date = "2024-03-20"
 # escolher o maximo de horas q dura uma emergencia
 max_time_emergency = 6
 
-# old_emergencies_qtd.times do
-#   # Seleção aleatória de uma emergência e uma localização
-#   emergencia = emergencias.sample
-#   localizacao = localizacoes.sample
+old_emergencies_qtd.times do
+  # Seleção aleatória de uma emergência e uma localização
+  emergencia = emergencias.sample
+  localizacao = localizacoes.sample
 
-#   # Seleção aleatória de n_people, gravity, category e description
-#   n_people = emergencia[:n_people]
-#   gravity = emergencia[:gravity]
-#   category = emergencia[:category]
-#   description = emergencia[:description]
+  # Seleção aleatória de n_people, gravity, category e description
+  n_people = emergencia[:n_people]
+  gravity = emergencia[:gravity]
+  category = emergencia[:category]
+  description = emergencia[:description]
 
-#   # Valores da localização da emergencia
-#   street = localizacao[:street]
-#   neighborhood = localizacao[:neighborhood]
-#   city = localizacao[:city]
-#   emergency_lat = localizacao[:emergency_lat]
-#   emergency_lon = localizacao[:emergency_lon]
-#   local_type = localizacao[:local_type]
+  # Valores da localização da emergencia
+  street = localizacao[:street]
+  neighborhood = localizacao[:neighborhood]
+  city = localizacao[:city]
+  emergency_lat = localizacao[:emergency_lat]
+  emergency_lon = localizacao[:emergency_lon]
+  local_type = localizacao[:local_type]
 
-#   # Seleção aleatória de start time dentro do periodo definido
-#   random_start_date = generate_random_datetime(start_date, end_date)
-#   random_end_date = DateTime.parse(random_start_date) + rand(1..max_time_emergency).hours
+  # Seleção aleatória de start time dentro do periodo definido
+  random_start_date = generate_random_datetime(start_date, end_date)
+  random_end_date = DateTime.parse(random_start_date) + rand(1..max_time_emergency).hours
 
-#   # Valores aleatorios de localizacao da ambulancia para inicio da chamada
-#   current_lat_start, current_lon_start = gerar_localizacao
+  # Valores aleatorios de localizacao da ambulancia para inicio da chamada
+  current_lat_start, current_lon_start = gerar_localizacao
 
-#   # Valores aleatorios de localizacao da ambulancia para final da chamada
-#   current_lat_end, current_lon_end = gerar_localizacao
+  # Valores aleatorios de localizacao da ambulancia para final da chamada
+  current_lat_end, current_lon_end = gerar_localizacao
 
-#   Emergency.create!(
-#     n_people: n_people,
-#     gravity: gravity,
-#     category: category,
-#     description: description,
-#     street: street,
-#     neighborhood: neighborhood,
-#     city: city,
-#     emergency_lat: emergency_lat,
-#     emergency_lon: emergency_lon,
-#     local_type: local_type,
-#     time_start: random_start_date,
-#     time_end: random_end_date,
-#     start_lon: current_lon_start,
-#     start_lat: current_lat_start,
-#     end_lon: current_lon_end,
-#     end_lat: current_lat_end,
-#     user_id: rand(1..2), # aleatorio user ID para centrais
-#     schedule_id: rand(1..desactivated_schedules_qtd) # aleatorio user ID para schedules desativadas
-#   )
-# end
+  Emergency.create!(
+    n_people: n_people,
+    gravity: gravity,
+    category: category,
+    description: description,
+    street: street,
+    neighborhood: neighborhood,
+    city: city,
+    emergency_lat: emergency_lat,
+    emergency_lon: emergency_lon,
+    local_type: local_type,
+    time_start: random_start_date,
+    time_end: random_end_date,
+    start_lon: current_lon_start,
+    start_lat: current_lat_start,
+    end_lon: current_lon_end,
+    end_lat: current_lat_end,
+    user_id: rand(1..2), # aleatorio user ID para centrais
+    schedule_id: rand(1..desactivated_schedules_qtd) # aleatorio user ID para schedules desativadas
+  )
+end
 
 
 # EMERGENCIAS NOVAS COM EMERGENCIA EM ANDAMENTO
@@ -1600,64 +1600,64 @@ horas_antes = 4
 # criando um array de IDs de ambulancias
 users_array =  (4..(vehicles + 3)).to_a
 
-# new_emergencies_qtd.times do
-#   # Seleção aleatória de uma emergência e uma localização
-#   emergencia = emergencias.sample
-#   localizacao = localizacoes.sample
+new_emergencies_qtd.times do
+  # Seleção aleatória de uma emergência e uma localização
+  emergencia = emergencias.sample
+  localizacao = localizacoes.sample
 
 
-#   # Criando a schedule da ambulancia que receberá a emergencia
-#   worker1_id = rand(1..workers_qtd)
-#   worker2_id = rand(1..workers_qtd)
-#   user_id = users_array.delete_at(0)
+  # Criando a schedule da ambulancia que receberá a emergencia
+  worker1_id = rand(1..workers_qtd)
+  worker2_id = rand(1..workers_qtd)
+  user_id = users_array.delete_at(0)
 
-#   # criando localizacao para a ambulancia e para o inicio da emergencia
-#   current_lat, current_lon = gerar_localizacao
+  # criando localizacao para a ambulancia e para o inicio da emergencia
+  current_lat, current_lon = gerar_localizacao
 
-#   schedule = Schedule.create!(
-#     worker1_id: worker1_id,
-#     worker2_id: worker2_id,
-#     user_id: user_id,
-#     active: true,
-#     current_lat: current_lat,
-#     current_lon: current_lon
-#   )
+  schedule = Schedule.create!(
+    worker1_id: worker1_id,
+    worker2_id: worker2_id,
+    user_id: user_id,
+    active: true,
+    current_lat: current_lat,
+    current_lon: current_lon
+  )
 
-#   # Seleção aleatória de n_people, gravity, category e description
-#   n_people = emergencia[:n_people]
-#   gravity = emergencia[:gravity]
-#   category = emergencia[:category]
-#   description = emergencia[:description]
+  # Seleção aleatória de n_people, gravity, category e description
+  n_people = emergencia[:n_people]
+  gravity = emergencia[:gravity]
+  category = emergencia[:category]
+  description = emergencia[:description]
 
-#   # Valores da localização da emergencia
-#   street = localizacao[:street]
-#   neighborhood = localizacao[:neighborhood]
-#   city = localizacao[:city]
-#   emergency_lat = localizacao[:emergency_lat]
-#   emergency_lon = localizacao[:emergency_lon]
-#   local_type = localizacao[:local_type]
+  # Valores da localização da emergencia
+  street = localizacao[:street]
+  neighborhood = localizacao[:neighborhood]
+  city = localizacao[:city]
+  emergency_lat = localizacao[:emergency_lat]
+  emergency_lon = localizacao[:emergency_lon]
+  local_type = localizacao[:local_type]
 
-#   # escolher quando qual a data e hora que comeca e finaliza as emergencias ativas
-#   start_date = random_datetime_last_x_hours(horas_antes)
+  # escolher quando qual a data e hora que comeca e finaliza as emergencias ativas
+  start_date = random_datetime_last_x_hours(horas_antes)
 
-#   Emergency.create!(
-#     n_people: n_people,
-#     gravity: gravity,
-#     category: category,
-#     description: description,
-#     street: street,
-#     neighborhood: neighborhood,
-#     city: city,
-#     emergency_lat: emergency_lat,
-#     emergency_lon: emergency_lon,
-#     local_type: local_type,
-#     time_start: start_date,
-#     start_lon: schedule.current_lon,
-#     start_lat: schedule.current_lat,
-#     user_id: rand(1..2), # aleatorio user ID para centrais
-#     schedule_id: schedule.id # aleatorio user ID para schedules desativadas
-#   )
-# end
+  Emergency.create!(
+    n_people: n_people,
+    gravity: gravity,
+    category: category,
+    description: description,
+    street: street,
+    neighborhood: neighborhood,
+    city: city,
+    emergency_lat: emergency_lat,
+    emergency_lon: emergency_lon,
+    local_type: local_type,
+    time_start: start_date,
+    start_lon: schedule.current_lon,
+    start_lat: schedule.current_lat,
+    user_id: rand(1..2), # aleatorio user ID para centrais
+    schedule_id: schedule.id # aleatorio user ID para schedules desativadas
+  )
+end
 
 
 # >>>>>>>>>>>>>>> BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
@@ -1907,13 +1907,57 @@ p "Criacao dos dashboards e queries do Blazer"
   # Adicionar a query ao dashboard
   dashboard.dashboard_queries.create!(query: query, position: 2)
 
+  # Criar um novo dashboard
+  dashboard = Blazer::Dashboard.create!(
+    name: "4-Duracao das Ocorrências"
+  )
+  query = Blazer::Query.create!(
+    name: "Evolução da duração das ocorrências (duracao)",
+    description: "Visao duracao",
+    data_source: "main",
+    statement: "SELECT
+    DATE_TRUNC('week', time_start) AS Week_Start,
+    AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) AS Average_Duration_Minutes
+  FROM
+    emergencies
+  WHERE
+    time_end IS NOT NULL
+    AND city = {Cidade}
+  GROUP BY
+    DATE_TRUNC('week', time_start)
+  ORDER BY
+    Week_Start;"
+  )
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 0)
+  query = Blazer::Query.create!(
+    name: "Duração das Ocorrências por bairro (duracao)",
+    description: "Visao duracao",
+    data_source: "main",
+    statement: "SELECT
+    neighborhood AS Neighborhood,
+    AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) AS Average_Duration_Minutes
+  FROM
+    emergencies
+  WHERE
+    time_end IS NOT NULL
+    AND city = {Cidade}
+  GROUP BY
+    neighborhood
+  ORDER BY
+    CASE WHEN {Order} = 'asc' THEN AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) END ASC,
+    CASE WHEN {Order} = 'desc' THEN AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) END DESC;"
+  )
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 1)
+
 # >>>>>>>>>>>>>>>FIM BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
 
 p 'Criacao do chatroom e 2 mensagens'
 Chatroom.create!(name: "General")
 # Chat.create!(name: "Le Wagon`s Hospital")
 
-p 'Criacao de 1 estoque'
+# p 'Criacao de 1 estoque'
 # stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 4)
 # stock1.save!
 
