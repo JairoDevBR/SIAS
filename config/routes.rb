@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get '/schedules_obtain_markers/:schedule_id', to: 'schedules#obtain_markers'
   post '/update_location_from_schedules_show_view/:id', to: 'schedules#update_location_from_schedules_show_view'
   post '/update_location_from_emergencies_show_view/:id', to: 'schedules#update_location_from_emergencies_show_view'
+  post '/send_message_to_ambulance/:chat_id', to: 'posts#create'
 
   resources :chatrooms, only: :show do
     resources :messages, only: :create
@@ -21,9 +22,9 @@ Rails.application.routes.draw do
   resources :schedules, only: %i[new create index show]
   resources :emergencies, only: %i[new create show index] do
     resources :patients, only: %i[new create]
-    resources :chats, only: :show do
-      resources :posts, only: :create
-    end
+  end
+  resources :chats, only: :show do
+    resources :posts, only: :create
   end
   resources :workers
   resources :stocks, only: %i[new create show edit update]

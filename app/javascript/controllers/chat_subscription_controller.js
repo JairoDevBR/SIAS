@@ -9,15 +9,15 @@ export default class extends Controller {
     this.channel = createConsumer().subscriptions.create(
       { channel: "ChatChannel", id: this.chatIdValue },
       { received: data =>
-        this.insertPost(data)
-      }
-      )
-      console.log('hello');
-    }
+        this.#insertPost(data)
+      },
+    )
+      console.log(this.chatIdValue);
+  }
 
-  insertPost(data) {
-    this.postsTarget.insertAdjacentHTML('beforeend', data);
-    this.postsTarget.scrollTo(0, this.postsTarget.scrollHeight);
-    this.formTarget.reset();
+    #insertPost(data) {
+      this.postsTarget.insertAdjacentHTML('beforeend', data);
+      this.postsTarget.scrollTo(0, this.postsTarget.scrollHeight);
+      this.formTarget.reset();
   }
 }

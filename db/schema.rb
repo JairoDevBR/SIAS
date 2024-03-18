@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_17_194639) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_18_164300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,8 +80,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_194639) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "emergency_id"
-    t.index ["emergency_id"], name: "index_chats_on_emergency_id"
   end
 
   create_table "emergencies", force: :cascade do |t|
@@ -106,6 +104,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_194639) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "hospital_id"
+    t.bigint "chat_id"
+    t.index ["chat_id"], name: "index_emergencies_on_chat_id"
     t.index ["hospital_id"], name: "index_emergencies_on_hospital_id"
     t.index ["schedule_id"], name: "index_emergencies_on_schedule_id"
     t.index ["user_id"], name: "index_emergencies_on_user_id"
@@ -141,6 +141,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_194639) do
     t.bigint "emergency_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "gender"
+    t.integer "age"
+    t.integer "gravity"
+    t.bigint "chat_id"
+    t.index ["chat_id"], name: "index_patients_on_chat_id"
     t.index ["emergency_id"], name: "index_patients_on_emergency_id"
   end
 
@@ -208,12 +213,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_194639) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "chats", "emergencies"
+  add_foreign_key "emergencies", "chats"
   add_foreign_key "emergencies", "hospitals"
   add_foreign_key "emergencies", "schedules"
   add_foreign_key "emergencies", "users"
   add_foreign_key "messages", "chatrooms"
   add_foreign_key "messages", "users"
+  add_foreign_key "patients", "chats"
   add_foreign_key "patients", "emergencies"
   add_foreign_key "posts", "chats"
   add_foreign_key "posts", "users"

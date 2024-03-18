@@ -50,7 +50,7 @@
       <div class="row w-100" data-controller="character-count">
         <%= f.input :description, label: "<i class='fa-solid fa-pencil'></i> Descrição da ocorrência".html_safe, label_html: { class: "text-azul fw-bold" }, input_html: { class: "box-shadow-leve border-radius-24", data: { action: "keyup->character-count#updateCounter"} }  %>
         <div>
-          <p data-character-count-target="counter">Descrição deve conter no mínimo 80 caracteres</p>
+          <p data-character-count-target="counter"></p>
         </div>
       </div>
         <%= f.button :submit, "Criar nova emergência", class:"botao-azul mt-2", remote: true %>
