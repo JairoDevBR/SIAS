@@ -1,6 +1,6 @@
 <div id="post-<%= post.id %>">
   <small>
-    <strong><%= post.user %></strong>
+    <strong>Central: <%= post.user.id %></strong>
     <i><%= post.created_at.strftime("%a %b %e at %l:%M %p") %></i>
   </small>
   <p><%= post.content %></p>

@@ -177,7 +177,7 @@ class EmergenciesController < ApplicationController
     @recomendation = @chat_response["recomendacao"]
     @emergency.time_start = DateTime.now.to_formatted_s(:db)
     if @emergency.save
-      find_ambulance(@emergency)
+      find_ambulance(@emergency, @recomendation)
       # find_hospital(@emergency)
       send_to_all_chat(@emergency, @recomendation)
     else
@@ -266,7 +266,7 @@ class EmergenciesController < ApplicationController
     ChatgptService.new(message)
   end
 
-  def find_ambulance(emergency)
+  def find_ambulance(emergency, recomendation)
     # restringe a procura para somente as ambulancias com emergencias menores que 15 ou menores que a emergencia atual
     emergency.gravity < 15 ? max_gravity = emergency.gravity : max_gravity = 15
 
@@ -298,7 +298,7 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
-      send_to_emergency(emergency)
+      send_to_emergency(emergency, recomendation)
       emergency.save!
 
       # mandar msg via webhook para o chat das ambulancias
@@ -318,6 +318,7 @@ class EmergenciesController < ApplicationController
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
+      send_to_emergency(emergency, recomendation)
       emergency.save!
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
@@ -365,7 +366,7 @@ class EmergenciesController < ApplicationController
   # colocar no content da msg a descricao, gravidade, recomendacao
   def send_to_all_chat(emergency, recomendation)
     msg = "Ocorrência nº#{emergency.id}: #{emergency.description}
-    gravidade: #{emergency.gravity} => #{recomendation}"
+    Gravidade: #{emergency.gravity} => Recomendação: #{recomendation}"
     @chatroom = Chatroom.find(1)
     @message = Message.new(content: msg)
     @message.chatroom = @chatroom
@@ -378,10 +379,12 @@ class EmergenciesController < ApplicationController
     end
   end
 
-  def send_to_emergency(emergency)
-    chat = Chat.create(name: "Chat da emergência #{emergency.id}")
+  def send_to_emergency(emergency, recomendation)
+    chat = Chat.create(name: "Ocorrência nº#{emergency.id}")
     emergency.chat = chat
-    post = Post.new(content: emergency.description)
+    msg = "Ocorrência nº#{emergency.id}: #{emergency.description}
+    Gravidade: #{emergency.gravity} => Recomendação: #{recomendation}"
+    post = Post.new(content: msg)
     post.chat = chat
     post.user = current_user
     if post.save

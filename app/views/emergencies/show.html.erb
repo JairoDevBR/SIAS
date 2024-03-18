@@ -20,7 +20,7 @@
         <button class="nav-link" id="paciente-tab" data-bs-toggle="tab" data-bs-target="#paciente" type="button" role="tab" aria-controls="paciente" aria-selected="false">Paciente</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+        <button class="nav-link" id="chat-tab" data-bs-toggle="tab" data-bs-target="#chat" type="button" role="tab" aria-controls="chat" aria-selected="false">Chat</button>
       </li>
     </ul>
 
@@ -63,11 +63,11 @@
         <%= render partial: "patients/form_patient", locals: {emergency: @emergency, patient: @patient} %>
       </div>
 
-      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+      <div class="tab-pane fade" id="chat" role="tabpanel" aria-labelledby="chat-tab">
         <div class="container chat"
           data-controller="chat-subscription"
           data-chat-subscription-chat-id-value="<%= @chat.id %>" >
-          <h1>#<%= @chat.name %></h1>
+          <h3><%= @chat.name %></h3>
 
           <div class="posts" data-chat-subscription-target="posts">
             <% @chat.posts.each do |post| %>

@@ -11,18 +11,21 @@ class PatientsController < ApplicationController
     @patient.emergency = @emergency
     authorize @patient
     @patient.save
-    message = "Idade: #{@patient.age}\nGênero: #{@patient.gender}\nFrequência cardíaca: #{@patient.heart_rate}\n
-    Frequência respiratória: #{@patient.respiratory_rate}\n
-    Pressão arterial: #{@patient.blood_pressure}\n
-    Saturação de oxigênio: #{@patient.oxygen_saturation}\n
-    Nível de consciência: #{@patient.consciousness}\n
-    Escala de dor: #{@patient.pain}\n
-    Gravidade: #{@patient.gravity}\n
-    Histórico médico: #{@patient.medical_history}\n
-    Descrição: #{@patient.description}"
+    message = "<strong>Idade:</strong> #{@patient.age}<br>
+    <strong>Gênero:</strong> #{@patient.gender}<br>
+    <strong>Frequência cardíaca:</strong> #{@patient.heart_rate}<br>
+    <strong>Frequência respiratória:</strong> #{@patient.respiratory_rate}<br>
+    <strong>Pressão arterial:</strong> #{@patient.blood_pressure}<br>
+    <strong>Saturação de oxigênio:</strong> #{@patient.oxygen_saturation}<br>
+    <strong>Nível de consciência:</strong> #{@patient.consciousness}<br>
+    <strong>Escala de dor:</strong> #{@patient.pain}<br>
+    <strong>Gravidade:</strong> #{@patient.gravity}<br>
+    <strong>Histórico médico:</strong> #{@patient.medical_history}<br>
+    <strong>Descrição:</strong> #{@patient.description}"
+
     @chat = Chat.find(@emergency.chat_id)
     @emergency.chat = @chat
-    @post = Post.new(content: message)
+    @post = Post.new(content: message.html_safe)
     @post.chat = @chat
     @post.user = current_user
     if @post.save
