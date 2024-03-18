@@ -17,7 +17,7 @@
         <button class="nav-link active" id="map-tab" data-bs-toggle="tab" data-bs-target="#map" type="button" role="tab" aria-controls="map" aria-selected="true">Mapa</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="paciente-tab" data-bs-toggle="tab" data-bs-target="#paciente" type="button" role="tab" aria-controls="paciente" aria-selected="false">Paciente</button>
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="tab-pane fade" id="paciente" role="tabpanel" aria-labelledby="Paciente-tab">
+      <div class="tab-pane fade" id="Paciente" role="tabpanel" aria-labelledby="Paciente-tab">
         <%= render partial: "patients/form_patient", locals: {emergency: @emergency, patient: @patient} %>
       </div>
 
@@ -71,19 +71,20 @@
 
           <div class="posts" data-chat-subscription-target="posts">
             <% @chat.posts.each do |post| %>
-              <%= render "emergencies/post", post: post %>
+              <%= render "posts/post", post: post %>
             <% end %>
           </div>
-          <%= simple_form_for [@chat, @post], url: "/send_message_to_ambulance/#{@chat.id}",
+          <%= simple_form_for [@chat, @post],
             html: {class: "d-flex",
             data: { chat_subscription_target: 'form' }} do |f| %>
-              <%= f.input :content,
-                label: false,
-                placeholder: "Post ##{@chat.name}",
-                wrapper_html: {class: "flex-grow-1"} %>
-              <%= f.submit "Send", class: "btn btn-primary mb-3" %>
-          <% end %>
+                <%= f.input :content,
+                  label: false,
+                  placeholder: "Post ##{@chat.name}",
+                  wrapper_html: {class: "flex-grow-1"} %>
+                <%= f.submit "Send", class: "btn btn-primary mb-3" %>
+              <% end %>
         </div>
+
       </div>
     </div>
   </div>
