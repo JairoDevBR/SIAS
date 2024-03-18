@@ -42,6 +42,19 @@ class SchedulesController < ApplicationController
       end
     end
 
+#   TEMPORARIO ATE CHAMAR QDO RECEBER A PRIMEIRA LOCALIZACAO
+      # # Verifica se há emergencias acima de 15 sem atendimento
+      # if Emergency.where("gravity >= ? AND time_end IS NULL", 15).exists?
+      #   high_gravity_emergencies = Emergency.where("gravity >= ? AND time_end IS NULL", 15)
+      #   high_gravity_emergencies.each do |emergency|
+      #     distances[emergency.id] = calculate_distance(schedule, emergency)
+      #   end
+      # end
+
+      # # Verifica se há emergencias com gravidade < 15, caso estejam mais proximas do que a ambulancia em andamento
+      # Emergency.where()
+# ---------------------------------------------------------------
+
     if @schedule.save!
       redirect_to @schedule, notice: 'Você está logado.'
     else
@@ -105,5 +118,9 @@ class SchedulesController < ApplicationController
 
   def schedule_params
     params.require(:schedule).permit(:worker1_id, :worker2_id)
+  end
+
+  def calculate_distance(schedule, emergency)
+    Math.sqrt((((schedule.current_lat - emergency.emergency_lat) * 111.11) ** 2) + (((schedule.current_lon - emergency.emergency_lon) * 111.1) ** 2))
   end
 end

@@ -17,7 +17,7 @@
         <button class="nav-link active" id="map-tab" data-bs-toggle="tab" data-bs-target="#map" type="button" role="tab" aria-controls="map" aria-selected="true">Mapa</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+        <button class="nav-link" id="paciente-tab" data-bs-toggle="tab" data-bs-target="#paciente" type="button" role="tab" aria-controls="paciente" aria-selected="false">Paciente</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
@@ -59,12 +59,53 @@
         </div>
       </div>
 
-      <div class="tab-pane fade" id="Paciente" role="tabpanel" aria-labelledby="Paciente-tab">
-        <%= render partial: "patients/form_patient", locals: {emergency: @emergency, patient: @patient} %>
+      <div class="tab-pane fade" id="paciente" role="tabpanel" aria-labelledby="paciente-tab">
+<div class="form-patient">
+  <%= simple_form_for [@emergency, @patient] do |f| %>
+    <div class="form-patient-info">
+      <%= f.input :gender, collection: Patient::GENDERS, label: 'Gênero:',
+        label_html: { class: 'form-patient-label' }, wrapper_html: { class: 'username' } %>
+
+      <%= f.input :age, label: 'Faixa etária:',
+        label_html: { class: 'form-patient-label' }, wrapper_html: { class: 'username' } %>
+
+      <%= f.input :heart_rate, label: 'Frequência cardíaca:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :respiratory_rate, label: 'Frequência respiratória:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :blood_pressure, label: 'Pressão arterial:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :oxygen_saturation, label: 'Saturação de oxigênio:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :consciousness, label: 'Nível de consciência:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :pain, label: 'Escala de dor:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :gravity, label: 'Gravidade:',
+        label_html: { class: 'form-patient-label' } %>
+
+      <%= f.input :medical_history, label: 'Histórico médico:',
+        label_html: { class: 'form-patient-label' } %>
+
+    <%= f.input :description, label: 'Descrição:', as: :text,
+        label_html: { class: 'form-patient-label' } %>
+    </div>
+    <div class="form-patient-button">
+      <%= f.button :submit, value: 'Enviar' %>
+    </div>
+  <% end %>
+</div>
+
       </div>
 
       <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        
+
       </div>
     </div>
   </div>
