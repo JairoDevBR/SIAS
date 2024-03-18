@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get '/schedules_obtain_markers/:schedule_id', to: 'schedules#obtain_markers'
   post '/update_location_from_schedules_show_view/:id', to: 'schedules#update_location_from_schedules_show_view'
   post '/update_location_from_emergencies_show_view/:id', to: 'schedules#update_location_from_emergencies_show_view'
+  post '/find_emergency_after_login/', to: 'schedules#find_emergency'
 
   resources :chatrooms, only: :show do
     resources :messages, only: :create
