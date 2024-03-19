@@ -25,7 +25,7 @@ data_sources:
       Categoria: {1: "Acidentes de trânsito", 2: "Mal súbito", 3: "Ferimentos por queda", 4: "Parada cardiorrespiratória", 5: "Intoxicação ou envenenamento", 6: "Problemas respiratórios", 7: "Crises hipertensivas", 8: "Complicações durante a gravidez ou parto", 9: "Ferimentos por arma branca ou de fogo", 10: "Reações alérgicas graves", 11: "Outros"}
       Bairro: "SELECT DISTINCT neighborhood AS name, neighborhood AS value FROM emergencies ORDER BY name ASC"
       Cidade: "SELECT DISTINCT city AS name, city AS value FROM emergencies ORDER BY name ASC"
-
+      Order: ["asc", "desc"]
       # zone_id: "SELECT id, name FROM zones ORDER BY name ASC"
       # period: ["day", "week", "month"]
       # status: {0: "Active", 1: "Archived"}
