@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   def create
+
     @chat = Chat.find(params[:chat_id])
     @post = Post.new(post_params)
     @post.chat = @chat
@@ -12,7 +13,7 @@ class PostsController < ApplicationController
       )
       head :ok
     else
-      render "chatrooms/show", status: :unprocessable_entity
+      render "emergencies/chats/show", status: :unprocessable_entity
     end
   end
 

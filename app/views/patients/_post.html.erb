@@ -1,0 +1,7 @@
+<div id="post-<%= post.id %>">
+  <small>
+    <strong>Ambulância: <%= post.user.id %></strong>
+    <i><%= post.created_at.strftime("%a %b %e at %l:%M %p") %></i>
+  </small>
+  <p><%= post.content.html_safe %></p>
+</div>

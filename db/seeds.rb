@@ -1397,6 +1397,7 @@ p "criando 2 centrais ID 2 ao 3"
 User.create!(email: "central1@email.com", admin: "false", central: "true", password: '123123')
 User.create!(email: "central2@email.com", admin: "false", central: "true", password: '123123')
 
+
 # colocar a quantidade de ambulancias
 vehicles = 8
 p "criando #{vehicles} ambulancias de ID 4 ao #{vehicles + 3}"
@@ -1906,15 +1907,59 @@ p "Criacao dos dashboards e queries do Blazer"
   # Adicionar a query ao dashboard
   dashboard.dashboard_queries.create!(query: query, position: 2)
 
+  # Criar um novo dashboard
+  dashboard = Blazer::Dashboard.create!(
+    name: "4-Duracao das Ocorrências"
+  )
+  query = Blazer::Query.create!(
+    name: "Evolução da duração das ocorrências (duracao)",
+    description: "Visao duracao",
+    data_source: "main",
+    statement: "SELECT
+    DATE_TRUNC('week', time_start) AS Week_Start,
+    AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) AS Average_Duration_Minutes
+  FROM
+    emergencies
+  WHERE
+    time_end IS NOT NULL
+    AND city = {Cidade}
+  GROUP BY
+    DATE_TRUNC('week', time_start)
+  ORDER BY
+    Week_Start;"
+  )
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 0)
+  query = Blazer::Query.create!(
+    name: "Duração das Ocorrências por bairro (duracao)",
+    description: "Visao duracao",
+    data_source: "main",
+    statement: "SELECT
+    neighborhood AS Neighborhood,
+    AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) AS Average_Duration_Minutes
+  FROM
+    emergencies
+  WHERE
+    time_end IS NOT NULL
+    AND city = {Cidade}
+  GROUP BY
+    neighborhood
+  ORDER BY
+    CASE WHEN {Order} = 'asc' THEN AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) END ASC,
+    CASE WHEN {Order} = 'desc' THEN AVG(EXTRACT(EPOCH FROM (time_end - time_start)) / 60) END DESC;"
+  )
+  # Adicionar a query ao dashboard
+  dashboard.dashboard_queries.create!(query: query, position: 1)
+
 # >>>>>>>>>>>>>>>FIM BLAZER DASHBOARDS E QUERIES <<<<<<<<<<<<<<<<<<<<<<
 
 p 'Criacao do chatroom e 2 mensagens'
 Chatroom.create!(name: "General")
 # Chat.create!(name: "Le Wagon`s Hospital")
 
-p 'Criacao de 1 estoque'
-stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 4)
-stock1.save!
+# p 'Criacao de 1 estoque'
+# stock1 = Stock.create(tesoura: 3, luvas: 8, pinça: 2, esparadrapo: 6, alcool: 2, gaze_esterilizada: 4, atadura: 10, bandagens: 10, medicamentos_basicos: 10, user_id: 4)
+# stock1.save!
 
 p 'criacao de 6 hospitais'
 hospital01 = Hospital.create!(name: "Le Wagon Hospital", latitude: -23.55195, longitude: -46.68898)
