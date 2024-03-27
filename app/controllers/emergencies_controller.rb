@@ -13,14 +13,14 @@ class EmergenciesController < ApplicationController
     authorize @emergency
   end
 
+  # endpoint for Mapbox's markers from the central view
   def obtain_markers
-    @emergency = Emergency.new
-    authorize @emergency
-    @schedule = Schedule.new
-    authorize @schedule
-    @hospital = Hospital.new
-    authorize @hospital
+    # pundit authorizations
+    authorize Emergency.new
+    authorize Schedule.new
+    authorize Hospital.new
 
+    # markers for not finished emergencies
     emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
       {
         lat: emergency.emergency_lat,
@@ -30,15 +30,18 @@ class EmergenciesController < ApplicationController
       }
     end
 
+    # markers for active ambulances
     schedules_markers = Schedule.where(active: true).map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
+        # since each schedule can have more than one emergency, only the unfinished emergency is filtered
         info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.where(schedule_id: schedule, time_end: nil).first })
       }
     end
 
+    # markers for hospitals
     hospitals_markers = Hospital.all.map do |hospital|
       {
         lat: hospital.latitude,
@@ -50,13 +53,12 @@ class EmergenciesController < ApplicationController
     render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers, hospitals_markers: hospitals_markers }
   end
 
+  # endpoint for Mapbox's markers from the ambulance view when she already has an emergency
   def obtain_markers_to_emergencies_show
-    @emergency = Emergency.new
-    authorize @emergency
-    @schedule = Schedule.new
-    authorize @schedule
+    authorize Emergency.new
+    authorize Schedule.new
 
-
+    # markers for not finished emergencies
     emergencies_markers = Emergency.where(time_end: nil).map do |emergency|
       {
         lat: emergency.emergency_lat,
@@ -66,24 +68,25 @@ class EmergenciesController < ApplicationController
       }
     end
 
+    # marker for the active ambulance from the param ID
     schedules_markers = Schedule.joins(:emergencies).where(active: true, emergencies: { id: params[:emergency_id]}).map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find_by(id: params[:emergency_id]) }) # nao estou conseguindo enviar a variavel local emergency para o popup
+        # nao estou conseguindo enviar a variavel local emergency para o popup -> problema com o locals ou partials?
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find_by(id: params[:emergency_id]) })
       }
     end
     render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
   end
 
+  # endpoint for Mapbox's marker to fit the borders on the current ambulance and the current emergency
   def obtain_markers_only_current_emergency
-    @emergency = Emergency.new
-    authorize @emergency
-    @schedule = Schedule.new
-    authorize @schedule
+    authorize Emergency.new
+    authorize Schedule.new
 
-
+    # marker for the active emergency from the param ID
     emergencies_markers = Emergency.where(id: params[:emergency_id]).map do |emergency|
       {
         lat: emergency.emergency_lat,
@@ -93,12 +96,14 @@ class EmergenciesController < ApplicationController
       }
     end
 
+    # marker for the active ambulance which is chasing the ambulance from the param ID
     schedules_markers = Schedule.joins(:emergencies).where(active: true, emergencies: { id: params[:emergency_id]}).map do |schedule|
       {
         lat: schedule.current_lat,
         lng: schedule.current_lon,
         marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find_by(id: params[:emergency_id]) }) # nao estou conseguindo enviar a variavel local emergency para o popup
+        # nao estou conseguindo enviar a variavel local emergency para o popup
+        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find_by(id: params[:emergency_id]) })
       }
     end
     render json: { emergencies_markers: emergencies_markers, schedules_markers: schedules_markers }
@@ -188,45 +193,47 @@ class EmergenciesController < ApplicationController
 
   def show
     @emergency = Emergency.find(params[:id])
+    authorize @emergency
+    @schedule = Schedule.find(@emergency.schedule.id)
     @chat = Chat.find(@emergency.chat_id)
     @post = Post.new
     @post.chat = @chat
     @post.user = current_user
     @patient = Patient.new
-    @lat = @emergency.emergency_lat
-    @long = @emergency.emergency_lon
-    @schedule = Schedule.find(@emergency.schedule.id)
-    @slat = @schedule.current_lon
-    @slon = @schedule.current_lat
-    authorize @emergency
-    @emergencies = Emergency.all
-    @emergencies_markers = Emergency.where("id != #{params[:id]}").map do |emergency|
-      {
-        lat: emergency.emergency_lat,
-        lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "emergency"),
-        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
-      }
-    end
 
-    @emergency_marker = Emergency.where("id = #{params[:id]}").map do |emergency|
-      {
-        lat: emergency.emergency_lat,
-        lng: emergency.emergency_lon,
-        marker_html: render_to_string(partial: "marker"),
-        info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
-      }
-    end
 
-    @schedules_markers = Schedule.where("id = #{@schedule.id}").map do |schedule|
-      {
-        lat: schedule.current_lat,
-        lng: schedule.current_lon,
-        marker_html: render_to_string(partial: "schedule_marker"),
-        info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find(params[:id]) })
-      }
-    end
+    # @emergencies = Emergency.all
+    # @lat = @emergency.emergency_lat
+    # @long = @emergency.emergency_lon
+    # @slat = @schedule.current_lon
+    # @slon = @schedule.current_lat
 
+    # @emergencies_markers = Emergency.where("id != #{params[:id]}").map do |emergency|
+    #   {
+    #     lat: emergency.emergency_lat,
+    #     lng: emergency.emergency_lon,
+    #     marker_html: render_to_string(partial: "emergency"),
+    #     info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+    #   }
+    # end
+
+    # @emergency_marker = Emergency.where("id = #{params[:id]}").map do |emergency|
+    #   {
+    #     lat: emergency.emergency_lat,
+    #     lng: emergency.emergency_lon,
+    #     marker_html: render_to_string(partial: "marker"),
+    #     info_window_html: render_to_string(partial: "info_window", locals: {emergency: emergency})
+    #   }
+    # end
+
+    # @schedules_markers = Schedule.where("id = #{@schedule.id}").map do |schedule|
+    #   {
+    #     lat: schedule.current_lat,
+    #     lng: schedule.current_lon,
+    #     marker_html: render_to_string(partial: "schedule_marker"),
+    #     info_window_html: render_to_string(partial: "info_window_schedule", locals: { schedule: schedule, emergency: Emergency.find(params[:id]) })
+    #   }
+    # end
   end
 
   def finish
