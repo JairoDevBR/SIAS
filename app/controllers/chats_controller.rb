@@ -5,7 +5,6 @@ class ChatsController < ApplicationController
   end
 
   def show
-    # @emergency = Emergency.find(params[:emergency_id])
     @chat = Chat.find(params[:id])
     @post = Post.new
     authorize @chat
