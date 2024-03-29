@@ -216,7 +216,7 @@ class EmergenciesController < ApplicationController
     render json: { routes: routes }
   end
 
-# >>>>>>>>>>>>>>>>>>>> AJAX ENDPOINTS END <<<<<<<<<<<<<<<<<<<<<<
+  # >>>>>>>>>>>>>>>>>>>> AJAX ENDPOINTS END <<<<<<<<<<<<<<<<<<<<<<
 
   private
 
@@ -242,41 +242,37 @@ class EmergenciesController < ApplicationController
   end
 
   def find_ambulance(emergency, recomendation)
-    # restringe a procura para somente as ambulancias com emergencias menores que 15 ou menores que a emergencia atual
+    # restrict the search to only ambulances with emergencies less than 15 or less than the current emergency
     emergency.gravity < 15 ? max_gravity = emergency.gravity : max_gravity = 15
 
-    # ambulancias ativas (ambulancias sem emergencias + ambulancias com emergencias < max gravity) considerando apenas as emergencias ativas (time_end = null) (ok)
+    # active ambulances (ambulances without emergencies + ambulances with emergencies < max gravity) considering only active emergencies (time_end = null)
     @schedules = Schedule.left_joins(:emergencies)
                          .where(active: true)
                          .where('emergencies.gravity < ? OR emergencies.id IS NULL', max_gravity)
                          .joins("LEFT JOIN emergencies ON emergencies.schedule_id = schedules.id AND emergencies.time_end IS NULL")
                          .distinct
-    # FALTA FAZER caso nao possua ambulancias ativas disponiveis, deverá aguardar uma ambulancia disponivel para rodar o find ambulance, ou seja,
-    # toda vez que uma ambulancia receber um time_end, devera rodar um metodo para procurar emergencias sem schedule
+    # FALTA FAZER sempre que uma ambulancia encerrar uma chamada, rodar o find ambulance
     distances = {}
     @schedules.each do |schedule|
-      # calcular distancia usando pitagoras ou geocode e colocar em uma hash (ok)
+      # calculate distance using pythagoras and place it in a hash
       distances[schedule.id] = calculate_distance(schedule, emergency)
     end
-    # lembrar de testar se o autocomplete esta mandando lat e lon com , ou . (ok)
-    # acha o id da ambulancia mais proxima
+    # find the nearest ambulance
     nearest_ambulance_id = distances.min_by { |id, distance| distance }&.first
-    # acha a ambulancia mais proxima
     nearest_ambulance = Schedule.find_by(id: nearest_ambulance_id)
 
-    # oq fazer se nao tiver nenhuma ambulancia
+    # return nil if there are no ambulances available
     return if nearest_ambulance.nil?
 
-    # verifica se a ambulancia esta atendendo alguma emergencia
+    # if the nearest ambulance is not attending to an emergency, it receives the emergency
     if check_if_is_free(nearest_ambulance)
-      # atribui a ambulancia com a menor distancia a emergencia
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
       send_to_emergency(emergency, recomendation)
       emergency.save!
 
-      # mandar msg via webhook para o chat das ambulancias
+      # send the information related to the emergency via webhook to the ambulance chat
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
@@ -285,7 +281,7 @@ class EmergenciesController < ApplicationController
       # FALTA FAZER cria um PopUp na view da central de que foi criada a nova emergencia
 
     else
-      # seleciona a emergencia em andamento da ambulancia proxima que será reatribuida
+      # if the nearest ambulance is already attending to an emergency, save its emergency in a variable
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
       emergency_to_be_reattributed.schedule_id = nil
       # atribui a ambulancia com a menor distancia a emergencia
