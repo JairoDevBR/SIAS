@@ -283,32 +283,37 @@ class EmergenciesController < ApplicationController
     else
       # if the nearest ambulance is already attending to an emergency, save its emergency in a variable
       emergency_to_be_reattributed = Emergency.where(schedule_id: nearest_ambulance_id, time_end: nil).first
+      # remove the ambulance that was attending and wait for another ambulance
       emergency_to_be_reattributed.schedule_id = nil
-      # atribui a ambulancia com a menor distancia a emergencia
-      emergency.schedule_id = nearest_ambulance.id
+
+      # the ambulance receives the newly created emergency
       emergency.schedule_id = nearest_ambulance.id
       emergency.start_lon = nearest_ambulance.current_lon
       emergency.start_lat = nearest_ambulance.current_lat
       send_to_emergency(emergency, recomendation)
       emergency.save!
+
+      # send the information related to the emergency via webhook to the ambulance chat
       ChatroomChannel.broadcast_to(
         Chatroom.find(1),
         { type: "emergency", scheduleId: nearest_ambulance.id, emergencyId: emergency.id }
       )
       head :ok
-      # FALTA FAZER mandar msg via webhook para o chat das ambulancias
       # FALTA FAZER cria um PopUp na view da central de que a emergencia x da ambulancia reatribuida para a ambulancia x foi criada nova emergencia para amb y
       # se a ambulancia ja possuia uma emergencia em andamento, rodar o metodo find ambulance para a emergencia que ficou sem ambulancia
+
+      # recursively run the find ambulance method with the emergency that was removed from the ambulance
       find_ambulance(emergency_to_be_reattributed)
     end
   end
 
+  # calculate distance using pythagoras
   def calculate_distance(schedule, emergency)
     Math.sqrt((((schedule.current_lat - emergency.emergency_lat) * 111.11) ** 2) + (((schedule.current_lon - emergency.emergency_lon) * 111.1) ** 2))
   end
 
+  # return true or false if the ambulance is not attending to an emergency
   def check_if_is_free(schedule_id)
-    # Verifica se não há nenhuma emergency associada à ambulancia ou se há uma emergency com time_end == nil
     Schedule.left_joins(:emergencies)
             .where(id: schedule_id)
             .where("emergencies.id IS NULL OR emergencies.time_end IS NULL")
