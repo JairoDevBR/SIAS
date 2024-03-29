@@ -13,8 +13,6 @@ class EmergenciesController < ApplicationController
     authorize @emergency
   end
 
-
-
   def create
     @emergency = Emergency.new(emergency_params)
     @emergency.user = current_user
